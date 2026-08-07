@@ -1,0 +1,217 @@
+/**
+ * 按钮体系（依赖 theme.css tokens）
+ * 用法：class="btn btn-primary" | btn-secondary | btn-ghost | btn-danger
+ * 尺寸：btn-sm
+ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  border-radius: var(--btn-radius);
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  font-size: var(--btn-font);
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease,
+    transform 0.08s ease,
+    box-shadow 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--color-accent-muted);
+  filter: brightness(1.06);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: none;
+  box-shadow: none;
+}
+
+/* 主操作：闯关入口、下一步、知道了、下一关 */
+.btn-primary {
+  background: linear-gradient(
+    180deg,
+    var(--color-primary),
+    var(--color-primary-deep)
+  );
+  color: var(--color-on-primary);
+  border-color: var(--color-accent-shadow);
+  font-weight: 700;
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--color-on-primary) 25%, transparent);
+}
+
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.05);
+  border-color: var(--color-accent-shadow);
+}
+
+/* 次要可点：上一步、练习、重试 —— outline / soft，克制不跳 */
+.btn-secondary {
+  background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
+  color: var(--color-text);
+  border: 1.5px solid color-mix(in srgb, var(--color-accent) 45%, var(--color-border-strong));
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-accent) 18%, var(--color-surface));
+  border-color: color-mix(in srgb, var(--color-accent) 65%, transparent);
+  filter: none;
+}
+
+.btn-secondary:disabled {
+  opacity: 0.35;
+  background: transparent;
+  border-color: var(--color-border);
+  color: var(--color-text-faint);
+}
+
+/* 最弱：关闭、取消、返回、音效开关 */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+  font-weight: 500;
+  box-shadow: none;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+  color: var(--color-text);
+  filter: none;
+}
+
+.btn-ghost:disabled {
+  opacity: 0.3;
+  color: var(--color-text-faint);
+}
+
+/* 危险（预留） */
+.btn-danger {
+  background: color-mix(in srgb, var(--color-danger) 18%, var(--color-surface));
+  color: var(--color-danger);
+  border-color: color-mix(in srgb, var(--color-danger) 55%, transparent);
+}
+
+/* 小尺寸：机身提交、顶栏 */
+.btn-sm {
+  --btn-pad-y: 0.45rem;
+  --btn-pad-x: 0.7rem;
+  --btn-font: 0.8rem;
+  --btn-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+/**
+ * 机身「提交」：跟旋钮同色系，保证相对外壳可读
+ * （主按钮 accent 常与壳同色，如经典青绿，不适合再铺一层）
+ */
+.btn-submit {
+  background: linear-gradient(
+    180deg,
+    var(--knob-light),
+    var(--knob) 48%,
+    var(--knob-deep)
+  );
+  color: var(--knob-ink);
+  border-color: var(--knob-deep);
+  font-weight: 700;
+  box-shadow:
+    0 2px 0 color-mix(in srgb, #000 35%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #fff 28%, transparent);
+}
+
+.btn-submit:hover:not(:disabled) {
+  filter: brightness(1.07);
+  border-color: var(--knob-deep);
+}
+
+.btn-submit:disabled {
+  opacity: 0.42;
+  filter: grayscale(0.25);
+  box-shadow: none;
+}
+
+/**
+ * 浅色机身表面（青绿外壳上的操作区）
+ * 复用同一套类名，仅覆盖对比度
+ */
+.on-shell {
+  --_shell-ink: var(--shell-ink);
+  --_shell-ink-soft: color-mix(in srgb, var(--shell-ink) 62%, transparent);
+  --_shell-ink-faint: color-mix(in srgb, var(--shell-ink) 32%, transparent);
+  --_shell-fill: color-mix(in srgb, var(--shell-ink) 14%, transparent);
+  --_shell-fill-soft: color-mix(in srgb, var(--shell-ink) 8%, transparent);
+}
+
+.on-shell .btn-primary {
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--shell-ink) 30%, transparent);
+}
+
+/* 机身上提交不受 shell secondary 洗白，保持旋钮色 */
+.on-shell .btn-submit {
+  color: var(--knob-ink);
+  border-color: var(--knob-deep);
+}
+
+.on-shell .btn-submit:disabled {
+  opacity: 0.42;
+  color: var(--knob-ink);
+  border-color: var(--knob-deep);
+  background: linear-gradient(
+    180deg,
+    var(--knob-light),
+    var(--knob) 48%,
+    var(--knob-deep)
+  );
+  filter: grayscale(0.3);
+}
+
+.on-shell .btn-secondary {
+  background: var(--_shell-fill-soft);
+  color: var(--_shell-ink);
+  border-color: color-mix(in srgb, var(--shell-ink) 55%, transparent);
+}
+
+.on-shell .btn-secondary:hover:not(:disabled) {
+  background: var(--_shell-fill);
+  border-color: var(--_shell-ink);
+}
+
+.on-shell .btn-secondary:disabled {
+  opacity: 1;
+  background: transparent;
+  color: var(--_shell-ink-faint);
+  border-color: var(--_shell-ink-faint);
+  cursor: not-allowed;
+}
+
+.on-shell .btn-ghost {
+  background: transparent;
+  color: var(--_shell-ink-soft);
+  border-color: color-mix(in srgb, var(--shell-ink) 28%, transparent);
+}
+
+.on-shell .btn-ghost:hover:not(:disabled) {
+  background: var(--_shell-fill-soft);
+  color: var(--_shell-ink);
+}

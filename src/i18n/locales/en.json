@@ -1,0 +1,231 @@
+{
+  "app": {
+    "name": "CryptoBoy",
+    "tagline": "Crack a 4-color code · 7 attempts max",
+    "description": "CryptoBoy — a 4-color code-breaking puzzle",
+    "aiCreated": "Built with AI",
+    "aiCreatedTitle": "Built with AI assistance"
+  },
+  "lang": {
+    "label": "Language",
+    "zh": "中文",
+    "en": "EN"
+  },
+  "menu": {
+    "soloTitle": "Solo Campaign",
+    "levelBtn": "Level {level}",
+    "soloHint": "Easy / Advanced count up and track best times; Challenge counts down (~{limit} this level) — timeout loses",
+    "practiceTitle": "Free Practice",
+    "practiceCta": "Tune rules & play",
+    "practiceHint": "Adjust intensity, colors, repeats, hints, and timer; or reuse Easy / Advanced / Challenge presets",
+    "helpTitle": "Help & Settings",
+    "helpLabel": "Help",
+    "helpTutorial": "View tutorial",
+    "helpChromeTitle": "How to play",
+    "themeLabel": "Theme",
+    "soundLabel": "Sound",
+    "soundOn": "On",
+    "soundOff": "Off",
+    "helpHint": "Adjust settings here; top-right ? opens help; or press ? / H"
+  },
+  "difficulty": {
+    "easy": "Easy",
+    "advanced": "Advanced",
+    "challenge": "Challenge"
+  },
+  "custom": {
+    "back": "← Back",
+    "title": "Free Practice",
+    "badge": "No campaign progress",
+    "presetsTitle": "Quick presets",
+    "presetsHint": "Load a mode’s defaults, then tweak any option below",
+    "intensityTitle": "Intensity · {label}",
+    "intensityAria": "Intensity",
+    "intensityMarks": "1 Intro · 3 Standard · 5 Extreme",
+    "intensityHint": "Dragging applies a recommended combo (colors / repeat / hints / timer)",
+    "detailsTitle": "Details",
+    "colorCount": "Colors",
+    "colorOption": "{n} colors",
+    "allowRepeat": "Allow color repeats",
+    "hintStyle": "Hint style",
+    "hintColumn": "Per-column (Easy)",
+    "hintSummary": "Green/white totals (Advanced)",
+    "timed": "Countdown timer (off = count up)",
+    "timeLimit": "Time limit",
+    "seconds": "{n} sec",
+    "start": "Start practice"
+  },
+  "intensity": {
+    "1": "Intro",
+    "2": "Easy",
+    "3": "Standard",
+    "4": "Hard",
+    "5": "Extreme"
+  },
+  "game": {
+    "menu": "← Menu",
+    "help": "Help",
+    "soloBadge": "Solo · {difficulty}",
+    "practiceBadge": "Practice · {colors}{repeat}{timed}",
+    "practiceRepeat": "·repeat",
+    "practiceTimed": "·timed",
+    "practiceColors": "{n} colors",
+    "tip": "Tap cells · palette · knob · press ? for help",
+    "remaining": "Left",
+    "elapsed": "Time",
+    "paused": "Paused"
+  },
+  "result": {
+    "won": "Cracked!",
+    "lost": "Failed",
+    "timeout": "Time’s up",
+    "timeUsed": "Time",
+    "withinLimit": "(within limit)",
+    "best": "Best",
+    "newRecord": " · New record!",
+    "secret": "Code:",
+    "next": "Next level",
+    "playAgain": "Play again",
+    "retry": "Retry",
+    "mainMenu": "Main menu"
+  },
+  "help": {
+    "title": "How to play",
+    "close": "Close",
+    "prev": "Back",
+    "next": "Next",
+    "done": "Got it",
+    "steps": [
+      {
+        "title": "Goal",
+        "body": [
+          "Crack a secret 4-color code.",
+          "You get up to 7 guesses; match the code exactly to win.",
+          "Use all 7 without matching and you lose — retry anytime."
+        ]
+      },
+      {
+        "title": "Three modes",
+        "body": [
+          "Easy: per-column green / white / off — great for learning.",
+          "Advanced: only totals of greens and whites, no column marks.",
+          "Challenge: more colors, repeats allowed, countdown — timeout loses like running out of guesses.",
+          "Campaign progress is saved separately per mode."
+        ]
+      },
+      {
+        "title": "Timers",
+        "body": [
+          "Easy / Advanced: count up from 00:00; results show time and local bests.",
+          "Challenge: countdown; help open or a hidden tab pauses the clock.",
+          "Challenge bests use elapsed time (limit minus remaining) — shorter is better.",
+          "The last ~10 seconds show a light cue (mute sound; reduced motion softens animation)."
+        ]
+      },
+      {
+        "title": "Controls",
+        "body": [
+          "Tap a cell to select; tap again to cycle colors.",
+          "Bottom palette fills the current slot in one tap.",
+          "Knob: drag to cycle · short press to move · long press to submit; or use Submit."
+        ]
+      },
+      {
+        "title": "Green & white",
+        "body": [
+          "Green: right color in the right place.",
+          "White: color is in the code, wrong place.",
+          "Off: that color is not in the code."
+        ]
+      },
+      {
+        "title": "Campaign & practice",
+        "body": [
+          "Solo campaign: clear levels to unlock the next; progress stays on this device.",
+          "Free Practice: tune intensity, colors, repeats, hints, timer; or reuse Easy / Advanced / Challenge.",
+          "Under Help & Settings you can open the tutorial and change language, theme, and sound; top-right ? opens help."
+        ]
+      },
+      {
+        "title": "Keyboard",
+        "body": [
+          "On desktop you can play with the keyboard (touch / mouse still work):"
+        ]
+      }
+    ]
+  },
+  "shortcuts": [
+    {
+      "keys": "1–6 (or 7–8)",
+      "action": "Fill current slot with that color"
+    },
+    {
+      "keys": "← / → or A / D",
+      "action": "Move edit cursor"
+    },
+    {
+      "keys": "↑ / ↓, W / S, Space",
+      "action": "Cycle color in current cell"
+    },
+    {
+      "keys": "Enter",
+      "action": "Submit row (all 4 cells filled)"
+    },
+    {
+      "keys": "Esc",
+      "action": "Close dialog, or return to menu"
+    },
+    {
+      "keys": "? / H",
+      "action": "Toggle how-to-play"
+    }
+  ],
+  "device": {
+    "submit": "Submit",
+    "knobAria": "Knob: drag to cycle, short press to move, long press to submit",
+    "knobTitle": "Drag to cycle · short press move · long press submit",
+    "levelAria": "Level {level}",
+    "paletteAria": "Color palette",
+    "gridAria": "Code LED grid",
+    "emptySlot": "Empty",
+    "hintSummary": "{exact} green {present} white"
+  },
+  "theme": {
+    "triggerTitle": "Theme: {label} (click to change)",
+    "panelAria": "Appearance themes",
+    "moreAboveHint": "Scroll up for more themes",
+    "moreBelowHint": "Scroll down for more themes",
+    "labels": {
+      "classic": "Classic",
+      "sanxingdui": "Sanxingdui",
+      "xmas": "Christmas",
+      "cyber": "Cyber Neon",
+      "cappuccino": "Cappuccino",
+      "plum-snow": "Plum Snow",
+      "cny": "Lunar New Year",
+      "panzer": "Panzer",
+      "americana": "Americana"
+    },
+    "blurbs": {
+      "classic": "Toy lime shell",
+      "sanxingdui": "Bronze green & gold",
+      "xmas": "Green · crimson · gold",
+      "cyber": "Deep neon cyan & magenta",
+      "cappuccino": "Coffee & cream",
+      "plum-snow": "Cool white & plum red",
+      "cny": "China red & gilt",
+      "panzer": "Black · red · gold",
+      "americana": "Navy, white & crimson"
+    }
+  },
+  "color": {
+    "R": "Red",
+    "O": "Orange",
+    "Y": "Yellow",
+    "G": "Green",
+    "B": "Blue",
+    "P": "Purple",
+    "C": "Cyan",
+    "K": "Pink"
+  }
+}

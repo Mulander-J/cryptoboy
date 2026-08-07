@@ -1,0 +1,231 @@
+{
+  "app": {
+    "name": "CryptoBoy",
+    "tagline": "破译四色密码 · 最多七次机会",
+    "description": "CryptoBoy — 四色密码破译益智游戏",
+    "aiCreated": "AI 生成",
+    "aiCreatedTitle": "本应用主要由 AI 生成"
+  },
+  "lang": {
+    "label": "语言",
+    "zh": "中文",
+    "en": "EN"
+  },
+  "menu": {
+    "soloTitle": "闯关 Solo",
+    "levelBtn": "第 {level} 关",
+    "soloHint": "Easy / Advanced 正计时记最佳用时；限时挑战倒计时（本关约 {limit}），超时即负",
+    "practiceTitle": "自由练习",
+    "practiceCta": "调整规则并练习",
+    "practiceHint": "可改难度系数、颜色数、是否重复、提示方式、限时等；也支持 Easy 等三档快捷复用",
+    "helpTitle": "帮助与设置",
+    "helpLabel": "帮助",
+    "helpTutorial": "查看教程",
+    "helpChromeTitle": "玩法说明",
+    "themeLabel": "主题",
+    "soundLabel": "音效",
+    "soundOn": "开",
+    "soundOff": "关",
+    "helpHint": "设置在本区调整；右上角 ? 打开玩法说明；桌面也可按 ? 或 H"
+  },
+  "difficulty": {
+    "easy": "Easy",
+    "advanced": "Advanced",
+    "challenge": "限时挑战"
+  },
+  "custom": {
+    "back": "← 返回",
+    "title": "自由练习",
+    "badge": "不计闯关进度",
+    "presetsTitle": "快捷复用",
+    "presetsHint": "一键填入三档默认规则，填完仍可改下面每一项",
+    "intensityTitle": "难度系数 · {label}",
+    "intensityAria": "难度系数",
+    "intensityMarks": "1 入门 · 3 标准 · 5 极限",
+    "intensityHint": "拖动会套用一组推荐组合（颜色数 / 重复 / 提示 / 限时）",
+    "detailsTitle": "详细选项",
+    "colorCount": "颜色数",
+    "colorOption": "{n} 色",
+    "allowRepeat": "允许颜色重复",
+    "hintStyle": "提示方式",
+    "hintColumn": "按列直示（Easy）",
+    "hintSummary": "绿白汇总（Advanced）",
+    "timed": "限时倒计时（关闭则为正计时）",
+    "timeLimit": "时限",
+    "seconds": "{n} 秒",
+    "start": "开始练习"
+  },
+  "intensity": {
+    "1": "入门",
+    "2": "轻松",
+    "3": "标准",
+    "4": "吃力",
+    "5": "极限"
+  },
+  "game": {
+    "menu": "← 菜单",
+    "help": "说明",
+    "soloBadge": "闯关 · {difficulty}",
+    "practiceBadge": "自由练习 · {colors}{repeat}{timed}",
+    "practiceRepeat": "·可重复",
+    "practiceTimed": "·限时",
+    "practiceColors": "{n}色",
+    "tip": "点格换色 · 色盘点选 · 旋钮操作 · 键盘 ? 看说明",
+    "remaining": "剩余",
+    "elapsed": "用时",
+    "paused": "暂停"
+  },
+  "result": {
+    "won": "破译成功！",
+    "lost": "破译失败",
+    "timeout": "时间到",
+    "timeUsed": "用时",
+    "withinLimit": "（限时内）",
+    "best": "最佳",
+    "newRecord": " · 新纪录！",
+    "secret": "密码：",
+    "next": "下一关",
+    "playAgain": "再来一局",
+    "retry": "重试本关",
+    "mainMenu": "主菜单"
+  },
+  "help": {
+    "title": "玩法说明",
+    "close": "关闭",
+    "prev": "上一步",
+    "next": "下一步",
+    "done": "知道了",
+    "steps": [
+      {
+        "title": "游戏目标",
+        "body": [
+          "破译一组 4 位颜色密码。",
+          "每局最多猜 7 次；某次与密码完全一致即过关。",
+          "7 次用尽仍未猜中则失败，可重试。"
+        ]
+      },
+      {
+        "title": "三档难度",
+        "body": [
+          "Easy：按列直示绿 / 白 / 灭，适合入门。",
+          "Advanced：只汇总绿白数量，不标明列。",
+          "限时挑战：颜色更多、可重复，且有倒计时；超时与猜完 7 次一样判负。",
+          "三档闯关进度分开保存。"
+        ]
+      },
+      {
+        "title": "计时与限时",
+        "body": [
+          "Easy / Advanced：正计时，从 00:00 向上，结算显示用时并记本地最佳。",
+          "限时挑战：倒计时；打开说明或切走页签会暂停。",
+          "挑战档最佳同样按「用时」（限额减去剩余）计算，越短越好。",
+          "最后约 10 秒会有轻提示（可关音效；系统减少动效时动画更弱）。"
+        ]
+      },
+      {
+        "title": "如何操作",
+        "body": [
+          "点灯格：选中槽位；再点同一格循环换色。",
+          "底部色盘：一键把颜色填入当前槽。",
+          "旋钮：拖转换色 · 短按移格 · 长按提交；也可用「提交」按钮。"
+        ]
+      },
+      {
+        "title": "绿白提示",
+        "body": [
+          "绿灯：颜色正确且位置正确。",
+          "白灯：颜色在密码中，但位置不对。",
+          "灭灯：该颜色不在密码中。"
+        ]
+      },
+      {
+        "title": "闯关与练习",
+        "body": [
+          "闯关 Solo：按关卡推进，通关解锁下一关，进度保存在本机。",
+          "自由练习：可调难度系数、颜色数、是否重复、提示方式、限时；也可快捷复用 Easy / Advanced / 限时挑战。",
+          "可在「帮助与设置」调整帮助、语言、主题与音效；右上角 ? 打开玩法说明。"
+        ]
+      },
+      {
+        "title": "键盘快捷键",
+        "body": [
+          "桌面可用键盘快速操作（不影响触屏 / 鼠标）："
+        ]
+      }
+    ]
+  },
+  "shortcuts": [
+    {
+      "keys": "1–6（或 7–8）",
+      "action": "将对应颜色填入当前槽"
+    },
+    {
+      "keys": "← / → 或 A / D",
+      "action": "切换当前编辑槽位"
+    },
+    {
+      "keys": "↑ / ↓、W / S、Space",
+      "action": "循环切换当前格颜色"
+    },
+    {
+      "keys": "Enter",
+      "action": "提交本行（需 4 格已填满）"
+    },
+    {
+      "keys": "Esc",
+      "action": "关闭弹层，或返回主菜单"
+    },
+    {
+      "keys": "? / H",
+      "action": "打开 / 关闭玩法说明"
+    }
+  ],
+  "device": {
+    "submit": "提交",
+    "knobAria": "旋钮：拖转换色，短按移格，长按提交",
+    "knobTitle": "拖转换色 · 短按移格 · 长按提交",
+    "levelAria": "关卡 {level}",
+    "paletteAria": "色盘",
+    "gridAria": "密码灯阵",
+    "emptySlot": "空槽",
+    "hintSummary": "{exact} 绿 {present} 白"
+  },
+  "theme": {
+    "triggerTitle": "主题：{label}（点击切换）",
+    "panelAria": "外观主题",
+    "moreAboveHint": "向上滚动查看更多主题",
+    "moreBelowHint": "向下滚动查看更多主题",
+    "labels": {
+      "classic": "经典原皮",
+      "sanxingdui": "三星堆目",
+      "xmas": "欢乐圣诞",
+      "cyber": "赛博霓虹",
+      "cappuccino": "卡布奇诺",
+      "plum-snow": "踏雪寻梅",
+      "cny": "祥瑞新春",
+      "panzer": "德国战车",
+      "americana": "自由美国"
+    },
+    "blurbs": {
+      "classic": "青绿玩具机身",
+      "sanxingdui": "铜绿暗金古蜀",
+      "xmas": "圣诞绿 · 朱红 · 金",
+      "cyber": "深底霓虹青品红",
+      "cappuccino": "咖啡棕与奶油",
+      "plum-snow": "冷白梅朱红",
+      "cny": "中国红 · 鎏金",
+      "panzer": "黑 · 红 · 金",
+      "americana": "深蓝白绯红"
+    }
+  },
+  "color": {
+    "R": "红",
+    "O": "橙",
+    "Y": "黄",
+    "G": "绿",
+    "B": "蓝",
+    "P": "紫",
+    "C": "青",
+    "K": "粉"
+  }
+}

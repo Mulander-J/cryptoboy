@@ -1,0 +1,575 @@
+/**
+ * 主题配色覆盖（仅改 token，布局与按钮类共用）
+ * 打磨原则：壳/页分层、字色对比、提示点可读、深浅皮边框够硬
+ */
+
+/* —— 卡布奇诺：咖啡棕 / 奶油 / 暖雾灰 —— */
+[data-theme='cappuccino'] {
+  --color-bg: #1c1612;
+  --color-bg-elevated: #2a211c;
+  --color-surface: #261e19;
+  --color-surface-raised: #322822;
+  --color-border: #8a6a52aa;
+  --color-border-strong: #a88868cc;
+
+  --color-text: #f7f0e8;
+  --color-text-muted: #d8c4b0;
+  --color-text-faint: #d8c4b099;
+
+  --color-accent: #c4a484;
+  --color-accent-deep: #a88968;
+  --color-accent-shadow: #7a6048;
+  --color-accent-muted: #5a4538;
+  --color-on-accent: #2a1c14;
+
+  --color-danger: #e07870;
+  --color-success: #7ec87e;
+  --color-warning: #e8c99a;
+
+  --color-page-glow: #3d2e24;
+
+  --shell: #d4b896;
+  --shell-deep: #b8956f;
+  --shell-shadow: #8a6a4a;
+  --shell-edge: #9a7854;
+  --shell-highlight: #f0e0c888;
+  --shell-ink: #2a1c14;
+  --shell-rim: color-mix(in srgb, #2a1c14 40%, transparent);
+
+  --panel: #1a1410;
+  --panel-inset: #100c0a;
+  --knob: #a67c52;
+  --knob-deep: #7a5535;
+  --knob-light: #d4a574;
+  --knob-mid: #c4925e;
+  --knob-center: #8b5e34;
+  --knob-mark: #4a3018;
+  --knob-sheen: #f0d8b066;
+  --knob-ink: #ffffff;
+
+  --digit: #e09070;
+  --digit-ghost: #3a2218;
+  --digit-glow: #e0907066;
+  --digit-well: #120e0c;
+
+  --status-idle: #3a3028;
+  --status-play: #e8c99a;
+  --status-play-glow: #e8c99aaa;
+  --cursor-ring: var(--knob);
+  --palette-selected: var(--knob-light);
+  --speaker-dot: #2a221c;
+  --palette-ring: #2a1c1488;
+
+  --hint-exact: #7ec87e;
+  --hint-present: #f5efe8;
+  --hint-absent: #4a3a30;
+  --glow-strength: 0.35;
+}
+
+/* —— 赛博霓虹：深底 + 霓虹青/品红 —— */
+[data-theme='cyber'] {
+  --color-bg: #070b12;
+  --color-bg-elevated: #0e1522;
+  --color-surface: #0c121c;
+  --color-surface-raised: #141c2a;
+  --color-border: #2a5a6aaa;
+  --color-border-strong: #3a7a8acc;
+
+  --color-text: #eef9ff;
+  --color-text-muted: #9ecad8;
+  --color-text-faint: #9ecad899;
+
+  --color-accent: #2de2e6;
+  --color-accent-deep: #1ab8c4;
+  --color-accent-shadow: #0e7a88;
+  --color-accent-muted: #1a3a48;
+  --color-on-accent: #041418;
+
+  --color-danger: #ff2a6d;
+  --color-success: #39ff14;
+  --color-warning: #f9f871;
+
+  --color-page-glow: #122030;
+
+  /* 壳略亮于页面，青边描出轮廓 */
+  --shell: #243448;
+  --shell-deep: #182636;
+  --shell-shadow: #0a1018;
+  --shell-edge: #2e4a5c;
+  --shell-highlight: #2de2e644;
+  --shell-ink: #eef9ff;
+  --shell-rim: color-mix(in srgb, #2de2e6 45%, transparent);
+
+  --panel: #05080e;
+  --panel-inset: #020408;
+  --knob: #ff2a6d;
+  --knob-deep: #b01848;
+  --knob-light: #ff6a9a;
+  --knob-mid: #ff4a80;
+  --knob-center: #d01858;
+  --knob-mark: #4a0820;
+  --knob-sheen: #ff8ab066;
+
+  --digit: #2de2e6;
+  --digit-ghost: #0a2830;
+  --digit-glow: #2de2e655;
+  --digit-well: #04080e;
+
+  --status-idle: #1a2830;
+  --status-play: #2de2e6;
+  --status-play-glow: #2de2e666;
+  --cursor-ring: var(--knob);
+  --palette-selected: var(--knob-light);
+  --speaker-dot: #121820;
+  --palette-ring: #2de2e644;
+
+  --hint-exact: #39ff14;
+  --hint-present: #e8f4ff;
+  --hint-absent: #2a3848;
+  --glow-strength: 0.45;
+}
+
+/* —— 自由美国：深蓝 / 白 / 绯红 —— */
+[data-theme='americana'] {
+  --color-bg: #0b1220;
+  --color-bg-elevated: #142038;
+  --color-surface: #121c30;
+  --color-surface-raised: #1a2840;
+  --color-border: #5a78a8aa;
+  --color-border-strong: #7a98c0cc;
+
+  --color-text: #f4f7fb;
+  --color-text-muted: #c4d2e4;
+  --color-text-faint: #c4d2e499;
+
+  --color-accent: #c8102e;
+  --color-accent-deep: #9e0c24;
+  --color-accent-shadow: #6e0818;
+  --color-accent-muted: #4a2030;
+  --color-on-accent: #fff8f8;
+
+  --color-danger: #e63946;
+  --color-success: #2ecc71;
+  --color-warning: #f4d35e;
+
+  --color-page-glow: #1a2a48;
+
+  --shell: #1e4580;
+  --shell-deep: #163560;
+  --shell-shadow: #0c1c38;
+  --shell-edge: #2a5890;
+  --shell-highlight: #ffffff44;
+  --shell-ink: #f4f7fb;
+  --shell-rim: color-mix(in srgb, #f4f7fb 35%, transparent);
+
+  --panel: #0a101c;
+  --panel-inset: #060a12;
+  --knob: #c8102e;
+  --knob-deep: #8a0c20;
+  --knob-light: #e84860;
+  --knob-mid: #d42844;
+  --knob-center: #a81028;
+  --knob-mark: #4a0810;
+  --knob-sheen: #ffb0b866;
+
+  --digit: #f0f4f8;
+  --digit-ghost: #2a3040;
+  --digit-glow: #ffffff55;
+  --digit-well: #080c14;
+
+  --status-idle: #243048;
+  --status-play: #f4f7fb;
+  --status-play-glow: #ffffff66;
+  --cursor-ring: var(--knob);
+  --palette-selected: var(--knob-light);
+  --speaker-dot: #1a2438;
+  --palette-ring: #ffffff44;
+
+  --hint-exact: #2ecc71;
+  --hint-present: #f4f7fb;
+  --hint-absent: #304058;
+  --glow-strength: 0.4;
+}
+
+/* —— 踏雪寻梅：冬雪冷白 + 梅朱红（浅色皮加强边与字色） —— */
+[data-theme='plum-snow'] {
+  --color-bg: #d8e0ea;
+  --color-bg-elevated: #c8d4e2;
+  --color-surface: #eef3f8;
+  --color-surface-raised: #ffffff;
+  --color-border: #6a7a8ccc;
+  --color-border-strong: #4a5a6cee;
+
+  --color-text: #141c26;
+  --color-text-muted: #3a4a5c;
+  --color-text-faint: #3a4a5caa;
+
+  --color-accent: #c45c5c;
+  --color-accent-deep: #a04048;
+  --color-accent-shadow: #702830;
+  --color-accent-muted: #c8a0a0;
+  --color-on-accent: #fff8f8;
+
+  --color-danger: #a02838;
+  --color-success: #1f7a4e;
+  --color-warning: #a87828;
+
+  --color-page-glow: #b0c0d4;
+  --color-overlay: #1a222c88;
+
+  /* 壳略偏暖白，与灰蓝页底拉开 */
+  --shell: #f7fafc;
+  --shell-deep: #e2eaf2;
+  --shell-shadow: #8a9aac;
+  --shell-edge: #c0cedc;
+  --shell-highlight: #ffffffee;
+  --shell-ink: #141c26;
+  --shell-rim: color-mix(in srgb, #141c26 28%, transparent);
+
+  --panel: #1e2630;
+  --panel-inset: #141a22;
+  --knob: #c45c5c;
+  --knob-deep: #8a3038;
+  --knob-light: #e08888;
+  --knob-mid: #d06868;
+  --knob-center: #a84850;
+  --knob-mark: #4a181c;
+  --knob-sheen: #ffd0d066;
+
+  --digit: #ff7a7a;
+  --digit-ghost: #3a2828;
+  --digit-glow: #ff7a7a66;
+  --digit-well: #141a22;
+
+  --status-idle: #6a7888;
+  --status-play: #c45c5c;
+  --status-play-glow: #c45c5c66;
+  --cursor-ring: var(--knob);
+  --palette-selected: var(--knob-light);
+  --speaker-dot: #3a4450;
+  --palette-ring: #1a222c44;
+
+  --hint-exact: #3dcc7a;
+  --hint-present: #f5f8fc;
+  --hint-absent: #4a5560;
+  --glow-strength: 0.35;
+}
+
+/* —— 三星堆目：铜绿 / 暗金 / 墨褐 —— */
+[data-theme='sanxingdui'] {
+  --color-bg: #14100c;
+  --color-bg-elevated: #1e1810;
+  --color-surface: #1a1610;
+  --color-surface-raised: #262018;
+  --color-border: #7a8a58aa;
+  --color-border-strong: #9aaa70cc;
+
+  --color-text: #f0e8d0;
+  --color-text-muted: #c8bc88;
+  --color-text-faint: #c8bc8899;
+
+  --color-accent: #6a9f7a;
+  --color-accent-deep: #4a7a58;
+  --color-accent-shadow: #2a4a34;
+  --color-accent-muted: #3a4a38;
+  --color-on-accent: #0e1810;
+
+  --color-danger: #d07050;
+  --color-success: #7ec090;
+  --color-warning: #d4b060;
+
+  --color-page-glow: #2a2418;
+
+  --shell: #527a5c;
+  --shell-deep: #3e6048;
+  --shell-shadow: #243828;
+  --shell-edge: #658a6e;
+  --shell-highlight: #d4b87855;
+  --shell-ink: #f0e8d0;
+  --shell-rim: color-mix(in srgb, #d4b060 40%, transparent);
+
+  --panel: #0e0c08;
+  --panel-inset: #080604;
+  --knob: #d4b060;
+  --knob-deep: #8a6830;
+  --knob-light: #e8d090;
+  --knob-mid: #dcc070;
+  --knob-center: #b89840;
+  --knob-mark: #3a2810;
+  --knob-sheen: #f0d89055;
+  --knob-ink: #1a1408;
+
+  --digit: #e0c878;
+  --digit-ghost: #2a2410;
+  --digit-glow: #e0c87866;
+  --digit-well: #0c0a06;
+
+  --status-idle: #3a4838;
+  --status-play: #d4b060;
+  --status-play-glow: #d4b06066;
+  --cursor-ring: var(--knob);
+  --palette-selected: var(--knob-light);
+  --speaker-dot: #1e1a12;
+  --palette-ring: #d4b06044;
+
+  --hint-exact: #7ec090;
+  --hint-present: #f0e8d0;
+  --hint-absent: #3a4030;
+  --glow-strength: 0.35;
+}
+
+/* —— 德国战车：黑 / 红 / 金（黑壳与黑底分层） —— */
+[data-theme='panzer'] {
+  --color-bg: #0a0a0a;
+  --color-bg-elevated: #161616;
+  --color-surface: #121212;
+  --color-surface-raised: #242424;
+  --color-border: #6a6a6abb;
+  --color-border-strong: #8a8a8acc;
+
+  --color-text: #fafafa;
+  --color-text-muted: #d0d0d0;
+  --color-text-faint: #d0d0d099;
+
+  --color-accent: #ffcc00;
+  --color-accent-deep: #d4a800;
+  --color-accent-shadow: #8a6e00;
+  --color-accent-muted: #4a4020;
+  --color-on-accent: #1a1400;
+
+  --color-danger: #ff2020;
+  --color-success: #4aaa50;
+  --color-warning: #ffcc00;
+
+  --color-page-glow: #2a1818;
+
+  /* 石墨壳，金边勾轮廓，避免吞进纯黑页 */
+  --shell: #2e2e2e;
+  --shell-deep: #1c1c1c;
+  --shell-shadow: #000000;
+  --shell-edge: #3e3e3e;
+  --shell-highlight: #ffcc0033;
+  --shell-ink: #fafafa;
+  --shell-rim: color-mix(in srgb, #ffcc00 50%, transparent);
+
+  --panel: #0a0a0a;
+  --panel-inset: #050505;
+  --knob: #e00000;
+  --knob-deep: #990000;
+  --knob-light: #ff4040;
+  --knob-mid: #ee2020;
+  --knob-center: #bb0000;
+  --knob-mark: #4a0000;
+  --knob-sheen: #ff808066;
+
+  --digit: #ffd633;
+  --digit-ghost: #2a2410;
+  --digit-glow: #ffd63366;
+  --digit-well: #080808;
+
+  --status-idle: #3a3a3a;
+  --status-play: #ffcc00;
+  --status-play-glow: #ffcc0066;
+  --cursor-ring: var(--knob);
+  --palette-selected: var(--knob-light);
+  --speaker-dot: #2a2a2a;
+  --palette-ring: #ffffff44;
+
+  --hint-exact: #4aaa50;
+  --hint-present: #f5f5f5;
+  --hint-absent: #454545;
+  --glow-strength: 0.4;
+}
+
+/* —— 欢乐圣诞：常青松绿 / 朱红 / 金箔 —— */
+[data-theme='xmas'] {
+  --color-bg: #0c1810;
+  --color-bg-elevated: #152418;
+  --color-surface: #122018;
+  --color-surface-raised: #1c2e22;
+  --color-border: #3a6a4888;
+  --color-border-strong: #5a8a60cc;
+
+  --color-text: #f5f0e6;
+  --color-text-muted: #c8d4b8;
+  --color-text-faint: #c8d4b899;
+
+  --color-accent: #d4a017;
+  --color-accent-deep: #b08610;
+  --color-accent-shadow: #6e5408;
+  --color-accent-muted: #4a4020;
+  --color-on-accent: #1a1400;
+
+  --color-danger: #c41e3a;
+  --color-success: #3aaa5a;
+  --color-warning: #e8c040;
+
+  --color-page-glow: #1a3020;
+
+  --shell: #1f6b3a;
+  --shell-deep: #16522c;
+  --shell-shadow: #0c3018;
+  --shell-edge: #2a8048;
+  --shell-highlight: #d4a01744;
+  --shell-ink: #f5f0e6;
+  --shell-rim: color-mix(in srgb, #d4a017 45%, transparent);
+
+  --panel: #0a100c;
+  --panel-inset: #060a08;
+  --knob: #c41e3a;
+  --knob-deep: #8a1428;
+  --knob-light: #e84860;
+  --knob-mid: #d42844;
+  --knob-center: #a81830;
+  --knob-mark: #4a0810;
+  --knob-sheen: #ffb0b866;
+
+  --digit: #e8c040;
+  --digit-ghost: #2a2410;
+  --digit-glow: #e8c04066;
+  --digit-well: #080c08;
+
+  --status-idle: #2a4030;
+  --status-play: #e8c040;
+  --status-play-glow: #e8c04066;
+  --cursor-ring: var(--knob);
+  --palette-selected: var(--knob-light);
+  --speaker-dot: #1a2820;
+  --palette-ring: #d4a01744;
+
+  --hint-exact: #3aaa5a;
+  --hint-present: #f5f0e6;
+  --hint-absent: #304038;
+  --glow-strength: 0.42;
+}
+
+/* —— 祥瑞新春：中国红 / 鎏金 / 暖绢 —— */
+[data-theme='cny'] {
+  --color-bg: #1a0c0c;
+  --color-bg-elevated: #2a1414;
+  --color-surface: #221010;
+  --color-surface-raised: #321818;
+  --color-border: #a0404088;
+  --color-border-strong: #c06060cc;
+
+  --color-text: #fff6e8;
+  --color-text-muted: #e8c8a0;
+  --color-text-faint: #e8c8a099;
+
+  --color-accent: #f0d78c;
+  --color-accent-deep: #d4b060;
+  --color-accent-shadow: #8a7030;
+  --color-accent-muted: #5a4020;
+  --color-on-accent: #2a1c08;
+
+  --color-danger: #ff5050;
+  --color-success: #e8c04a;
+  --color-warning: #ffd070;
+
+  --color-page-glow: #4a1818;
+
+  --shell: #c8102e;
+  --shell-deep: #9e0c24;
+  --shell-shadow: #6e0818;
+  --shell-edge: #e02848;
+  --shell-highlight: #ffd07055;
+  --shell-ink: #fff6e8;
+  --shell-rim: color-mix(in srgb, #f0d78c 55%, transparent);
+
+  --panel: #120808;
+  --panel-inset: #0a0404;
+  --knob: #e8c04a;
+  --knob-deep: #a88828;
+  --knob-light: #f5d878;
+  --knob-mid: #f0d060;
+  --knob-center: #c8a030;
+  --knob-mark: #4a3810;
+  --knob-sheen: #fff0b066;
+  --knob-ink: #1a1408;
+
+  --digit: #ffd070;
+  --digit-ghost: #3a2810;
+  --digit-glow: #ffd07066;
+  --digit-well: #0c0606;
+
+  --status-idle: #4a2828;
+  --status-play: #ffd070;
+  --status-play-glow: #ffd07066;
+  --cursor-ring: var(--knob);
+  --palette-selected: var(--knob-light);
+  --speaker-dot: #2a1414;
+  --palette-ring: #f0d78c44;
+
+  --hint-exact: #e8c04a;
+  --hint-present: #fff6e8;
+  --hint-absent: #4a3030;
+  --glow-strength: 0.42;
+}
+
+/* 经典：略加强边框与 rim */
+[data-theme='classic'] {
+  --color-border: #4a5e2888;
+  --color-border-strong: #6a8430cc;
+  --shell-rim: color-mix(in srgb, #000 30%, transparent);
+  --hint-absent: #3a3a30;
+}
+
+[data-theme='plum-snow'] body {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, #b8c8dccc 0%, transparent 55%),
+    linear-gradient(180deg, var(--page-bg-top), var(--page-bg-bottom));
+}
+
+[data-theme='panzer'] body {
+  background:
+    radial-gradient(ellipse 50% 36% at 50% 0%, #dd000022 0%, transparent 50%),
+    linear-gradient(180deg, var(--page-bg-top), var(--page-bg-bottom));
+}
+
+[data-theme='xmas'] body {
+  background:
+    radial-gradient(ellipse 55% 40% at 50% 0%, #1f6b3a33 0%, transparent 52%),
+    radial-gradient(ellipse 40% 30% at 85% 8%, #c41e3a18 0%, transparent 45%),
+    linear-gradient(180deg, var(--page-bg-top), var(--page-bg-bottom));
+}
+
+[data-theme='cny'] body {
+  background:
+    radial-gradient(ellipse 60% 42% at 50% 0%, #c8102e33 0%, transparent 55%),
+    radial-gradient(ellipse 35% 28% at 15% 10%, #f0d78c22 0%, transparent 48%),
+    linear-gradient(180deg, var(--page-bg-top), var(--page-bg-bottom));
+}
+
+/* 浅色皮：卡片 / 浮层边框更硬 */
+[data-theme='plum-snow'] .menu-block,
+[data-theme='plum-snow'] .theme-dock-panel,
+[data-theme='plum-snow'] .theme-dock-trigger,
+[data-theme='plum-snow'] .game-timer,
+[data-theme='plum-snow'] .result-modal,
+[data-theme='plum-snow'] .help-panel {
+  border-color: var(--color-border-strong);
+  box-shadow: 0 2px 12px color-mix(in srgb, #141c26 12%, transparent);
+}
+
+[data-theme='plum-snow'] .btn-ghost {
+  border-color: var(--color-border-strong);
+  color: var(--color-text-muted);
+}
+
+[data-theme='plum-snow'] .menu-hero h1 {
+  text-shadow:
+    0 1px 0 #fff,
+    0 2px 0 var(--color-accent-shadow);
+}
+
+/* 深壳主题：机身提交区字色已靠 shell-ink；加强面板与壳的交界 */
+[data-theme='cyber'] .device-panel,
+[data-theme='americana'] .device-panel,
+[data-theme='panzer'] .device-panel,
+[data-theme='xmas'] .device-panel,
+[data-theme='cny'] .device-panel {
+  box-shadow:
+    inset 0 0 0 2px #000,
+    inset 0 8px 16px #000000aa,
+    0 0 0 1px color-mix(in srgb, var(--shell-rim) 80%, transparent);
+}

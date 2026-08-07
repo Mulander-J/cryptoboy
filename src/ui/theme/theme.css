@@ -1,0 +1,148 @@
+/**
+ * 共享结构变量 + 经典原皮（默认）
+ * 其它主题见 themes.css 的 [data-theme=…]
+ */
+
+:root,
+[data-theme='classic'] {
+  /* —— UI Chrome —— */
+  --color-bg: #0d1208;
+  --color-bg-elevated: #1a2210;
+  --color-surface: #12180c;
+  --color-surface-raised: #1c2412;
+  --color-border: #3a4a2088;
+  --color-border-strong: #5a6e30aa;
+
+  --color-text: #f4f7ea;
+  --color-text-muted: #c5d49a;
+  --color-text-faint: #c5d49a88;
+
+  --color-accent: #a8d400;
+  --color-accent-deep: #8fb000;
+  --color-accent-shadow: #6e8a00;
+  --color-accent-muted: #3a4a28;
+  --color-on-accent: #122000;
+
+  --color-primary: var(--color-accent);
+  --color-primary-deep: var(--color-accent-deep);
+  --color-on-primary: var(--color-on-accent);
+
+  --color-danger: #ff6b6b;
+  --color-success: #39ff14;
+  --color-warning: #ffe08a;
+
+  --color-page-glow: #2a3818;
+  --color-overlay: #00000099;
+
+  /* —— 机身 —— */
+  --shell: var(--color-accent);
+  --shell-deep: var(--color-accent-deep);
+  --shell-shadow: var(--color-accent-shadow);
+  --shell-edge: #7a9800;
+  --shell-highlight: #d4f06a88;
+  --shell-ink: var(--color-on-accent);
+  /* 机身外描边：壳色贴近页面时拉开层次 */
+  --shell-rim: color-mix(in srgb, #000 35%, transparent);
+  --panel: #141414;
+  --panel-inset: #0a0a0a;
+  --brand-strip: #1a1a1a;
+
+  --knob: #ff6a00;
+  --knob-deep: #cc5500;
+  --knob-light: #ffb060;
+  --knob-mid: #ff9a40;
+  --knob-center: #e85a00;
+  --knob-mark: #7a2f00;
+  --knob-sheen: #ffd0a066;
+  /* 旋钮色按钮上的字色（提交等） */
+  --knob-ink: #ffffff;
+
+  --digit: #ff3b30;
+  --digit-ghost: #3a1515;
+  --digit-glow: #ff3b3088;
+  --digit-well: #0d0d0d;
+
+  --status-idle: #3a3a20;
+  --status-play: #ffe08a;
+  --status-play-glow: #ffe08acc;
+  /* 当前格闪烁 / 色盘选中：与旋钮对齐 */
+  --cursor-ring: var(--knob);
+  --palette-selected: var(--knob-light);
+
+  --speaker-dot: #2a2a2a;
+  --palette-ring: #1a280088;
+
+  /* 兼容旧别名 */
+  --shell-green: var(--shell);
+  --shell-green-deep: var(--shell-deep);
+  --shell-green-shadow: var(--shell-shadow);
+  --panel-black: var(--panel);
+
+  /* —— LED（高识别度固定色板；主题可微调节奏） —— */
+  --led-off: #1c1c1c;
+  --led-r: #e53935;
+  --led-o: #fb8c00;
+  --led-y: #fdd835;
+  --led-g: #43a047;
+  --led-b: #1e88e5;
+  --led-p: #8e24aa;
+  --led-c: #00acc1;
+  --led-k: #ec407a;
+
+  --hint-exact: var(--color-success);
+  --hint-present: #f5f5f5;
+  /* 暗面板上「无灯」也要看得出凹槽 */
+  --hint-absent: #3a3a3a;
+
+  --page-bg-top: var(--color-bg-elevated);
+  --page-bg-bottom: var(--color-bg);
+  --text-primary: var(--color-text);
+  --text-muted: var(--color-text-muted);
+  --danger: var(--color-danger);
+
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-shell: 28px;
+
+  --font-ui: 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    sans-serif;
+  --font-display: 'DIN Alternate', 'Avenir Next Condensed', 'Segoe UI',
+    sans-serif;
+
+  --btn-pad-y: 0.65rem;
+  --btn-pad-x: 1rem;
+  --btn-font: 0.95rem;
+  --btn-radius: var(--radius-md);
+
+  --glow-strength: 0.55;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-ui);
+  color: var(--color-text);
+  background:
+    radial-gradient(
+      ellipse 80% 50% at 50% 0%,
+      color-mix(in srgb, var(--color-page-glow) 70%, transparent) 0%,
+      transparent 55%
+    ),
+    linear-gradient(180deg, var(--page-bg-top), var(--page-bg-bottom));
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.25s ease, color 0.2s ease;
+}
+
+button {
+  font-family: inherit;
+}
