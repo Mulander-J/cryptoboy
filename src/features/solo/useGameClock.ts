@@ -14,6 +14,8 @@ type Options = {
   config: Pick<LevelConfig, 'timerMode' | 'timeLimitMs'>
   /** 帮助打开时暂停 */
   helpOpen: boolean
+  /** 提交确认弹层打开时暂停 */
+  confirmOpen?: boolean
   gameStatus: GameStatus
   /** 时钟重置键（重试时递增） */
   resetKey: number
@@ -21,11 +23,12 @@ type Options = {
 }
 
 /**
- * 局内时钟：rAF 推进；帮助 / document.hidden 暂停；胜负冻结；超时回调。
+ * 局内时钟：rAF 推进；帮助 / 确认弹层 / document.hidden 暂停；胜负冻结；超时回调。
  */
 export function useGameClock({
   config,
   helpOpen,
+  confirmOpen = false,
   gameStatus,
   resetKey,
   onExpire,
@@ -53,6 +56,15 @@ export function useGameClock({
       return next
     })
   }, [helpOpen])
+
+  // 提交确认弹层暂停
+  useEffect(() => {
+    setClock((c) => {
+      const next = confirmOpen ? pause(c, 'confirm') : resume(c, 'confirm')
+      clockRef.current = next
+      return next
+    })
+  }, [confirmOpen])
 
   // 页签隐藏暂停
   useEffect(() => {

@@ -1,6 +1,8 @@
 import { COLOR_META, colorsForCount } from '@/domain/colors'
 import type { ColorToken } from '@/domain/types'
 import { useI18n } from '@/i18n'
+import { useColorBlindPatterns } from '@/ui/colorBlind/ColorBlindContext'
+import { ColorPatternMark } from '@/ui/colorBlind/ColorPatternMark'
 
 type Props = {
   colorCount: number
@@ -19,6 +21,7 @@ export function ColorPalette({
   onPick,
 }: Props) {
   const { m } = useI18n()
+  const showPattern = useColorBlindPatterns()
   const palette = colorsForCount(colorCount)
   const blocked = new Set(disabledColors ?? [])
   return (
@@ -37,7 +40,9 @@ export function ColorPalette({
             onClick={() => onPick(c)}
             title={m.color[c]}
             aria-label={m.color[c]}
-          />
+          >
+            {showPattern ? <ColorPatternMark color={c} /> : null}
+          </button>
         )
       })}
     </div>

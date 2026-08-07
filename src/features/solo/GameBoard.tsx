@@ -16,6 +16,7 @@ import { useI18n } from '@/i18n'
 import { ColorPalette } from '@/ui/device/ColorPalette'
 import { DeviceShell } from '@/ui/device/DeviceShell'
 import { LedGrid } from '@/ui/device/LedGrid'
+import { ConfirmSubmitModal } from '@/ui/ConfirmSubmitModal'
 import { ResultModal } from '@/ui/ResultModal'
 import { TimerDisplay } from '@/ui/TimerDisplay'
 import { playSound } from '@/ui/audio/sound'
@@ -31,6 +32,8 @@ type Props = {
   difficulty: Difficulty
   level: number
   sound: boolean
+  /** 提交前二次确认（设置项） */
+  confirmSubmit?: boolean
   /** 自定义练习完整配置；有则覆盖 practiceConfig(difficulty) */
   customConfig?: LevelConfig
   /** 预设答案（本地双人）；有则跳过随机生成，重试保持同密 */
@@ -81,6 +84,7 @@ export function GameBoard({
   difficulty,
   level,
   sound,
+  confirmSubmit = false,
   customConfig,
   initialSecret,
   bestTimeMs,
@@ -106,12 +110,14 @@ export function GameBoard({
   const [resultElapsed, setResultElapsed] = useState<number | undefined>()
   const [resultBest, setResultBest] = useState<number | undefined>(bestTimeMs)
   const [isNewBest, setIsNewBest] = useState(false)
+  const [confirmOpen, setConfirmOpen] = useState(false)
   const prevStatus = useRef(session.status)
   const urgentBeeped = useRef(false)
 
   const clock = useGameClock({
     config,
     helpOpen,
+    confirmOpen,
     gameStatus: session.status,
     resetKey: clockResetKey,
     onExpire: () => dispatch({ type: 'TIMEOUT' }),
@@ -165,13 +171,24 @@ export function GameBoard({
     setResultElapsed(undefined)
     setIsNewBest(false)
     setResultBest(bestTimeMs)
+    setConfirmOpen(false)
     setClockResetKey((k) => k + 1)
   }
 
-  function submit() {
+  function commitSubmit() {
     if (!isGuessComplete(session.currentGuess) || session.status !== 'editing') return
+    setConfirmOpen(false)
     playSound('submit', sound)
     dispatch({ type: 'SUBMIT' })
+  }
+
+  function requestSubmit() {
+    if (!isGuessComplete(session.currentGuess) || session.status !== 'editing') return
+    if (confirmSubmit) {
+      setConfirmOpen(true)
+      return
+    }
+    commitSubmit()
   }
 
   function cycleAt(index: number, direction: 1 | -1 = 1) {
@@ -221,12 +238,15 @@ export function GameBoard({
     active: true,
     helpOpen,
     resultOpen,
+    confirmOpen,
+    onConfirmSubmit: commitSubmit,
+    onCancelConfirm: () => setConfirmOpen(false),
     editing,
     colorCount: session.config.colorCount,
     onPickColor: onPick,
     onMoveCursor: moveCursor,
     onCycle: (dir) => cycleAt(session.cursor, dir),
-    onSubmit: submit,
+    onSubmit: requestSubmit,
     onEscape: onMenu,
   })
 
@@ -259,20 +279,22 @@ export function GameBoard({
       <DeviceShell
         level={mode === 'practice' ? 0 : level}
         statusLight={statusLight}
-        knobDisabled={!editing}
-        submitDisabled={!editing || !isGuessComplete(session.currentGuess)}
-        onSubmitClick={submit}
+        knobDisabled={!editing || confirmOpen}
+        submitDisabled={
+          !editing || confirmOpen || !isGuessComplete(session.currentGuess)
+        }
+        onSubmitClick={requestSubmit}
         onKnobRotate={(dir) => cycleAt(session.cursor, dir)}
         onKnobShortPress={() => {
           playSound('move', sound)
           dispatch({ type: 'NEXT_SLOT' })
         }}
-        onKnobLongPress={submit}
+        onKnobLongPress={requestSubmit}
         footerExtra={
           <ColorPalette
             colorCount={session.config.colorCount}
             selected={session.currentGuess[session.cursor] ?? null}
-            disabled={!editing}
+            disabled={!editing || confirmOpen}
             onPick={onPick}
           />
         }
@@ -288,6 +310,13 @@ export function GameBoard({
       </DeviceShell>
 
       <p className="game-help">{m.game.tip}</p>
+
+      {confirmOpen ? (
+        <ConfirmSubmitModal
+          onConfirm={commitSubmit}
+          onCancel={() => setConfirmOpen(false)}
+        />
+      ) : null}
 
       {resultOpen ? (
         <ResultModal

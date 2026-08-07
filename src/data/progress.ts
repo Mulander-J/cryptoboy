@@ -25,6 +25,8 @@ export type DifficultyProgress = {
 export type Settings = {
   sound: boolean
   confirmSubmit: boolean
+  /** 色盲图案：色块上叠加几何符号 */
+  colorBlindPatterns: boolean
   seenTutorial: boolean
   theme: ThemeId
   locale: Locale
@@ -52,6 +54,7 @@ const DEFAULT_PROGRESS: ProgressState = {
   settings: {
     sound: true,
     confirmSubmit: false,
+    colorBlindPatterns: false,
     seenTutorial: false,
     theme: DEFAULT_THEME,
     locale: DEFAULT_LOCALE,
@@ -197,6 +200,30 @@ export function updateSettings(
   const next: ProgressState = {
     ...state,
     settings: { ...state.settings, ...patch },
+  }
+  saveProgress(next)
+  return next
+}
+
+/** 是否已有可清空的闯关进度（解锁/通关/最佳用时） */
+export function hasSoloProgress(state: ProgressState): boolean {
+  return (Object.keys(state.solo) as Difficulty[]).some((d) => {
+    const cur = state.solo[d]
+    return (
+      cur.unlocked > 1 || cur.cleared > 0 || Object.keys(cur.bestTimes).length > 0
+    )
+  })
+}
+
+/** 重置三档闯关进度与最佳用时；保留设置（音效/主题/语言等） */
+export function resetSoloProgress(state: ProgressState): ProgressState {
+  const next: ProgressState = {
+    ...state,
+    solo: {
+      easy: emptyProgress(),
+      advanced: emptyProgress(),
+      challenge: emptyProgress(),
+    },
   }
   saveProgress(next)
   return next

@@ -6,6 +6,9 @@ import './ui/theme/buttons.css'
 import './app/App.css'
 import App from '@/app/App'
 import { applyTheme, DEFAULT_THEME, resolveTheme } from '@/ui/theme/themes'
+import { injectPixelFont } from '@/ui/theme/pixelFont'
+
+injectPixelFont()
 
 try {
   const raw = localStorage.getItem('code-hack-progress-v2')

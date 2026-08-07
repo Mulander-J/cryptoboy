@@ -24,13 +24,23 @@
     "helpTitle": "Help & Settings",
     "helpLabel": "Help",
     "helpTutorial": "View tutorial",
-    "helpChromeTitle": "How to play",
     "themeLabel": "Theme",
     "soundLabel": "Sound",
     "soundOn": "On",
     "soundOff": "Off",
+    "colorBlindLabel": "Color patterns",
+    "colorBlindOn": "On",
+    "colorBlindOff": "Off",
+    "colorBlindHint": "Overlay shapes on colors to tell them apart (not a new theme)",
+    "confirmSubmitLabel": "Confirm submit",
+    "confirmSubmitOn": "On",
+    "confirmSubmitOff": "Off",
+    "confirmSubmitHint": "Ask before each submit to avoid accidents; turn off anytime",
+    "progressLabel": "Progress",
+    "progressReset": "Reset campaign",
+    "progressResetConfirm": "Reset all campaign progress? Levels and best times for all difficulties will clear. Sound, theme, and other settings are kept.",
     "aboutLabel": "About",
-    "helpHint": "Adjust settings here; top-right ? opens help; or press ? / H"
+    "helpHint": "Adjust settings here; in-game top-bar Help opens the tutorial; or press ? / H"
   },
   "difficulty": {
     "easy": "Easy",
@@ -92,7 +102,11 @@
     "tip": "Tap cells · palette · knob · press ? for help",
     "remaining": "Left",
     "elapsed": "Time",
-    "paused": "Paused"
+    "paused": "Paused",
+    "confirmSubmitTitle": "Submit this row?",
+    "confirmSubmitBody": "You can’t edit after submit. Guess with these four colors?",
+    "confirmSubmitOk": "Submit",
+    "confirmSubmitCancel": "Not yet"
   },
   "result": {
     "won": "Cracked!",
@@ -163,7 +177,7 @@
           "Solo campaign: clear levels to unlock the next; progress stays on this device.",
           "Free Practice: tune intensity, colors, repeats, hints, timer; or reuse Easy / Advanced / Challenge.",
           "Turn on “Preset secret” so a friend sets the code, you hand over the device, then you crack it (local duo).",
-          "Under Help & Settings you can open the tutorial and change language, theme, and sound; top-right ? opens help."
+          "Under Help & Settings you can open the tutorial and change language, theme, and sound; in-game Help or ? / H opens the guide."
         ]
       },
       {

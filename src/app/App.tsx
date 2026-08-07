@@ -9,19 +9,21 @@ import {
   getBestTime,
   loadProgress,
   markLevelCleared,
+  resetSoloProgress,
   updateSettings,
   type ProgressState,
+  type Settings,
 } from '@/data/progress'
 import type { Difficulty, Password } from '@/domain/types'
 import { HelpController } from '@/features/help/HelpController'
 import { AiCreatedBadge } from '@/features/menu/AiCreatedBadge'
-import { AppChrome } from '@/features/menu/AppChrome'
 import { CustomPracticeSetup } from '@/features/menu/CustomPracticeSetup'
 import { Menu, type Screen } from '@/features/menu/Menu'
 import { PracticeSetSecret } from '@/features/menu/PracticeSetSecret'
 import { GameBoard } from '@/features/solo/GameBoard'
 import { I18nProvider, type Locale } from '@/i18n'
-import { applyTheme, type ThemeId } from '@/ui/theme/themes'
+import { ColorBlindProvider } from '@/ui/colorBlind/ColorBlindContext'
+import { applyTheme } from '@/ui/theme/themes'
 
 export default function App() {
   const [progress, setProgress] = useState<ProgressState>(() => loadProgress())
@@ -43,9 +45,9 @@ export default function App() {
     })
   }, [])
 
-  const selectTheme = useCallback((theme: ThemeId) => {
-    applyTheme(theme)
-    setProgress((p) => updateSettings(p, { theme }))
+  const onUpdateSettings = useCallback((patch: Partial<Settings>) => {
+    if (patch.theme !== undefined) applyTheme(patch.theme)
+    setProgress((p) => updateSettings(p, patch))
   }, [])
 
   const selectLocale = useCallback((locale: Locale) => {
@@ -96,28 +98,26 @@ export default function App() {
 
   return (
     <I18nProvider locale={progress.settings.locale} onLocaleChange={selectLocale}>
-      <HelpController
-        initiallyOpen={!progress.settings.seenTutorial}
-        onSeen={markTutorialSeen}
-      >
-        <AppChrome />
-        <AiCreatedBadge />
+      <ColorBlindProvider enabled={progress.settings.colorBlindPatterns}>
+        <HelpController
+          initiallyOpen={!progress.settings.seenTutorial}
+          onSeen={markTutorialSeen}
+        >
+          <AiCreatedBadge />
 
-        {screen.name === 'menu' ? (
-          <Menu
-            progress={progress}
-            onStartSolo={startSolo}
-            onOpenCustom={() => {
-              setCustomDraft(progress.settings.customPractice)
-              setPracticeSecret(null)
-              setScreen({ name: 'custom-setup' })
-            }}
-            onToggleSound={() =>
-              setProgress((p) => updateSettings(p, { sound: !p.settings.sound }))
-            }
-            onSelectTheme={selectTheme}
-          />
-        ) : null}
+          {screen.name === 'menu' ? (
+            <Menu
+              progress={progress}
+              onStartSolo={startSolo}
+              onOpenCustom={() => {
+                setCustomDraft(progress.settings.customPractice)
+                setPracticeSecret(null)
+                setScreen({ name: 'custom-setup' })
+              }}
+              onUpdateSettings={onUpdateSettings}
+              onResetProgress={() => setProgress((p) => resetSoloProgress(p))}
+            />
+          ) : null}
 
         {screen.name === 'custom-setup' ? (
           <CustomPracticeSetup
@@ -150,6 +150,7 @@ export default function App() {
             difficulty={screen.difficulty}
             level={screen.level}
             sound={progress.settings.sound}
+            confirmSubmit={progress.settings.confirmSubmit}
             bestTimeMs={getBestTime(progress, screen.difficulty, screen.level)}
             onClearLevel={(level, elapsedMs) =>
               onClearLevel(screen.difficulty, level, elapsedMs)
@@ -178,13 +179,15 @@ export default function App() {
             customConfig={practiceConfig}
             initialSecret={practiceSecret ?? undefined}
             sound={progress.settings.sound}
+            confirmSubmit={progress.settings.confirmSubmit}
             onMenu={() => {
               setPracticeSecret(null)
               setScreen({ name: 'custom-setup' })
             }}
           />
         ) : null}
-      </HelpController>
+        </HelpController>
+      </ColorBlindProvider>
     </I18nProvider>
   )
 }

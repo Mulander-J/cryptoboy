@@ -1,12 +1,17 @@
 import type { Difficulty } from '@/domain/types'
-import type { ProgressState } from '@/data/progress'
+import {
+  hasSoloProgress,
+  type ProgressState,
+  type Settings,
+} from '@/data/progress'
 import { challengeTimeLimitMs } from '@/data/levels'
 import { formatMmSs } from '@/domain/clock'
 import { useI18n } from '@/i18n'
 import { MenuSettingRow } from '@/ui/MenuSettingRow'
-import type { ThemeId } from '@/ui/theme/themes'
 import { useHelp } from '@/features/help/HelpController'
 import { SvgIcon } from '@/ui/icons'
+import { ColorBlindToggle } from './ColorBlindToggle'
+import { ConfirmSubmitToggle } from './ConfirmSubmitToggle'
 import { LocaleSwitcher } from './LocaleSwitcher'
 import { SoundToggle } from './SoundToggle'
 import { ThemePicker } from './ThemePicker'
@@ -25,22 +30,31 @@ type Props = {
   progress: ProgressState
   onStartSolo: (difficulty: Difficulty) => void
   onOpenCustom: () => void
-  onToggleSound: () => void
-  onSelectTheme: (theme: ThemeId) => void
+  /** 局部补丁更新设置（勿回传整份 settings，避免覆盖未改字段） */
+  onUpdateSettings: (patch: Partial<Settings>) => void
+  onResetProgress: () => void
 }
 
 export function Menu({
   progress,
   onStartSolo,
   onOpenCustom,
-  onToggleSound,
-  onSelectTheme,
+  onUpdateSettings,
+  onResetProgress,
 }: Props) {
   const { m, t } = useI18n()
   const { openHelp } = useHelp()
   const challengeLv = progress.solo.challenge.unlocked
   const challengeLimit = formatMmSs(challengeTimeLimitMs(challengeLv))
-  const soundOn = progress.settings.sound
+  const { settings } = progress
+  const canReset = hasSoloProgress(progress)
+
+  function handleResetProgress() {
+    if (!canReset) return
+    if (window.confirm(m.menu.progressResetConfirm)) {
+      onResetProgress()
+    }
+  }
 
   return (
     <div className="menu-screen">
@@ -53,24 +67,51 @@ export function Menu({
       <div className="menu-cards">
         <section className="menu-block">
           <h2>{m.menu.soloTitle}</h2>
-          <div className="menu-row">
-            <button type="button" className="btn btn-primary" onClick={() => onStartSolo('easy')}>
-              {m.difficulty.easy} · {t(m.menu.levelBtn, { level: progress.solo.easy.unlocked })}
+          <div className="menu-solo-list">
+            <button
+              type="button"
+              className="btn btn-primary menu-solo-btn"
+              onClick={() => onStartSolo('easy')}
+            >
+              <span className="menu-solo-name">
+                <i className="menu-solo-emoji" aria-hidden>
+                  🌱
+                </i>
+                {m.difficulty.easy}
+              </span>
+              <span className="menu-solo-level">
+                {t(m.menu.levelBtn, { level: progress.solo.easy.unlocked })}
+              </span>
             </button>
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-primary menu-solo-btn"
               onClick={() => onStartSolo('advanced')}
             >
-              {m.difficulty.advanced} ·{' '}
-              {t(m.menu.levelBtn, { level: progress.solo.advanced.unlocked })}
+              <span className="menu-solo-name">
+                <i className="menu-solo-emoji" aria-hidden>
+                  ⚡
+                </i>
+                {m.difficulty.advanced}
+              </span>
+              <span className="menu-solo-level">
+                {t(m.menu.levelBtn, { level: progress.solo.advanced.unlocked })}
+              </span>
             </button>
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-primary menu-solo-btn"
               onClick={() => onStartSolo('challenge')}
             >
-              {m.difficulty.challenge} · {t(m.menu.levelBtn, { level: challengeLv })}
+              <span className="menu-solo-name">
+                <i className="menu-solo-emoji" aria-hidden>
+                  ⏱️
+                </i>
+                {m.difficulty.challenge}
+              </span>
+              <span className="menu-solo-level">
+                {t(m.menu.levelBtn, { level: challengeLv })}
+              </span>
             </button>
           </div>
           <p className="menu-hint">{t(m.menu.soloHint, { limit: challengeLimit })}</p>
@@ -98,8 +139,8 @@ export function Menu({
           <MenuSettingRow label={m.menu.themeLabel}>
             <ThemePicker
               variant="inline"
-              current={progress.settings.theme}
-              onSelect={onSelectTheme}
+              current={settings.theme}
+              onSelect={(theme) => onUpdateSettings({ theme })}
             />
           </MenuSettingRow>
 
@@ -109,11 +150,42 @@ export function Menu({
 
           <MenuSettingRow label={m.menu.soundLabel}>
             <SoundToggle
-              on={soundOn}
-              onChange={(next) => {
-                if (next !== soundOn) onToggleSound()
-              }}
+              on={settings.sound}
+              onChange={(sound) => onUpdateSettings({ sound })}
             />
+          </MenuSettingRow>
+
+          <MenuSettingRow
+            label={m.menu.colorBlindLabel}
+            hint={m.menu.colorBlindHint}
+          >
+            <ColorBlindToggle
+              on={settings.colorBlindPatterns}
+              onChange={(colorBlindPatterns) =>
+                onUpdateSettings({ colorBlindPatterns })
+              }
+            />
+          </MenuSettingRow>
+
+          <MenuSettingRow
+            label={m.menu.confirmSubmitLabel}
+            hint={m.menu.confirmSubmitHint}
+          >
+            <ConfirmSubmitToggle
+              on={settings.confirmSubmit}
+              onChange={(confirmSubmit) => onUpdateSettings({ confirmSubmit })}
+            />
+          </MenuSettingRow>
+
+          <MenuSettingRow label={m.menu.progressLabel}>
+            <button
+              type="button"
+              className="btn btn-danger btn-sm"
+              disabled={!canReset}
+              onClick={handleResetProgress}
+            >
+              {m.menu.progressReset}
+            </button>
           </MenuSettingRow>
 
           <MenuSettingRow label={m.menu.aboutLabel}>

@@ -14,9 +14,10 @@
 | ------ | ------ |
 | `device/` | 机身：`DeviceShell`、灯阵、数码管、旋钮、色盘 |
 | `theme/` | 主题 CSS / `applyTheme`（详见 [theme/README](./theme/README.md)） |
+| `colorBlind/` | `ColorBlindProvider` + 色块符号标记（读 `settings.colorBlindPatterns`） |
 | `icons/` | `SvgIcon` + `assets/*.svg`；需变色用 `currentColor` |
 | `audio/` | 轻量音效 |
-| 根下组件 | `DropdownPanel`、`SegmentedControl`、`MenuSettingRow`、`ModalBackdrop`、`IconButton`、`ResultModal`、`TimerDisplay` 等 |
+| 根下组件 | `DropdownPanel`、`SegmentedControl`、`MenuSettingRow`、`ModalBackdrop`、`ResultModal`、`TimerDisplay` 等 |
 
 ## 相关
 

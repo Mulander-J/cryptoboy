@@ -2,6 +2,7 @@ import { useMemo, type CSSProperties } from 'react'
 import chevronSvg from '@/ui/icons/assets/chevron.svg?raw'
 import githubMarkSvg from '@/ui/icons/assets/github-mark.svg?raw'
 import helpCircleSvg from '@/ui/icons/assets/help-circle.svg?raw'
+import infoCircleSvg from '@/ui/icons/assets/info-circle.svg?raw'
 import mitLicenseSvg from '@/ui/icons/assets/mit-license.svg?raw'
 
 type IconPreset = {
@@ -21,7 +22,11 @@ const ICON_REGISTRY = {
   },
   'help-circle': {
     svg: helpCircleSvg,
-    size: 18,
+    size: 15,
+  },
+  'info-circle': {
+    svg: infoCircleSvg,
+    size: 14,
   },
   chevron: {
     svg: chevronSvg,

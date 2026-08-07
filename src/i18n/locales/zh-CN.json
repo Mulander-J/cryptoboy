@@ -24,13 +24,23 @@
     "helpTitle": "帮助与设置",
     "helpLabel": "帮助",
     "helpTutorial": "查看教程",
-    "helpChromeTitle": "玩法说明",
     "themeLabel": "主题",
     "soundLabel": "音效",
     "soundOn": "开",
     "soundOff": "关",
+    "colorBlindLabel": "色盲图案",
+    "colorBlindOn": "开",
+    "colorBlindOff": "关",
+    "colorBlindHint": "在色块上叠加几何符号，便于辨色（不是换主题）",
+    "confirmSubmitLabel": "确认提交",
+    "confirmSubmitOn": "开",
+    "confirmSubmitOff": "关",
+    "confirmSubmitHint": "每次提交前多一步确认，防误触；可随时关闭",
+    "progressLabel": "进度",
+    "progressReset": "重置闯关",
+    "progressResetConfirm": "确定重置全部闯关进度？三档关卡与最佳用时将清空，音效/主题等设置会保留。",
     "aboutLabel": "关于",
-    "helpHint": "设置在本区调整；右上角 ? 打开玩法说明；桌面也可按 ? 或 H"
+    "helpHint": "设置在本区调整；对局顶栏 Help 可开玩法说明；桌面也可按 ? 或 H"
   },
   "difficulty": {
     "easy": "Easy",
@@ -92,7 +102,11 @@
     "tip": "点格换色 · 色盘点选 · 旋钮操作 · 键盘 ? 看说明",
     "remaining": "剩余",
     "elapsed": "用时",
-    "paused": "暂停"
+    "paused": "暂停",
+    "confirmSubmitTitle": "提交本行？",
+    "confirmSubmitBody": "提交后不可改。确认用当前四色发起猜测？",
+    "confirmSubmitOk": "确认提交",
+    "confirmSubmitCancel": "再看看"
   },
   "result": {
     "won": "破译成功！",
@@ -163,7 +177,7 @@
           "闯关 Solo：按关卡推进，通关解锁下一关，进度保存在本机。",
           "自由练习：可调难度系数、颜色数、是否重复、提示方式、限时；也可快捷复用 Easy / Advanced / 限时挑战。",
           "开启「预设答案」后，由同伴先设密码并换手，再由你破译（同设备本地双人）。",
-          "可在「帮助与设置」调整帮助、语言、主题与音效；右上角 ? 打开玩法说明。"
+          "可在「帮助与设置」调整帮助、语言、主题与音效；对局顶栏 Help 或按 ? / H 打开玩法说明。"
         ]
       },
       {

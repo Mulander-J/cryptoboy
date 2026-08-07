@@ -15,52 +15,81 @@ function getCtx(): AudioContext | null {
   return ctx
 }
 
+/** 须在用户手势后调用；先 resume 再发声，避免静音启动 */
+async function ensureCtx(): Promise<AudioContext | null> {
+  const ac = getCtx()
+  if (!ac) return null
+  if (ac.state === 'suspended') {
+    try {
+      await ac.resume()
+    } catch {
+      return null
+    }
+  }
+  return ac
+}
+
 function beep(
+  ac: AudioContext,
   freq: number,
   duration: number,
   type: OscillatorType = 'square',
-  gain = 0.04,
+  gain = 0.06,
 ): void {
-  const ac = getCtx()
-  if (!ac) return
-  void ac.resume()
   const osc = ac.createOscillator()
   const g = ac.createGain()
+  const t0 = ac.currentTime
   osc.type = type
-  osc.frequency.value = freq
-  g.gain.value = gain
-  g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + duration)
+  osc.frequency.setValueAtTime(freq, t0)
+  g.gain.setValueAtTime(gain, t0)
+  g.gain.exponentialRampToValueAtTime(0.001, t0 + duration)
   osc.connect(g)
   g.connect(ac.destination)
-  osc.start()
-  osc.stop(ac.currentTime + duration)
+  osc.start(t0)
+  osc.stop(t0 + duration)
 }
 
 export type SoundEvent = 'tick' | 'move' | 'submit' | 'win' | 'lose' | 'urgent'
 
 export function playSound(event: SoundEvent, enabled: boolean): void {
   if (!enabled) return
-  switch (event) {
-    case 'tick':
-      beep(880, 0.04, 'square', 0.03)
-      break
-    case 'move':
-      beep(660, 0.05, 'triangle', 0.03)
-      break
-    case 'submit':
-      beep(440, 0.1, 'square', 0.04)
-      break
-    case 'urgent':
-      beep(920, 0.06, 'square', 0.035)
-      setTimeout(() => beep(720, 0.08, 'square', 0.03), 90)
-      break
-    case 'win':
-      beep(523, 0.1)
-      setTimeout(() => beep(659, 0.1), 100)
-      setTimeout(() => beep(784, 0.18), 200)
-      break
-    case 'lose':
-      beep(220, 0.25, 'sawtooth', 0.05)
-      break
-  }
+  void (async () => {
+    const ac = await ensureCtx()
+    if (!ac) return
+    switch (event) {
+      case 'tick':
+        beep(ac, 880, 0.05, 'square', 0.05)
+        break
+      case 'move':
+        beep(ac, 660, 0.06, 'triangle', 0.05)
+        break
+      case 'submit':
+        beep(ac, 440, 0.12, 'square', 0.06)
+        break
+      case 'urgent':
+        beep(ac, 920, 0.07, 'square', 0.055)
+        window.setTimeout(() => {
+          void ensureCtx().then((a) => {
+            if (a) beep(a, 720, 0.09, 'square', 0.05)
+          })
+        }, 90)
+        break
+      case 'win':
+        beep(ac, 523, 0.1)
+        window.setTimeout(() => {
+          void ensureCtx().then((a) => {
+            if (a) beep(a, 659, 0.1)
+          })
+        }, 100)
+        window.setTimeout(() => {
+          void ensureCtx().then((a) => {
+            if (a) beep(a, 784, 0.18)
+          })
+        }, 200)
+        break
+      case 'lose':
+        beep(ac, 220, 0.28, 'sawtooth', 0.07)
+        break
+    }
+  })()
 }

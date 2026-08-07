@@ -13,7 +13,7 @@
 | 文件 | 说明 |
 | ------ | ------ |
 | `types.ts` | 难度、密码、提示、关卡配置等类型与常量 |
-| `colors.ts` | 颜色元数据、`colorsForCount` / `nextColor` |
+| `colors.ts` | 颜色元数据（含色盲用 `symbol`）、`colorsForCount` / `nextColor` |
 | `evaluate.ts` | Advanced 槽位提示 / Easy 汇总提示、`isWin` |
 | `generate.ts` | 确定性密码生成、`levelSeed` |
 | `session.ts` | `GameSession` 状态机（输入 / 提交 / 胜负） |

@@ -7,6 +7,10 @@ type Handlers = {
   active: boolean
   helpOpen: boolean
   resultOpen: boolean
+  /** 提交确认弹层打开时：Enter 确认 / Esc 取消 */
+  confirmOpen?: boolean
+  onConfirmSubmit?: () => void
+  onCancelConfirm?: () => void
   editing: boolean
   colorCount: number
   onPickColor: (color: ColorToken) => void
@@ -34,8 +38,21 @@ export function useGameKeyboard(handlers: Handlers): void {
       if (key === 'Escape') {
         // 帮助打开时由 HelpController 关闭；此处不抢菜单返回
         if (h.helpOpen) return
+        if (h.confirmOpen) {
+          e.preventDefault()
+          h.onCancelConfirm?.()
+          return
+        }
         e.preventDefault()
         h.onEscape()
+        return
+      }
+
+      if (h.confirmOpen) {
+        if (key === 'Enter') {
+          e.preventDefault()
+          h.onConfirmSubmit?.()
+        }
         return
       }
 

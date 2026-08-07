@@ -1,6 +1,6 @@
 import type { LevelConfig, TimerMode } from './types'
 
-export type ClockPauseReason = 'help' | 'hidden'
+export type ClockPauseReason = 'help' | 'hidden' | 'confirm'
 
 export type ClockStatus = 'running' | 'paused' | 'frozen' | 'expired'
 

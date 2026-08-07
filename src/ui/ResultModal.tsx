@@ -2,6 +2,8 @@ import { COLOR_META } from '@/domain/colors'
 import { formatMmSs } from '@/domain/clock'
 import type { LoseReason, Password, TimerMode } from '@/domain/types'
 import { useI18n } from '@/i18n'
+import { useColorBlindPatterns } from '@/ui/colorBlind/ColorBlindContext'
+import { ColorPatternMark } from '@/ui/colorBlind/ColorPatternMark'
 import { ModalBackdrop } from './ModalBackdrop'
 
 type Props = {
@@ -34,6 +36,7 @@ export function ResultModal({
   isNewBest,
 }: Props) {
   const { m } = useI18n()
+  const showPattern = useColorBlindPatterns()
   const won = status === 'won'
   const title = won
     ? m.result.won
@@ -70,7 +73,9 @@ export function ResultModal({
               className="secret-chip"
               style={{ background: COLOR_META[c].hex }}
               title={m.color[c]}
-            />
+            >
+              {showPattern ? <ColorPatternMark color={c} /> : null}
+            </span>
           ))}
         </p>
         <div className="result-actions">

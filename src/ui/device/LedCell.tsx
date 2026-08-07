@@ -1,6 +1,8 @@
 import type { ColorToken } from '@/domain/types'
 import { COLOR_META } from '@/domain/colors'
 import { useI18n } from '@/i18n'
+import { useColorBlindPatterns } from '@/ui/colorBlind/ColorBlindContext'
+import { ColorPatternMark } from '@/ui/colorBlind/ColorPatternMark'
 
 type Props = {
   color: ColorToken | null
@@ -22,6 +24,7 @@ const LED_VAR: Record<ColorToken, string> = {
 
 export function LedCell({ color, active = false, onClick, disabled }: Props) {
   const { m } = useI18n()
+  const showPattern = useColorBlindPatterns()
   const lit = color !== null
   const hex = lit ? COLOR_META[color].hex : undefined
 
@@ -40,6 +43,8 @@ export function LedCell({ color, active = false, onClick, disabled }: Props) {
       onClick={onClick}
       disabled={disabled || !onClick}
       aria-label={lit ? m.color[color] : m.device.emptySlot}
-    />
+    >
+      {lit && showPattern ? <ColorPatternMark color={color} /> : null}
+    </button>
   )
 }

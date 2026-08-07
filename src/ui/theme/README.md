@@ -1,6 +1,7 @@
 # theme
 
-> 主题 token 与切换：`data-theme` + CSS 变量；菜单色点为 **外壳 · 旋钮 · 主按钮** 三色。
+> 主题 token 与切换：`data-theme` + CSS 变量；菜单色点为 **外壳 · 旋钮 · 主按钮** 三色。  
+> 字体：`--font-pixel`（Press Start 2P，`public/fonts` + `injectPixelFont` / `assetUrl`）/ `--font-display`（结算用时等）/ `--font-ui`（中文正文）；无需 fontsource / CDN。
 
 ## 文件
 
@@ -9,8 +10,14 @@
 | `theme.css` | 共享结构变量 + **经典原皮**默认 |
 | `themes.css` | 其它主题的 token 覆盖 |
 | `themes.ts` | 主题 id / 标签 / 三色点 / `applyTheme` / `resolveTheme` |
-| `buttons.css` | `.btn-*` 体系 |
+| `pixelFont.ts` | 启动时注入 `@font-face`（带 Vite `BASE_URL`） |
+| `buttons.css` | `.btn-*` 体系（含危险按钮） |
 | `themes.test.ts` | id 解析与目录完整性 |
+
+## 像素字体使用范围
+
+品牌标题、机身品牌字、关卡数码管、对局计时、顶栏徽章、帮助 `kbd` 等用 `--font-pixel`。  
+**结算用时**用 `--font-display`，不用像素体。
 
 ## 主题列表（菜单顺序）
 

@@ -3,6 +3,8 @@
  * 其它主题见 themes.css 的 [data-theme=…]
  */
 
+/* 像素字体 @font-face 见 pixelFont.ts（public/fonts + BASE_URL） */
+
 :root,
 [data-theme='classic'] {
   /* —— UI Chrome —— */
@@ -107,8 +109,11 @@
 
   --font-ui: 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
     sans-serif;
+  /* 像素风（短英文 / 数字）；中文会回落到系统字体 */
+  --font-pixel: 'Press Start 2P', 'Courier New', monospace;
+  /* 中文标题等展示字：保持清晰可读 */
   --font-display: 'DIN Alternate', 'Avenir Next Condensed', 'Segoe UI',
-    sans-serif;
+    'PingFang SC', sans-serif;
 
   --btn-pad-y: 0.65rem;
   --btn-pad-x: 1rem;
@@ -120,6 +125,10 @@
 
 * {
   box-sizing: border-box;
+  /* Firefox：滚动条跟主题色 */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent)
+    color-mix(in srgb, var(--color-surface) 80%, transparent);
 }
 
 html,
@@ -145,4 +154,32 @@ body {
 
 button {
   font-family: inherit;
+}
+
+/* WebKit / Chromium / Safari：滚动条跟主题色 */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-accent) 72%, var(--color-accent-deep));
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }

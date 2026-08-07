@@ -41,11 +41,21 @@ export type Messages = {
     helpTitle: string
     helpLabel: string
     helpTutorial: string
-    helpChromeTitle: string
     themeLabel: string
     soundLabel: string
     soundOn: string
     soundOff: string
+    colorBlindLabel: string
+    colorBlindOn: string
+    colorBlindOff: string
+    colorBlindHint: string
+    confirmSubmitLabel: string
+    confirmSubmitOn: string
+    confirmSubmitOff: string
+    confirmSubmitHint: string
+    progressLabel: string
+    progressReset: string
+    progressResetConfirm: string
     aboutLabel: string
     helpHint: string
   }
@@ -100,6 +110,10 @@ export type Messages = {
     remaining: string
     elapsed: string
     paused: string
+    confirmSubmitTitle: string
+    confirmSubmitBody: string
+    confirmSubmitOk: string
+    confirmSubmitCancel: string
   }
   result: {
     won: string

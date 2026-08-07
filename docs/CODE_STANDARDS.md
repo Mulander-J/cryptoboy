@@ -66,11 +66,10 @@
 | `SegmentedControl` | `src/ui/` | 分段 pill 开关 |
 | `MenuSettingRow` | `src/ui/` | 设置区标签行 |
 | `ModalBackdrop` | `src/ui/` | 弹层遮罩外壳 |
-| `IconButton` | `src/ui/` | 圆形图标按钮 |
 | Icons（`<SvgIcon name="..." />` + `assets/*.svg`） | `src/ui/icons/` | 按 name 引用；需变色用 `currentColor`，多色可写死 |
 | `ThemePicker` | `features/menu/` | 触发器 + DropdownPanel |
-| `AppChrome` | `features/menu/` | 右上角玩法说明 `?` |
 | `LocaleSwitcher` / `SoundToggle` | `features/menu/` | 基于 SegmentedControl |
+| `GameTopbar` Help | `features/solo/` | 对局内打开玩法说明（菜单用「查看教程」） |
 | `GameTopbar` | `features/solo/` | 对局顶栏 |
 | `HelpController` / `HelpPanel` | `features/help/` | 全局唯一帮助窗 |
 | Device 系列 | `ui/device/` | 外壳 / 灯阵 / 旋钮 / 色盘 / 数码管 |
