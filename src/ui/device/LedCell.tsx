@@ -1,6 +1,6 @@
-import type { ColorToken } from '../../domain/types'
-import { COLOR_META } from '../../domain/colors'
-import { useI18n } from '../../i18n'
+import type { ColorToken } from '@/domain/types'
+import { COLOR_META } from '@/domain/colors'
+import { useI18n } from '@/i18n'
 
 type Props = {
   color: ColorToken | null

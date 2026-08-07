@@ -6,9 +6,9 @@ import {
   resume,
   tick,
   type GameClock,
-} from '../../domain/clock'
-import type { LevelConfig } from '../../domain/types'
-import type { GameStatus } from '../../domain/types'
+} from '@/domain/clock'
+import type { LevelConfig } from '@/domain/types'
+import type { GameStatus } from '@/domain/types'
 
 type Options = {
   config: Pick<LevelConfig, 'timerMode' | 'timeLimitMs'>

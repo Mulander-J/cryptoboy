@@ -1,5 +1,5 @@
-import { LOCALES, useI18n, type Locale } from '../../i18n'
-import { SegmentedControl } from '../../ui/SegmentedControl'
+import { LOCALES, useI18n, type Locale } from '@/i18n'
+import { SegmentedControl } from '@/ui/SegmentedControl'
 
 export function LocaleSwitcher() {
   const { locale, setLocale, m } = useI18n()

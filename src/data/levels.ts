@@ -1,4 +1,4 @@
-import type { Difficulty, LevelConfig } from '../domain/types'
+import type { Difficulty, LevelConfig } from '@/domain/types'
 
 /** 各难度关卡数（种子生成） */
 export const MAX_LEVELS: Record<Difficulty, number> = {

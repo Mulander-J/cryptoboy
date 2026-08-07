@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { colorsForCount } from '../../domain/colors'
-import type { ColorToken } from '../../domain/types'
-import { isEditableTarget } from '../help/shortcuts'
+import { colorsForCount } from '@/domain/colors'
+import type { ColorToken } from '@/domain/types'
+import { isEditableTarget } from '@/features/help/shortcuts'
 
 type Handlers = {
   active: boolean

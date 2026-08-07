@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CATALOG } from '../../i18n/messages'
+import { CATALOG } from '@/i18n/messages'
 import { GAME_SHORTCUT_KEYS, isEditableTarget } from './shortcuts'
 
 describe('shortcuts helpers', () => {

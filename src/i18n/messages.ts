@@ -1,9 +1,9 @@
-import type { ColorToken, Difficulty } from '../domain/types'
-import type { PracticeIntensity } from '../data/customPractice'
-import type { ThemeId } from '../ui/theme/themes'
+import type { ColorToken, Difficulty } from '@/domain/types'
+import type { PracticeIntensity } from '@/data/customPractice'
+import type { ThemeId } from '@/ui/theme/themes'
 import type { Locale } from './types'
-import enJson from './locales/en.json'
-import zhCNJson from './locales/zh-CN.json'
+import enJson from '@/i18n/locales/en.json'
+import zhCNJson from '@/i18n/locales/zh-CN.json'
 
 export type HelpStep = {
   title: string

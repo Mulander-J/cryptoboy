@@ -1,5 +1,5 @@
-import { useI18n } from '../../i18n'
-import { SegmentedControl } from '../../ui/SegmentedControl'
+import { useI18n } from '@/i18n'
+import { SegmentedControl } from '@/ui/SegmentedControl'
 
 type Props = {
   on: boolean

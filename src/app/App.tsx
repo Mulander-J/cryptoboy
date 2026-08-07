@@ -3,25 +3,25 @@ import {
   customOptionsToLevelConfig,
   sanitizeOptions,
   type CustomPracticeOptions,
-} from '../data/customPractice'
-import { MAX_LEVELS } from '../data/levels'
+} from '@/data/customPractice'
+import { MAX_LEVELS } from '@/data/levels'
 import {
   getBestTime,
   loadProgress,
   markLevelCleared,
   updateSettings,
   type ProgressState,
-} from '../data/progress'
-import type { Difficulty, Password } from '../domain/types'
-import { HelpController } from '../features/help/HelpController'
-import { AiCreatedBadge } from '../features/menu/AiCreatedBadge'
-import { AppChrome } from '../features/menu/AppChrome'
-import { CustomPracticeSetup } from '../features/menu/CustomPracticeSetup'
-import { Menu, type Screen } from '../features/menu/Menu'
-import { PracticeSetSecret } from '../features/menu/PracticeSetSecret'
-import { GameBoard } from '../features/solo/GameBoard'
-import { I18nProvider, type Locale } from '../i18n'
-import { applyTheme, type ThemeId } from '../ui/theme/themes'
+} from '@/data/progress'
+import type { Difficulty, Password } from '@/domain/types'
+import { HelpController } from '@/features/help/HelpController'
+import { AiCreatedBadge } from '@/features/menu/AiCreatedBadge'
+import { AppChrome } from '@/features/menu/AppChrome'
+import { CustomPracticeSetup } from '@/features/menu/CustomPracticeSetup'
+import { Menu, type Screen } from '@/features/menu/Menu'
+import { PracticeSetSecret } from '@/features/menu/PracticeSetSecret'
+import { GameBoard } from '@/features/solo/GameBoard'
+import { I18nProvider, type Locale } from '@/i18n'
+import { applyTheme, type ThemeId } from '@/ui/theme/themes'
 
 export default function App() {
   const [progress, setProgress] = useState<ProgressState>(() => loadProgress())

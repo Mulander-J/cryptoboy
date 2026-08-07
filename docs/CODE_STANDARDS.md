@@ -15,6 +15,9 @@
 | `src/features` | 按功能的页面 / 流程（menu、solo、help） | 可组合 `ui` + `domain` |
 | `src/ui` | 可复用展示组件（机身、弹层、下拉） | 尽量无业务状态机 |
 | `src/app` | 根装配、全局样式、（规划中）路由入口 | 薄：Provider + 路由/Outlet，少业务分支 |
+| `src/lib` | 与框架/部署相关的薄工具（如 `assetUrl`） | 无业务规则、无 UI |
+
+跨目录引用可用别名 `@/` → `src/`（如 `@/lib/assetUrl`）；同目录 / 近邻仍可用相对路径。
 
 依赖方向：`app` → `features` → `ui` / `data` / `i18n` → `domain`（domain 不依赖上层）。
 

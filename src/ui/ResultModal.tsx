@@ -1,7 +1,7 @@
-import { COLOR_META } from '../domain/colors'
-import { formatMmSs } from '../domain/clock'
-import type { LoseReason, Password, TimerMode } from '../domain/types'
-import { useI18n } from '../i18n'
+import { COLOR_META } from '@/domain/colors'
+import { formatMmSs } from '@/domain/clock'
+import type { LoseReason, Password, TimerMode } from '@/domain/types'
+import { useI18n } from '@/i18n'
 import { ModalBackdrop } from './ModalBackdrop'
 
 type Props = {

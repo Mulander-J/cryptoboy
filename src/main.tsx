@@ -4,8 +4,8 @@ import './ui/theme/theme.css'
 import './ui/theme/themes.css'
 import './ui/theme/buttons.css'
 import './app/App.css'
-import App from './app/App'
-import { applyTheme, DEFAULT_THEME, resolveTheme } from './ui/theme/themes'
+import App from '@/app/App'
+import { applyTheme, DEFAULT_THEME, resolveTheme } from '@/ui/theme/themes'
 
 try {
   const raw = localStorage.getItem('code-hack-progress-v2')

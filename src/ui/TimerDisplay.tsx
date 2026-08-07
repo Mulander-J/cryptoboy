@@ -1,5 +1,5 @@
-import { formatMmSs, type GameClock, isUrgent } from '../domain/clock'
-import { useI18n } from '../i18n'
+import { formatMmSs, type GameClock, isUrgent } from '@/domain/clock'
+import { useI18n } from '@/i18n'
 
 type Props = {
   clock: GameClock

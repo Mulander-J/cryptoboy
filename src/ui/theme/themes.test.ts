@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CATALOG } from '../../i18n/messages'
+import { CATALOG } from '@/i18n/messages'
 import { DEFAULT_THEME, isThemeId, resolveTheme, THEME_IDS, THEMES } from './themes'
 
 describe('themes catalog', () => {

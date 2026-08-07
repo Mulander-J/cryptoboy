@@ -1,23 +1,23 @@
 import { useReducer, useState } from 'react'
-import { colorsForCount } from '../../domain/colors'
+import { colorsForCount } from '@/domain/colors'
 import {
   colorsUsedElsewhere,
   cycleColorInPalette,
   emptyGuess,
   isGuessComplete,
   resolvePassword,
-} from '../../domain'
-import type { ColorToken, EditableGuess, LevelConfig, Password } from '../../domain/types'
-import { PASSWORD_LENGTH } from '../../domain/types'
-import { useI18n } from '../../i18n'
-import { playSound } from '../../ui/audio/sound'
-import { ColorPalette } from '../../ui/device/ColorPalette'
-import { DeviceShell } from '../../ui/device/DeviceShell'
-import { LedGrid } from '../../ui/device/LedGrid'
-import { ModalBackdrop } from '../../ui/ModalBackdrop'
-import { useHelp } from '../help/HelpController'
-import { GameTopbar } from '../solo/GameTopbar'
-import { useGameKeyboard } from '../solo/useGameKeyboard'
+} from '@/domain'
+import type { ColorToken, EditableGuess, LevelConfig, Password } from '@/domain/types'
+import { PASSWORD_LENGTH } from '@/domain/types'
+import { useI18n } from '@/i18n'
+import { playSound } from '@/ui/audio/sound'
+import { ColorPalette } from '@/ui/device/ColorPalette'
+import { DeviceShell } from '@/ui/device/DeviceShell'
+import { LedGrid } from '@/ui/device/LedGrid'
+import { ModalBackdrop } from '@/ui/ModalBackdrop'
+import { useHelp } from '@/features/help/HelpController'
+import { GameTopbar } from '@/features/solo/GameTopbar'
+import { useGameKeyboard } from '@/features/solo/useGameKeyboard'
 
 type Phase = 'entry' | 'handoff'
 

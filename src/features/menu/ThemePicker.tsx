@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
-import { useI18n } from '../../i18n'
-import { DropdownPanel } from '../../ui/DropdownPanel'
-import { THEMES, type ThemeId } from '../../ui/theme/themes'
+import { useI18n } from '@/i18n'
+import { DropdownPanel } from '@/ui/DropdownPanel'
+import { THEMES, type ThemeId } from '@/ui/theme/themes'
 
 type Props = {
   current: ThemeId

@@ -1,4 +1,4 @@
-import type { Difficulty, HintStyle, LevelConfig, TimerMode } from '../domain/types'
+import type { Difficulty, HintStyle, LevelConfig, TimerMode } from '@/domain/types'
 import { practiceConfig } from './levels'
 
 /** 难度系数 1–5：一键套用一组默认值，仍可再改单项 */

@@ -1,6 +1,6 @@
-import type { Attempt, ColorToken, EditableGuess, HintStyle } from '../../domain/types'
-import { MAX_ATTEMPTS, PASSWORD_LENGTH } from '../../domain/types'
-import { useI18n } from '../../i18n'
+import type { Attempt, ColorToken, EditableGuess, HintStyle } from '@/domain/types'
+import { MAX_ATTEMPTS, PASSWORD_LENGTH } from '@/domain/types'
+import { useI18n } from '@/i18n'
 import { LedCell } from './LedCell'
 
 type Props = {

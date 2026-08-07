@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useI18n } from '../../i18n'
-import { ModalBackdrop } from '../../ui/ModalBackdrop'
+import { useI18n } from '@/i18n'
+import { ModalBackdrop } from '@/ui/ModalBackdrop'
 
 type Props = {
   open: boolean

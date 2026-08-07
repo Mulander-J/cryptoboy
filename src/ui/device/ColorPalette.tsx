@@ -1,6 +1,6 @@
-import { COLOR_META, colorsForCount } from '../../domain/colors'
-import type { ColorToken } from '../../domain/types'
-import { useI18n } from '../../i18n'
+import { COLOR_META, colorsForCount } from '@/domain/colors'
+import type { ColorToken } from '@/domain/types'
+import { useI18n } from '@/i18n'
 
 type Props = {
   colorCount: number

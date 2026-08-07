@@ -1,11 +1,11 @@
-import type { Difficulty } from '../domain/types'
+import type { Difficulty } from '@/domain/types'
 import {
   DEFAULT_LOCALE,
   detectLocale,
   resolveLocale,
   type Locale,
-} from '../i18n/types'
-import { DEFAULT_THEME, resolveTheme, type ThemeId } from '../ui/theme/themes'
+} from '@/i18n/types'
+import { DEFAULT_THEME, resolveTheme, type ThemeId } from '@/ui/theme/themes'
 import {
   DEFAULT_CUSTOM_PRACTICE,
   sanitizeOptions,

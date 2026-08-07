@@ -1,8 +1,8 @@
 import { useMemo, type CSSProperties } from 'react'
-import chevronSvg from './assets/chevron.svg?raw'
-import githubMarkSvg from './assets/github-mark.svg?raw'
-import helpCircleSvg from './assets/help-circle.svg?raw'
-import mitLicenseSvg from './assets/mit-license.svg?raw'
+import chevronSvg from '@/ui/icons/assets/chevron.svg?raw'
+import githubMarkSvg from '@/ui/icons/assets/github-mark.svg?raw'
+import helpCircleSvg from '@/ui/icons/assets/help-circle.svg?raw'
+import mitLicenseSvg from '@/ui/icons/assets/mit-license.svg?raw'
 
 type IconPreset = {
   svg: string

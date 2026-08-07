@@ -1,6 +1,6 @@
-import { useI18n } from '../../i18n'
-import { SvgIcon } from '../../ui/icons'
-import { IconButton } from '../../ui/IconButton'
+import { useI18n } from '@/i18n'
+import { SvgIcon } from '@/ui/icons'
+import { IconButton } from '@/ui/IconButton'
 
 type Props = {
   onOpen: () => void

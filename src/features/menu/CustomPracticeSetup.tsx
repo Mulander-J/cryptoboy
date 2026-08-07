@@ -5,9 +5,9 @@ import {
   TIME_LIMIT_OPTIONS,
   type CustomPracticeOptions,
   type PracticeIntensity,
-} from '../../data/customPractice'
-import type { Difficulty } from '../../domain/types'
-import { useI18n } from '../../i18n'
+} from '@/data/customPractice'
+import type { Difficulty } from '@/domain/types'
+import { useI18n } from '@/i18n'
 
 type Props = {
   value: CustomPracticeOptions

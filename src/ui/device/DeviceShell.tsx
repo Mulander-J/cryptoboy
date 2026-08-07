@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useI18n } from '../../i18n'
+import { useI18n } from '@/i18n'
 import { SevenSegment } from './SevenSegment'
 import { OrangeKnob } from './OrangeKnob'
 
