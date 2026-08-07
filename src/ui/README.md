@@ -4,7 +4,7 @@
 
 ## 约束
 
-- 不直接改全局 `Screen` / 进度；由 `features` 传入 props / 回调
+- 不直接改路由 / 进度；由 `features` 页面传入 props / 回调
 - 样式优先 CSS 变量（主题 token）；组件私有类名带前缀
 - 图标统一 `<SvgIcon name="..." />`（见 `icons/`）
 

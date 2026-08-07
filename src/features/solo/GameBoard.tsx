@@ -280,10 +280,6 @@ export function GameBoard({
         level={mode === 'practice' ? 0 : level}
         statusLight={statusLight}
         knobDisabled={!editing || confirmOpen}
-        submitDisabled={
-          !editing || confirmOpen || !isGuessComplete(session.currentGuess)
-        }
-        onSubmitClick={requestSubmit}
         onKnobRotate={(dir) => cycleAt(session.cursor, dir)}
         onKnobShortPress={() => {
           playSound('move', sound)

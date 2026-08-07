@@ -16,10 +16,9 @@
 | `solo/` | 闯关与练习共用的 `GameBoard`、顶栏、计时 / 键盘 hooks |
 | `help/` | 全局帮助 `HelpController` / `HelpPanel`、快捷键 |
 
-## 现状与规划
+## 路由页面
 
-- 现状：`App` 内 `Screen` 状态切换（无 URL）
-- 规划：路由体系见 [CODE_STANDARDS §1.1](../../docs/CODE_STANDARDS.md) / [PLAN P4.9](../../docs/PLAN.md)
+各特性下 `pages/` 为路由入口；路径表见 [CODE_STANDARDS §1.1](../../docs/CODE_STANDARDS.md) 与 `src/app/paths.ts`。
 
 ## 相关
 

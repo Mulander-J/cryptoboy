@@ -74,7 +74,7 @@
     "presetEntryRules": "Must match practice rules: {colors}{repeat}",
     "presetRulesRepeatOn": "·repeats OK",
     "presetRulesRepeatOff": "·no repeats",
-    "presetEntryTip": "Fill all 4 slots within the rules, then submit or long-press the knob",
+    "presetEntryTip": "Fill all 4 slots within the rules, then long-press the knob or press Enter",
     "presetInvalid": "Code breaks the practice rules",
     "presetInvalidRepeat": "Repeats are not allowed",
     "presetInvalidColor": "Color is outside the current palette",
@@ -99,7 +99,7 @@
     "practiceTimed": "·timed",
     "practicePreset": "·preset",
     "practiceColors": "{n} colors",
-    "tip": "Tap cells · palette · knob · press ? for help",
+    "tip": "Tap cells · palette · long-press knob / Enter to submit · ? help",
     "remaining": "Left",
     "elapsed": "Time",
     "paused": "Paused",
@@ -160,7 +160,7 @@
         "body": [
           "Tap a cell to select; tap again to cycle colors.",
           "Bottom palette fills the current slot in one tap.",
-          "Knob: drag to cycle · short press to move · long press to submit; or use Submit."
+          "Knob: drag to cycle · short press to move · long press to submit; or press Enter."
         ]
       },
       {
@@ -215,7 +215,6 @@
     }
   ],
   "device": {
-    "submit": "Submit",
     "knobAria": "Knob: drag to cycle, short press to move, long press to submit",
     "knobTitle": "Drag to cycle · short press move · long press submit",
     "levelAria": "Level {level}",
@@ -261,5 +260,10 @@
     "P": "Purple",
     "C": "Cyan",
     "K": "Pink"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "Nothing here — head back to the menu and keep cracking.",
+    "home": "Back to menu"
   }
 }

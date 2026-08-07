@@ -19,13 +19,6 @@ import { ThemePicker } from './ThemePicker'
 const REPO_URL = 'https://github.com/Mulander-J/cryptoboy'
 const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`
 
-export type Screen =
-  | { name: 'menu' }
-  | { name: 'solo'; difficulty: Difficulty; level: number }
-  | { name: 'custom-setup' }
-  | { name: 'practice-set-secret' }
-  | { name: 'practice'; difficulty: Difficulty }
-
 type Props = {
   progress: ProgressState
   onStartSolo: (difficulty: Difficulty) => void

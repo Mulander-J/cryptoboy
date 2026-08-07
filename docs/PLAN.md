@@ -21,8 +21,8 @@ P0 工程骨架
  → P4.6 主题体系 / 自由练习（可配置）
  → P4.7 i18n（简中 / EN）+ CryptoBoy 品牌
  → P4.8 工程规范深化（组件模块化 / i18n JSON）
- → P4.9 页面路由体系（规范结构，待做）
- → P4.10 GitHub Pages 404 / SPA 回退（待做）
+ → P4.9 页面路由体系
+ → P4.10 GitHub Pages 404 / SPA 回退
  → P5 Duo + 完整设置 + 抛光
 ```
 
@@ -44,9 +44,9 @@ P0 工程骨架
 | i18n 简中 / EN + CryptoBoy | ✅ | 设置区语言；文案 `locales/*.json` |
 | 代码规范文档 | ✅ | [CODE_STANDARDS.md](./CODE_STANDARDS.md) |
 | P4.8 组件模块化（续） | ⏳ | 高/中优已落地；低优见 CODE_STANDARDS §2 |
-| P4.9 页面路由体系 | ⏳ | 现状为 App 内 `Screen` 状态切换；见 CODE_STANDARDS §1.1 |
+| P4.9 页面路由体系 | ✅ | React Router；见 CODE_STANDARDS §1.1 / `src/app/paths.ts` |
 | GitHub Pages 自动部署 | ✅ | `main` → Actions → Pages；见 `.github/workflows/deploy-pages.yml` |
-| P4.10 Pages 404 / SPA 回退 | ⏳ | 现状无 URL 路由可不做；上路由后需 `404.html` 回退 |
+| P4.10 Pages 404 / SPA 回退 | ✅ | `scripts/copy-404.mjs` → `dist/404.html`；客户端 `/404` |
 | P5-1 本地双人（练习预设答案） | ✅ | 自由练习 `presetSecret` + 设密/换手 |
 | P5-2 完整设置 | ✅ | 音效 / 主题 / 语言 / 进度重置 / 色盲图案 / 确认提交 |
 | 像素字体自托管 | ✅ | Press Start 2P → `public/fonts` + `injectPixelFont`（兼容 Pages base） |
@@ -135,37 +135,25 @@ P0 工程骨架
 
 ---
 
-## P4.9 · 页面路由体系（待做）
-
-**现状**：`App.tsx` 用 `Screen` 联合类型 + `useState` 切换  
-`menu` / `custom-setup` / `solo` / `practice`，无 URL、无历史栈。
-
-**目标**：引入页面路由，规范「一页一路由、特性目录对齐路径」，便于 Duo / 设置等新屏扩展，并支持刷新可恢复、浏览器前进后退（按需）。
+## P4.9 · 页面路由体系
 
 | ID | 任务 | 状态 |
 | ---- | ------ | ------ |
-| RTE-1 | 选型：优先 React Router（或同等轻量）；约定路径表写入 CODE_STANDARDS | ⏳ |
-| RTE-2 | 将现有 `Screen` 映射为路由；`App` 只做 Provider / Outlet 装配 | ⏳ |
-| RTE-3 | 特性页下沉：`features/*/pages` 或 `routes`；导航用 `navigate`，禁散落 `setScreen` | ⏳ |
-| RTE-4 | （可选）关卡/难度进 path 或 search；刷新不丢局内入口（不含进行中会话） | ⏳ |
-| RTE-5 | 全局层（i18n / Help / Theme chrome）挂在 layout，不随页面卸载 | ⏳ |
-
-约定细节见 [CODE_STANDARDS.md §1.1](./CODE_STANDARDS.md)。可与 P5 并行：先接路由再上 Duo，或 Duo 落地后一并迁入。
+| RTE-1 | React Router；路径表写入 CODE_STANDARDS / `paths.ts` | ✅ |
+| RTE-2 | `App` = Provider + `BrowserRouter` + `AppLayout` Outlet | ✅ |
+| RTE-3 | `features/*/pages`；导航用 `navigate` / `<Link>` | ✅ |
+| RTE-4 | 闯关 `/solo/:difficulty/:level`；练习会话内存保留 | ✅ |
+| RTE-5 | i18n / Help / 色盲 / 练习会话挂 Layout | ✅ |
 
 ---
 
-## P4.10 · GitHub Pages 404 / SPA 回退（待做）
-
-**现状**：无前端 URL 路由，主站入口 ` /cryptoboy/` 即可；错链由 GitHub 默认 404。  
-**目标**：上路由或需要友好错页后，提供 SPA 回退，避免深链刷新空白。
+## P4.10 · GitHub Pages 404 / SPA 回退
 
 | ID | 任务 | 状态 |
 | ---- | ------ | ------ |
-| PG-1 | 构建产物增加 `404.html`：与 `index.html` 同内容（或构建后 `cp dist/index.html dist/404.html`） | ⏳ |
-| PG-2 | （可选）品牌化 404 屏：回首页 CTA；仍须能被 Pages 当作回退入口 | ⏳ |
-| PG-3 | 与 P4.9 联调：深链 / 刷新不 白屏；文档注明 Pages 项目站 `base` | ⏳ |
-
-建议：**跟 P4.9 路由一并做**；路由未上线前可不阻塞发布。
+| PG-1 | `scripts/copy-404.mjs`：`dist/404.html` ← `index.html` | ✅ |
+| PG-2 | 客户端 `/404` 品牌页 + 回主菜单 | ✅ |
+| PG-3 | `basename` = Vite `BASE_URL`（Pages `/cryptoboy/`） | ✅ |
 
 ---
 
@@ -195,7 +183,5 @@ P0 工程骨架
 
 ## 下一步建议
 
-1. P4.9 页面路由（结构规范化）  
-2. P4.10 Pages `404.html` SPA 回退（随路由落地）  
-3. a11y 与小屏顶栏避让  
-4. （远期）联机 Duo
+1. a11y 与小屏顶栏避让  
+2. （远期）联机 Duo / 独立设置路由

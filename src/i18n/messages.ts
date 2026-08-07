@@ -139,7 +139,6 @@ export type Messages = {
   }
   shortcuts: ShortcutCopy[]
   device: {
-    submit: string
     knobAria: string
     knobTitle: string
     levelAria: string
@@ -157,6 +156,11 @@ export type Messages = {
     blurbs: Record<ThemeId, string>
   }
   color: Record<ColorToken, string>
+  notFound: {
+    title: string
+    body: string
+    home: string
+  }
 }
 
 /** JSON 文案表；结构变更时靠 as Messages + 单测对齐 */

@@ -29,7 +29,8 @@ npm run preview      # http://127.0.0.1:4173
 ```
 
 本地服务仅绑定 `127.0.0.1`。  
-`main` 合并后由 GitHub Actions 自动部署到 Pages（见 `.github/workflows/deploy-pages.yml`）。
+`main` 合并后由 GitHub Actions 自动部署到 Pages（见 `.github/workflows/deploy-pages.yml`）。  
+项目站 `base` 为 `/cryptoboy/`；构建会生成 `404.html` 作 SPA 深链回退。
 
 ## 怎么玩
 
@@ -45,7 +46,8 @@ npm run preview      # http://127.0.0.1:4173
 | [`src/domain`](./src/domain/README.md) | 规则内核（评估 / 生成 / 会话，可单测） |
 | [`src/data`](./src/data/README.md) | 关卡曲线、自定义练习、localStorage 进度 |
 | [`src/i18n`](./src/i18n/README.md) | 简中 / 英文文案（`locales/*.json`） |
-| [`src/features`](./src/features/README.md) | 菜单、闯关、帮助等页面流程 |
+| [`src/app`](./src/app) | 路由、`ProgressProvider`、Layout（`paths.ts`） |
+| [`src/features`](./src/features/README.md) | 菜单、闯关、帮助等页面流程（含 `pages/`） |
 | [`src/ui`](./src/ui/README.md) | 机身组件、[主题](./src/ui/theme/README.md)、图标 |
 | [`src/lib`](./src/lib/README.md) | 框架/部署向薄工具（如 `assetUrl`） |
 | `docs/` | 产品规格、计划、截图 |

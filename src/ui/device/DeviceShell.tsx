@@ -12,8 +12,6 @@ type Props = {
   onKnobRotate: (direction: 1 | -1) => void
   onKnobShortPress: () => void
   onKnobLongPress: () => void
-  onSubmitClick: () => void
-  submitDisabled?: boolean
 }
 
 export function DeviceShell({
@@ -25,8 +23,6 @@ export function DeviceShell({
   onKnobRotate,
   onKnobShortPress,
   onKnobLongPress,
-  onSubmitClick,
-  submitDisabled,
 }: Props) {
   const { m } = useI18n()
 
@@ -42,14 +38,6 @@ export function DeviceShell({
       <div className="device-controls">
         <SevenSegment value={level} />
         <div className="control-actions">
-          <button
-            type="button"
-            className="btn btn-submit btn-sm"
-            onClick={onSubmitClick}
-            disabled={submitDisabled}
-          >
-            {m.device.submit}
-          </button>
           <OrangeKnob
             disabled={knobDisabled}
             onRotate={onKnobRotate}

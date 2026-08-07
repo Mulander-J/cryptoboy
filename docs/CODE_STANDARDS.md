@@ -21,36 +21,26 @@
 
 依赖方向：`app` → `features` → `ui` / `data` / `i18n` → `domain`（domain 不依赖上层）。
 
-### 1.1 页面与路由（现状 → 目标）
+### 1.1 页面与路由
 
-**现状（过渡）**
+**实现**：`react-router-dom` + `BrowserRouter`，`basename` 取自 Vite `BASE_URL`（Pages 项目站 `/cryptoboy`）。路径常量见 `src/app/paths.ts`。
 
-- `App` 内 `Screen` 联合类型 + `useState` 切换页面（`menu` / `custom-setup` / `solo` / `practice`）。
-- 无 URL、无浏览器历史；全局层（i18n、Help、Theme chrome）与页面同挂在 `App`。
-- 新增屏时继续扩 `Screen` 会让 `App.tsx` 变厚，后续应迁出。
-
-**目标（待落地，见 PLAN P4.9）**
-
-- 引入页面路由体系（优先 React Router 或同等轻量方案），**一页一路由**。
-- 建议路径（落地时以实现为准，表需同步本文）：
-
-| 路径（草案） | 页面 | 特性目录 |
+| 路径 | 页面 | 特性目录 |
 | ------ | ------ | ------ |
-| `/` | 主菜单 | `features/menu` |
-| `/practice/setup` | 自由练习配置 | `features/menu` |
-| `/solo/:difficulty/:level` | 闯关 | `features/solo` |
-| `/practice/play` | 自由练习对局 | `features/solo` |
+| `/` | 主菜单 | `features/menu/pages/MenuPage` |
+| `/practice/setup` | 自由练习配置 | `features/menu/pages/PracticeSetupPage` |
+| `/practice/set-secret` | 预设答案设密 | `features/menu/pages/PracticeSetSecretPage` |
+| `/practice/play` | 自由练习对局 | `features/solo/pages/PracticePlayPage` |
+| `/solo/:difficulty/:level` | 闯关 | `features/solo/pages/SoloPage` |
+| `/404` | 未知路径 | `app/NotFoundPage` |
 | `/duo`（预留） | 联机双人（远期） | `features/duo` |
-| （现状 Screen）`practice-set-secret` | 练习预设答案 / 本地双人设密 | `features/menu` |
-| `/settings`（预留） | 完整设置 | `features/settings` |
+| `/settings`（预留） | 独立设置页（远期） | `features/settings` |
 
-- `app`：只装配 `BrowserRouter`（或 HashRouter，若静态托管需要）、根 Layout、全局 Provider。
-- 页面组件放在对应 `features/<name>/`（如 `pages/` 或路由文件集中在 `src/routes/`）；**禁止**在深层 UI 里直接改全局 screen 状态。
-- 导航：统一 `navigate` / `<Link>`；返回菜单、下一关等走路由参数或 search，而不是隐式 `setScreen`。
-- Layout：帮助弹层、主题/语言 chrome、i18n 挂在根 layout，路由切换不卸载。
-- 帮助 / 结果弹层仍是页面内或全局 overlay，**不**必占独立 URL（除非产品明确要求可分享说明页）。
-
-落地前可继续用 `Screen`；一旦接路由，删除分散的 `setScreen`，并更新上表与 PLAN RTE-*。
+- `app`：`ProgressProvider` + `BrowserRouter` + `AppLayout`（i18n / 色盲 / 练习会话 / Help / Outlet）。
+- 导航：页面内用 `navigate` / `<Link>`；**禁止**再引入全局 `Screen` / `setScreen`。
+- 闯关难度与关卡在 path；未解锁关会重定向到当前解锁关。练习预设密仅存内存，刷新后需重设。
+- 帮助 / 结果 / 确认提交弹层仍为 overlay，不占独立 URL。
+- **GitHub Pages SPA 回退**：`npm run build` 末尾 `scripts/copy-404.mjs` 将 `dist/index.html` 复制为 `dist/404.html`，深链刷新由前端路由接管。
 
 ---
 

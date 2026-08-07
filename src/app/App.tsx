@@ -1,193 +1,33 @@
-import { useCallback, useEffect, useState } from 'react'
-import {
-  customOptionsToLevelConfig,
-  sanitizeOptions,
-  type CustomPracticeOptions,
-} from '@/data/customPractice'
-import { MAX_LEVELS } from '@/data/levels'
-import {
-  getBestTime,
-  loadProgress,
-  markLevelCleared,
-  resetSoloProgress,
-  updateSettings,
-  type ProgressState,
-  type Settings,
-} from '@/data/progress'
-import type { Difficulty, Password } from '@/domain/types'
-import { HelpController } from '@/features/help/HelpController'
-import { AiCreatedBadge } from '@/features/menu/AiCreatedBadge'
-import { CustomPracticeSetup } from '@/features/menu/CustomPracticeSetup'
-import { Menu, type Screen } from '@/features/menu/Menu'
-import { PracticeSetSecret } from '@/features/menu/PracticeSetSecret'
-import { GameBoard } from '@/features/solo/GameBoard'
-import { I18nProvider, type Locale } from '@/i18n'
-import { ColorBlindProvider } from '@/ui/colorBlind/ColorBlindContext'
-import { applyTheme } from '@/ui/theme/themes'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { MenuPage } from '@/features/menu/pages/MenuPage'
+import { PracticeSetSecretPage } from '@/features/menu/pages/PracticeSetSecretPage'
+import { PracticeSetupPage } from '@/features/menu/pages/PracticeSetupPage'
+import { PracticePlayPage } from '@/features/solo/pages/PracticePlayPage'
+import { SoloPage } from '@/features/solo/pages/SoloPage'
+import { AppLayout } from './AppLayout'
+import { NotFoundPage } from './NotFoundPage'
+import { appBasename, ROUTES } from './paths'
+import { ProgressProvider } from './ProgressContext'
 
 export default function App() {
-  const [progress, setProgress] = useState<ProgressState>(() => loadProgress())
-  const [screen, setScreen] = useState<Screen>({ name: 'menu' })
-  const [customDraft, setCustomDraft] = useState<CustomPracticeOptions>(
-    () => loadProgress().settings.customPractice,
-  )
-  /** 预设答案仅存内存，不写 localStorage */
-  const [practiceSecret, setPracticeSecret] = useState<Password | null>(null)
-
-  useEffect(() => {
-    applyTheme(progress.settings.theme)
-  }, [progress.settings.theme])
-
-  const markTutorialSeen = useCallback(() => {
-    setProgress((p) => {
-      if (p.settings.seenTutorial) return p
-      return updateSettings(p, { seenTutorial: true })
-    })
-  }, [])
-
-  const onUpdateSettings = useCallback((patch: Partial<Settings>) => {
-    if (patch.theme !== undefined) applyTheme(patch.theme)
-    setProgress((p) => updateSettings(p, patch))
-  }, [])
-
-  const selectLocale = useCallback((locale: Locale) => {
-    setProgress((p) => updateSettings(p, { locale }))
-  }, [])
-
-  const startSolo = useCallback(
-    (difficulty: Difficulty) => {
-      const level = progress.solo[difficulty].unlocked
-      setScreen({ name: 'solo', difficulty, level })
-    },
-    [progress],
-  )
-
-  const onClearLevel = useCallback(
-    (difficulty: Difficulty, level: number, elapsedMs: number) => {
-      setProgress((p) =>
-        markLevelCleared(p, difficulty, level, MAX_LEVELS[difficulty], elapsedMs),
-      )
-    },
-    [],
-  )
-
-  const saveCustomDraft = useCallback((next: CustomPracticeOptions) => {
-    const clean = sanitizeOptions(next)
-    setCustomDraft(clean)
-    setProgress((p) => updateSettings(p, { customPractice: clean }))
-  }, [])
-
-  const startCustomPractice = useCallback(() => {
-    const clean = sanitizeOptions(customDraft)
-    setCustomDraft(clean)
-    setProgress((p) => updateSettings(p, { customPractice: clean }))
-    setPracticeSecret(null)
-    if (clean.presetSecret) {
-      setScreen({ name: 'practice-set-secret' })
-      return
-    }
-    const cfg = customOptionsToLevelConfig(clean)
-    setScreen({ name: 'practice', difficulty: cfg.difficulty })
-  }, [customDraft])
-
-  const practiceOptions = sanitizeOptions(progress.settings.customPractice)
-  const practiceConfig =
-    screen.name === 'practice' || screen.name === 'practice-set-secret'
-      ? customOptionsToLevelConfig(practiceOptions)
-      : undefined
-
   return (
-    <I18nProvider locale={progress.settings.locale} onLocaleChange={selectLocale}>
-      <ColorBlindProvider enabled={progress.settings.colorBlindPatterns}>
-        <HelpController
-          initiallyOpen={!progress.settings.seenTutorial}
-          onSeen={markTutorialSeen}
-        >
-          <AiCreatedBadge />
-
-          {screen.name === 'menu' ? (
-            <Menu
-              progress={progress}
-              onStartSolo={startSolo}
-              onOpenCustom={() => {
-                setCustomDraft(progress.settings.customPractice)
-                setPracticeSecret(null)
-                setScreen({ name: 'custom-setup' })
-              }}
-              onUpdateSettings={onUpdateSettings}
-              onResetProgress={() => setProgress((p) => resetSoloProgress(p))}
+    <ProgressProvider>
+      <BrowserRouter basename={appBasename()}>
+        <Routes>
+          <Route element={<AppLayout />}>
+            <Route index element={<MenuPage />} />
+            <Route path={ROUTES.practiceSetup} element={<PracticeSetupPage />} />
+            <Route
+              path={ROUTES.practiceSetSecret}
+              element={<PracticeSetSecretPage />}
             />
-          ) : null}
-
-        {screen.name === 'custom-setup' ? (
-          <CustomPracticeSetup
-            value={customDraft}
-            onChange={saveCustomDraft}
-            onStart={startCustomPractice}
-            onBack={() => setScreen({ name: 'menu' })}
-          />
-        ) : null}
-
-        {screen.name === 'practice-set-secret' && practiceConfig ? (
-          <PracticeSetSecret
-            config={practiceConfig}
-            sound={progress.settings.sound}
-            onBack={() => {
-              setPracticeSecret(null)
-              setScreen({ name: 'custom-setup' })
-            }}
-            onConfirm={(secret) => {
-              setPracticeSecret(secret)
-              setScreen({ name: 'practice', difficulty: practiceConfig.difficulty })
-            }}
-          />
-        ) : null}
-
-        {screen.name === 'solo' ? (
-          <GameBoard
-            key={`solo-${screen.difficulty}-${screen.level}`}
-            mode="solo"
-            difficulty={screen.difficulty}
-            level={screen.level}
-            sound={progress.settings.sound}
-            confirmSubmit={progress.settings.confirmSubmit}
-            bestTimeMs={getBestTime(progress, screen.difficulty, screen.level)}
-            onClearLevel={(level, elapsedMs) =>
-              onClearLevel(screen.difficulty, level, elapsedMs)
-            }
-            onNextLevel={() =>
-              setScreen({
-                name: 'solo',
-                difficulty: screen.difficulty,
-                level: Math.min(MAX_LEVELS[screen.difficulty], screen.level + 1),
-              })
-            }
-            onMenu={() => setScreen({ name: 'menu' })}
-          />
-        ) : null}
-
-        {screen.name === 'practice' && practiceConfig ? (
-          <GameBoard
-            key={
-              practiceSecret
-                ? `practice-preset-${practiceSecret.join('')}-${JSON.stringify(practiceConfig)}`
-                : `practice-${JSON.stringify(practiceConfig)}`
-            }
-            mode="practice"
-            difficulty={practiceConfig.difficulty}
-            level={0}
-            customConfig={practiceConfig}
-            initialSecret={practiceSecret ?? undefined}
-            sound={progress.settings.sound}
-            confirmSubmit={progress.settings.confirmSubmit}
-            onMenu={() => {
-              setPracticeSecret(null)
-              setScreen({ name: 'custom-setup' })
-            }}
-          />
-        ) : null}
-        </HelpController>
-      </ColorBlindProvider>
-    </I18nProvider>
+            <Route path={ROUTES.practicePlay} element={<PracticePlayPage />} />
+            <Route path={ROUTES.solo} element={<SoloPage />} />
+            <Route path="/404" element={<NotFoundPage />} />
+            <Route path="*" element={<Navigate to="/404" replace />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ProgressProvider>
   )
 }

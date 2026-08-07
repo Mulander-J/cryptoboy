@@ -74,7 +74,7 @@
     "presetEntryRules": "须符合练习规则：{colors}{repeat}",
     "presetRulesRepeatOn": "·允许重复",
     "presetRulesRepeatOff": "·不可重复",
-    "presetEntryTip": "填满 4 格且符合规则后，点提交或长按旋钮确认",
+    "presetEntryTip": "填满 4 格且符合规则后，长按旋钮或按 Enter 确认",
     "presetInvalid": "密码不符合练习规则",
     "presetInvalidRepeat": "当前不允许重复颜色",
     "presetInvalidColor": "颜色不在当前可用色板内",
@@ -99,7 +99,7 @@
     "practiceTimed": "·限时",
     "practicePreset": "·预设",
     "practiceColors": "{n}色",
-    "tip": "点格换色 · 色盘点选 · 旋钮操作 · 键盘 ? 看说明",
+    "tip": "点格换色 · 色盘点选 · 长按旋钮提交 · Enter · ? 说明",
     "remaining": "剩余",
     "elapsed": "用时",
     "paused": "暂停",
@@ -160,7 +160,7 @@
         "body": [
           "点灯格：选中槽位；再点同一格循环换色。",
           "底部色盘：一键把颜色填入当前槽。",
-          "旋钮：拖转换色 · 短按移格 · 长按提交；也可用「提交」按钮。"
+          "旋钮：拖转换色 · 短按移格 · 长按提交；桌面也可按 Enter。"
         ]
       },
       {
@@ -215,7 +215,6 @@
     }
   ],
   "device": {
-    "submit": "提交",
     "knobAria": "旋钮：拖转换色，短按移格，长按提交",
     "knobTitle": "拖转换色 · 短按移格 · 长按提交",
     "levelAria": "关卡 {level}",
@@ -261,5 +260,10 @@
     "P": "紫",
     "C": "青",
     "K": "粉"
+  },
+  "notFound": {
+    "title": "页面不存在",
+    "body": "这个地址没有对应内容，回主菜单继续破译吧。",
+    "home": "回主菜单"
   }
 }

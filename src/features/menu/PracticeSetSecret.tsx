@@ -207,8 +207,6 @@ export function PracticeSetSecret({ config, sound, onConfirm, onBack }: Props) {
         level={0}
         statusLight="idle"
         knobDisabled={false}
-        submitDisabled={!resolved}
-        onSubmitClick={tryConfirm}
         onKnobRotate={(dir) => cycleAt(entry.cursor, dir)}
         onKnobShortPress={() => {
           playSound('move', sound)
