@@ -27,26 +27,30 @@ export function DeviceShell({
   const { m } = useI18n()
 
   return (
-    <div className={`device-shell on-shell status-${statusLight}`}>
-      <div className="device-antenna">
-        <span className="status-led" />
-      </div>
-      <div className="device-panel">{children}</div>
-      <div className="device-brand">
-        <span>{m.app.name}</span>
-      </div>
-      <div className="device-controls">
-        <SevenSegment value={level} />
-        <div className="control-actions">
-          <OrangeKnob
-            disabled={knobDisabled}
-            onRotate={onKnobRotate}
-            onShortPress={onKnobShortPress}
-            onLongPress={onKnobLongPress}
-          />
+    <div className="device-scale-wrap">
+      <div className="device-scale-inner">
+        <div className={`device-shell on-shell status-${statusLight}`}>
+          <div className="device-antenna">
+            <span className="status-led" aria-hidden />
+          </div>
+          <div className="device-panel">{children}</div>
+          <div className="device-brand">
+            <span>{m.app.name}</span>
+          </div>
+          <div className="device-controls">
+            <SevenSegment value={level} />
+            <div className="control-actions">
+              <OrangeKnob
+                disabled={knobDisabled}
+                onRotate={onKnobRotate}
+                onShortPress={onKnobShortPress}
+                onLongPress={onKnobLongPress}
+              />
+            </div>
+          </div>
+          {footerExtra}
         </div>
       </div>
-      {footerExtra}
     </div>
   )
 }

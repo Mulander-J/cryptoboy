@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom'
 import { HelpController } from '@/features/help/HelpController'
-import { AiCreatedBadge } from '@/features/menu/AiCreatedBadge'
 import { I18nProvider } from '@/i18n'
 import { ColorBlindProvider } from '@/ui/colorBlind/ColorBlindContext'
 import { PracticeSessionProvider } from './PracticeSessionContext'
@@ -18,7 +17,6 @@ export function AppLayout() {
             initiallyOpen={!progress.settings.seenTutorial}
             onSeen={markTutorialSeen}
           >
-            <AiCreatedBadge />
             <Outlet />
           </HelpController>
         </PracticeSessionProvider>

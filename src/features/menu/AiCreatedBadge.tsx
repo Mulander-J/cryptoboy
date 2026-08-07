@@ -1,22 +1,22 @@
 import { useI18n } from '@/i18n'
 import { assetUrl } from '@/lib/assetUrl'
 
-/** 右下角标识：AI 生成 */
+/** 主菜单标题下的次要说明：AI 生成 */
 export function AiCreatedBadge() {
   const { m } = useI18n()
 
   return (
-    <div className="ai-created-badge" title={m.app.aiCreatedTitle}>
+    <p className="menu-hero-meta" title={m.app.aiCreatedTitle}>
       <span className="ai-created-mark" aria-hidden>
         <img
           className="ai-created-mark-icon"
           src={assetUrl('imgs/cursor.svg')}
           alt=""
-          width={13}
-          height={13}
+          width={12}
+          height={12}
         />
       </span>
       <span>{m.app.aiCreated}</span>
-    </div>
+    </p>
   )
 }

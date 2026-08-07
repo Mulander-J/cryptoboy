@@ -33,7 +33,7 @@ export function HelpPanel({ open, onClose }: Props) {
           </span>
         </header>
 
-        <div className="help-body">
+        <div className="help-body" aria-live="polite">
           <h3>{current.title}</h3>
           <ul>
             {current.body.map((line) => (

@@ -276,34 +276,36 @@ export function GameBoard({
         label={clock.mode === 'countdown' ? m.game.remaining : m.game.elapsed}
       />
 
-      <DeviceShell
-        level={mode === 'practice' ? 0 : level}
-        statusLight={statusLight}
-        knobDisabled={!editing || confirmOpen}
-        onKnobRotate={(dir) => cycleAt(session.cursor, dir)}
-        onKnobShortPress={() => {
-          playSound('move', sound)
-          dispatch({ type: 'NEXT_SLOT' })
-        }}
-        onKnobLongPress={requestSubmit}
-        footerExtra={
-          <ColorPalette
-            colorCount={session.config.colorCount}
-            selected={session.currentGuess[session.cursor] ?? null}
-            disabled={!editing || confirmOpen}
-            onPick={onPick}
+      <div className="game-stage">
+        <DeviceShell
+          level={mode === 'practice' ? 0 : level}
+          statusLight={statusLight}
+          knobDisabled={!editing || confirmOpen}
+          onKnobRotate={(dir) => cycleAt(session.cursor, dir)}
+          onKnobShortPress={() => {
+            playSound('move', sound)
+            dispatch({ type: 'NEXT_SLOT' })
+          }}
+          onKnobLongPress={requestSubmit}
+          footerExtra={
+            <ColorPalette
+              colorCount={session.config.colorCount}
+              selected={session.currentGuess[session.cursor] ?? null}
+              disabled={!editing || confirmOpen}
+              onPick={onPick}
+            />
+          }
+        >
+          <LedGrid
+            attempts={session.attempts}
+            currentGuess={session.currentGuess}
+            cursor={session.cursor}
+            editing={editing}
+            hintStyle={session.config.hintStyle}
+            onCellClick={onCellClick}
           />
-        }
-      >
-        <LedGrid
-          attempts={session.attempts}
-          currentGuess={session.currentGuess}
-          cursor={session.cursor}
-          editing={editing}
-          hintStyle={session.config.hintStyle}
-          onCellClick={onCellClick}
-        />
-      </DeviceShell>
+        </DeviceShell>
+      </div>
 
       <p className="game-help">{m.game.tip}</p>
 

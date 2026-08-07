@@ -1,6 +1,5 @@
 # CryptoBoy
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](./LICENSE)
 [![React](https://img.shields.io/badge/React-Vite_TypeScript-61dafb?style=flat-square&logo=react&logoColor=white)](https://vitejs.dev/)
 
 破译四色密码 · 最多七次机会。  
@@ -17,7 +16,6 @@
 - **复古机身**：LED 灯阵、数码管、旋钮与色盘；多套主题；像素品牌字体自托管
 - **设置**：语言 / 主题 / 音效 / 色盲图案 / 确认提交 / 重置闯关
 - **玩法说明**：首次引导 + 对局顶栏 Help / 快捷键 `?` `H`
-- **开源 MIT**：欢迎在 [Issues](https://github.com/Mulander-J/cryptoboy/issues) 交流反馈
 
 ## 本地开发
 

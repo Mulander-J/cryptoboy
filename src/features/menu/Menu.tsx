@@ -10,6 +10,7 @@ import { useI18n } from '@/i18n'
 import { MenuSettingRow } from '@/ui/MenuSettingRow'
 import { useHelp } from '@/features/help/HelpController'
 import { SvgIcon } from '@/ui/icons'
+import { AiCreatedBadge } from './AiCreatedBadge'
 import { ColorBlindToggle } from './ColorBlindToggle'
 import { ConfirmSubmitToggle } from './ConfirmSubmitToggle'
 import { LocaleSwitcher } from './LocaleSwitcher'
@@ -54,7 +55,8 @@ export function Menu({
       <div className="menu-hero">
         <div className="menu-device-preview" aria-hidden />
         <h1>{m.app.name}</h1>
-        <p>{m.app.tagline}</p>
+        <p className="menu-hero-tagline">{m.app.tagline}</p>
+        <AiCreatedBadge />
       </div>
 
       <div className="menu-cards">

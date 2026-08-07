@@ -43,11 +43,12 @@ export function ResultModal({
     : loseReason === 'timeout'
       ? m.result.timeout
       : m.result.lost
+  const titleId = 'result-modal-title'
 
   return (
-    <ModalBackdrop>
+    <ModalBackdrop labelledBy={titleId}>
       <div className={`result-modal ${won ? 'won' : 'lost'}`}>
-        <h2>{title}</h2>
+        <h2 id={titleId}>{title}</h2>
         {typeof elapsedMs === 'number' ? (
           <p className="result-time">
             {m.result.timeUsed} <strong>{formatMmSs(elapsedMs)}</strong>
@@ -73,6 +74,7 @@ export function ResultModal({
               className="secret-chip"
               style={{ background: COLOR_META[c].hex }}
               title={m.color[c]}
+              aria-label={m.color[c]}
             >
               {showPattern ? <ColorPatternMark color={c} /> : null}
             </span>
