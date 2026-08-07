@@ -64,6 +64,7 @@
 | `MenuSettingRow` | `src/ui/` | 设置区标签行 |
 | `ModalBackdrop` | `src/ui/` | 弹层遮罩外壳 |
 | `IconButton` | `src/ui/` | 圆形图标按钮 |
+| Icons（`<SvgIcon name="..." />` + `assets/*.svg`） | `src/ui/icons/` | 按 name 引用；需变色用 `currentColor`，多色可写死 |
 | `ThemePicker` | `features/menu/` | 触发器 + DropdownPanel |
 | `AppChrome` | `features/menu/` | 右上角玩法说明 `?` |
 | `LocaleSwitcher` / `SoundToggle` | `features/menu/` | 基于 SegmentedControl |

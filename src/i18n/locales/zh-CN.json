@@ -4,7 +4,10 @@
     "tagline": "破译四色密码 · 最多七次机会",
     "description": "CryptoBoy — 四色密码破译益智游戏",
     "aiCreated": "AI 生成",
-    "aiCreatedTitle": "本应用主要由 AI 生成"
+    "aiCreatedTitle": "本应用主要由 AI 生成",
+    "githubLabel": "GitHub",
+    "githubTitle": "打开 GitHub 仓库",
+    "mitLicenseTitle": "以 MIT 协议开源，查看完整许可文本"
   },
   "lang": {
     "label": "语言",
@@ -26,6 +29,7 @@
     "soundLabel": "音效",
     "soundOn": "开",
     "soundOff": "关",
+    "aboutLabel": "关于",
     "helpHint": "设置在本区调整；右上角 ? 打开玩法说明；桌面也可按 ? 或 H"
   },
   "difficulty": {

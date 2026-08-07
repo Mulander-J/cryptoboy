@@ -4,7 +4,10 @@
     "tagline": "Crack a 4-color code · 7 attempts max",
     "description": "CryptoBoy — a 4-color code-breaking puzzle",
     "aiCreated": "Built with AI",
-    "aiCreatedTitle": "Built with AI assistance"
+    "aiCreatedTitle": "Built with AI assistance",
+    "githubLabel": "GitHub",
+    "githubTitle": "Open GitHub repository",
+    "mitLicenseTitle": "Open source under the MIT License — view full text"
   },
   "lang": {
     "label": "Language",
@@ -26,6 +29,7 @@
     "soundLabel": "Sound",
     "soundOn": "On",
     "soundOff": "Off",
+    "aboutLabel": "About",
     "helpHint": "Adjust settings here; top-right ? opens help; or press ? / H"
   },
   "difficulty": {

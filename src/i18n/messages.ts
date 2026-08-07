@@ -22,6 +22,9 @@ export type Messages = {
     description: string
     aiCreated: string
     aiCreatedTitle: string
+    githubLabel: string
+    githubTitle: string
+    mitLicenseTitle: string
   }
   lang: {
     label: string
@@ -43,6 +46,7 @@ export type Messages = {
     soundLabel: string
     soundOn: string
     soundOff: string
+    aboutLabel: string
     helpHint: string
   }
   difficulty: Record<Difficulty, string>

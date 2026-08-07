@@ -5,6 +5,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from 'react'
+import { SvgIcon } from './icons'
 
 type Props = {
   id?: string
@@ -22,16 +23,7 @@ type Props = {
 function MoreChevron({ dir }: { dir: 'up' | 'down' }) {
   return (
     <span className={`dropdown-panel-more-arrow ${dir}`}>
-      <svg viewBox="0 0 16 10" width="14" height="9" aria-hidden>
-        <path
-          d="M2 2.25 L8 7.75 L14 2.25"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      <SvgIcon name="chevron" />
     </span>
   )
 }

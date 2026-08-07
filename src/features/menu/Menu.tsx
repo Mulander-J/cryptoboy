@@ -6,9 +6,13 @@ import { useI18n } from '../../i18n'
 import { MenuSettingRow } from '../../ui/MenuSettingRow'
 import type { ThemeId } from '../../ui/theme/themes'
 import { useHelp } from '../help/HelpController'
+import { SvgIcon } from '../../ui/icons'
 import { LocaleSwitcher } from './LocaleSwitcher'
 import { SoundToggle } from './SoundToggle'
 import { ThemePicker } from './ThemePicker'
+
+const REPO_URL = 'https://github.com/Mulander-J/cryptoboy'
+const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`
 
 export type Screen =
   | { name: 'menu' }
@@ -110,6 +114,33 @@ export function Menu({
                 if (next !== soundOn) onToggleSound()
               }}
             />
+          </MenuSettingRow>
+
+          <MenuSettingRow label={m.menu.aboutLabel}>
+            <span className="menu-about-links">
+              <a
+                className="menu-about-link"
+                href={REPO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={m.app.githubTitle}
+              >
+                <SvgIcon name="github-mark" />
+                <span>{m.app.githubLabel}</span>
+              </a>
+              <span className="menu-about-sep" aria-hidden>
+                |
+              </span>
+              <a
+                className="menu-about-link menu-about-badge-link"
+                href={LICENSE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={m.app.mitLicenseTitle}
+              >
+                <SvgIcon name="mit-license" />
+              </a>
+            </span>
           </MenuSettingRow>
 
           <p className="menu-hint">{m.menu.helpHint}</p>

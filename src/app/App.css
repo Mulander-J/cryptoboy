@@ -88,6 +88,56 @@
   gap: 0.45rem;
 }
 
+.menu-about-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.menu-about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+}
+
+.menu-about-link:hover {
+  color: var(--color-text);
+}
+
+.menu-about-link .github-mark {
+  flex-shrink: 0;
+  display: block;
+}
+
+.menu-about-badge-link {
+  text-decoration: none;
+  line-height: 0;
+  border-radius: 3px;
+}
+
+.menu-about-badge-link:hover {
+  filter: brightness(1.08);
+}
+
+.menu-about-badge-link .mit-license-badge {
+  display: block;
+}
+
+.menu-about-sep {
+  color: var(--color-text-muted);
+  opacity: 0.55;
+  font-weight: 500;
+  user-select: none;
+}
+
 .ai-created-badge {
   position: fixed;
   right: 0.65rem;
