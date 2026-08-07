@@ -2,7 +2,7 @@
   "app": {
     "name": "CryptoBoy",
     "tagline": "破译四色密码 · 最多七次机会",
-    "description": "CryptoBoy — 四色密码破译益智游戏",
+    "description": "CryptoBoy — 仿照复古颜色密码小玩具的浏览器数字版（娱乐向）",
     "aiCreated": "AI 生成",
     "aiCreatedTitle": "本应用主要由 AI 生成",
     "githubLabel": "GitHub",

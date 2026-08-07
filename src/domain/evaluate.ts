@@ -1,7 +1,7 @@
 import type { Feedback, Guess, Password, SlotHint } from './types'
 
 /**
- * 标准 Mastermind：先计绿（位+色），再在剩余中计白（色在、位不对）。
+ * 珠机密码类标准反馈：先计绿（位+色），再在剩余中计白（色在、位不对）。
  * 同一密码位/猜测位不重复占用。
  */
 export function evaluate(secret: Password, guess: Guess): Feedback {

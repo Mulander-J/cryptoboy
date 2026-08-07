@@ -7,7 +7,7 @@ const secret = (a: string, b: string, c: string, d: string) =>
 const guess = (a: string, b: string, c: string, d: string) =>
   [a, b, c, d] as unknown as Guess
 
-describe('evaluate（标准 Mastermind）', () => {
+describe('evaluate（珠机密码类标准反馈）', () => {
   it('全对：4 绿 0 白', () => {
     const fb = evaluate(secret('R', 'O', 'Y', 'G'), guess('R', 'O', 'Y', 'G'))
     expect(fb).toEqual({ exactCount: 4, presentCount: 0 })

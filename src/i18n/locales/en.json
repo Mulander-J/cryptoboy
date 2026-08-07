@@ -2,7 +2,7 @@
   "app": {
     "name": "CryptoBoy",
     "tagline": "Crack a 4-color code · 7 attempts max",
-    "description": "CryptoBoy — a 4-color code-breaking puzzle",
+    "description": "CryptoBoy — a browser remake of a retro color-code toy, for fun",
     "aiCreated": "Built with AI",
     "aiCreatedTitle": "Built with AI assistance",
     "githubLabel": "GitHub",
