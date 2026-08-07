@@ -37,7 +37,8 @@
 | `/practice/setup` | 自由练习配置 | `features/menu` |
 | `/solo/:difficulty/:level` | 闯关 | `features/solo` |
 | `/practice/play` | 自由练习对局 | `features/solo` |
-| `/duo`（预留） | 本地双人 | `features/duo` |
+| `/duo`（预留） | 联机双人（远期） | `features/duo` |
+| （现状 Screen）`practice-set-secret` | 练习预设答案 / 本地双人设密 | `features/menu` |
 | `/settings`（预留） | 完整设置 | `features/settings` |
 
 - `app`：只装配 `BrowserRouter`（或 HashRouter，若静态托管需要）、根 Layout、全局 Provider。

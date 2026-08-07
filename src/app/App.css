@@ -918,6 +918,66 @@
   outline-offset: 2px;
 }
 
+.palette-swatch.blocked,
+.palette-swatch:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(0.35);
+}
+
+/* —— 预设答案 / 换手 —— */
+.set-secret-banner {
+  text-align: center;
+  margin: 0 0 0.5rem;
+  padding: 0 0.75rem;
+}
+
+.set-secret-banner h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+  color: var(--color-accent);
+}
+
+.set-secret-banner p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.set-secret-rules {
+  margin-top: 0.35rem !important;
+  font-weight: 600;
+  color: var(--color-accent) !important;
+}
+
+.set-secret-error {
+  margin: 0.5rem 0 0;
+  text-align: center;
+  color: #e53935;
+  font-size: 0.9rem;
+}
+
+.handoff-modal {
+  width: min(100%, 320px);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  text-align: center;
+  box-shadow: 0 16px 40px #00000088;
+}
+
+.handoff-modal h2 {
+  margin: 0 0 0.75rem;
+  color: var(--color-accent);
+}
+
+.handoff-modal p {
+  margin: 0 0 1.25rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
 /* —— 结果弹层 —— */
 .modal-backdrop {
   position: fixed;

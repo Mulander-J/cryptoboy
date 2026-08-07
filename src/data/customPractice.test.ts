@@ -12,6 +12,7 @@ describe('customPractice', () => {
     expect(o.colorCount).toBe(8)
     expect(o.allowRepeat).toBe(true)
     expect(o.timed).toBe(true)
+    expect('presetSecret' in o).toBe(false)
   })
 
   it('快捷档复用 Easy/挑战', () => {
@@ -32,16 +33,22 @@ describe('customPractice', () => {
       hintStyle: 'summary',
       timed: true,
       timeLimitSec: 60,
+      presetSecret: true,
     })
     expect(cfg.colorCount).toBe(7)
     expect(cfg.timerMode).toBe('countdown')
     expect(cfg.timeLimitMs).toBe(60_000)
   })
 
-  it('sanitize 校正非法值', () => {
+  it('sanitize 校正非法值并默认 presetSecret', () => {
     const o = sanitizeOptions({ colorCount: 99, timeLimitSec: 12, hintStyle: 'nope' as never })
     expect(o.colorCount).toBe(8)
     expect(o.timeLimitSec).toBe(90)
     expect(o.hintStyle).toBe('summary')
+    expect(o.presetSecret).toBe(false)
+  })
+
+  it('sanitize 保留 presetSecret', () => {
+    expect(sanitizeOptions({ presetSecret: true }).presetSecret).toBe(true)
   })
 })

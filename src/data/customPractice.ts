@@ -12,6 +12,8 @@ export type CustomPracticeOptions = {
   timed: boolean
   /** 限时时的秒数 */
   timeLimitSec: number
+  /** 开启后由同伴设答案再换手开局（本地双人） */
+  presetSecret: boolean
 }
 
 export const COLOR_COUNT_OPTIONS = [4, 5, 6, 7, 8] as const
@@ -24,9 +26,12 @@ export const DEFAULT_CUSTOM_PRACTICE: CustomPracticeOptions = {
   hintStyle: 'summary',
   timed: false,
   timeLimitSec: 90,
+  presetSecret: false,
 }
 
-const INTENSITY_PRESETS: Record<PracticeIntensity, Omit<CustomPracticeOptions, 'intensity'>> = {
+type IntensityPreset = Omit<CustomPracticeOptions, 'intensity' | 'presetSecret'>
+
+const INTENSITY_PRESETS: Record<PracticeIntensity, IntensityPreset> = {
   1: { colorCount: 4, allowRepeat: false, hintStyle: 'column', timed: false, timeLimitSec: 120 },
   2: { colorCount: 5, allowRepeat: false, hintStyle: 'column', timed: false, timeLimitSec: 120 },
   3: { colorCount: 6, allowRepeat: false, hintStyle: 'summary', timed: false, timeLimitSec: 90 },
@@ -43,8 +48,10 @@ export const INTENSITY_LABELS: Record<PracticeIntensity, string> = {
   5: 'Extreme',
 }
 
-/** Easy / Advanced / 限时 快捷复用 */
-export function optionsFromDifficulty(difficulty: Difficulty): CustomPracticeOptions {
+/** Easy / Advanced / 限时 快捷复用（不改动 presetSecret，由调用方合并保留） */
+export function optionsFromDifficulty(
+  difficulty: Difficulty,
+): Omit<CustomPracticeOptions, 'presetSecret'> {
   const base = practiceConfig(difficulty)
   return {
     intensity: difficulty === 'easy' ? 2 : difficulty === 'advanced' ? 3 : 5,
@@ -56,7 +63,10 @@ export function optionsFromDifficulty(difficulty: Difficulty): CustomPracticeOpt
   }
 }
 
-export function applyIntensity(intensity: PracticeIntensity): CustomPracticeOptions {
+/** 套用难度系数推荐组合（不改动 presetSecret，由调用方合并保留） */
+export function applyIntensity(
+  intensity: PracticeIntensity,
+): Omit<CustomPracticeOptions, 'presetSecret'> {
   return { intensity, ...INTENSITY_PRESETS[intensity] }
 }
 
@@ -76,8 +86,9 @@ export function sanitizeOptions(raw: Partial<CustomPracticeOptions> | undefined)
   const intensity = ([1, 2, 3, 4, 5] as const).includes(base.intensity as PracticeIntensity)
     ? (base.intensity as PracticeIntensity)
     : 3
+  const presetSecret = Boolean(base.presetSecret)
 
-  return { intensity, colorCount, allowRepeat, hintStyle, timed, timeLimitSec }
+  return { intensity, colorCount, allowRepeat, hintStyle, timed, timeLimitSec, presetSecret }
 }
 
 export function customOptionsToLevelConfig(opts: CustomPracticeOptions): LevelConfig {

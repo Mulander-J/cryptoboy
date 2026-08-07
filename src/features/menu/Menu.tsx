@@ -14,6 +14,7 @@ export type Screen =
   | { name: 'menu' }
   | { name: 'solo'; difficulty: Difficulty; level: number }
   | { name: 'custom-setup' }
+  | { name: 'practice-set-secret' }
   | { name: 'practice'; difficulty: Difficulty }
 
 type Props = {

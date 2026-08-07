@@ -24,12 +24,14 @@ export function CustomPracticeSetup({ value, onChange, onStart, onBack }: Props)
   }
 
   function applyPreset(difficulty: Difficulty) {
-    onChange(optionsFromDifficulty(difficulty))
+    onChange({ ...optionsFromDifficulty(difficulty), presetSecret: value.presetSecret })
   }
 
   function onIntensity(raw: string) {
     const n = Number(raw) as PracticeIntensity
-    if (n >= 1 && n <= 5) onChange(applyIntensity(n))
+    if (n >= 1 && n <= 5) {
+      onChange({ ...applyIntensity(n), presetSecret: value.presetSecret })
+    }
   }
 
   const markParts = m.custom.intensityMarks.split(' · ')
@@ -151,6 +153,16 @@ export function CustomPracticeSetup({ value, onChange, onStart, onBack }: Props)
             </select>
           </label>
         ) : null}
+
+        <label className="custom-field custom-check">
+          <input
+            type="checkbox"
+            checked={value.presetSecret}
+            onChange={(e) => patch({ presetSecret: e.target.checked })}
+          />
+          <span>{m.custom.presetSecret}</span>
+        </label>
+        <p className="menu-hint">{m.custom.presetSecretHint}</p>
       </section>
 
       <div className="custom-setup-actions">

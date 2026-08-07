@@ -33,6 +33,8 @@ type Props = {
   sound: boolean
   /** 自定义练习完整配置；有则覆盖 practiceConfig(difficulty) */
   customConfig?: LevelConfig
+  /** 预设答案（本地双人）；有则跳过随机生成，重试保持同密 */
+  initialSecret?: Password
   /** 该关进入前的最佳用时 */
   bestTimeMs?: number
   onClearLevel?: (level: number, elapsedMs: number) => void
@@ -52,7 +54,14 @@ function buildConfig(
   return levelConfig(difficulty, level)
 }
 
-function buildSecret(mode: Mode, difficulty: Difficulty, level: number, config: LevelConfig): Password {
+function buildSecret(
+  mode: Mode,
+  difficulty: Difficulty,
+  level: number,
+  config: LevelConfig,
+  initialSecret?: Password,
+): Password {
+  if (initialSecret) return initialSecret
   const seed =
     mode === 'practice'
       ? (Math.floor(Math.random() * 0xffffffff) >>> 0)
@@ -73,6 +82,7 @@ export function GameBoard({
   level,
   sound,
   customConfig,
+  initialSecret,
   bestTimeMs,
   onClearLevel,
   onNextLevel,
@@ -88,7 +98,8 @@ export function GameBoard({
   const [session, dispatch] = useReducer(
     sessionReducer,
     undefined,
-    () => createSession(buildSecret(mode, difficulty, level, config), config),
+    () =>
+      createSession(buildSecret(mode, difficulty, level, config, initialSecret), config),
   )
 
   const [clockResetKey, setClockResetKey] = useState(0)
@@ -147,7 +158,7 @@ export function GameBoard({
 
   function restart(nextLevel = level) {
     const nextConfig = buildConfig(mode, difficulty, nextLevel, customConfig)
-    const secret = buildSecret(mode, difficulty, nextLevel, nextConfig)
+    const secret = buildSecret(mode, difficulty, nextLevel, nextConfig, initialSecret)
     dispatch({ type: 'RESTART', secret, config: nextConfig })
     prevStatus.current = 'editing'
     urgentBeeped.current = false
@@ -223,6 +234,7 @@ export function GameBoard({
     colors: t(m.game.practiceColors, { n: session.config.colorCount }),
     repeat: session.config.allowRepeat ? m.game.practiceRepeat : '',
     timed: session.config.timerMode === 'countdown' ? m.game.practiceTimed : '',
+    preset: initialSecret ? m.game.practicePreset : '',
   })
 
   return (

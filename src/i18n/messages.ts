@@ -66,6 +66,20 @@ export type Messages = {
     timed: string
     timeLimit: string
     seconds: string
+    presetSecret: string
+    presetSecretHint: string
+    presetEntryTitle: string
+    presetEntryHint: string
+    presetEntryRules: string
+    presetRulesRepeatOn: string
+    presetRulesRepeatOff: string
+    presetEntryTip: string
+    presetInvalid: string
+    presetInvalidRepeat: string
+    presetInvalidColor: string
+    handoffTitle: string
+    handoffBody: string
+    handoffReady: string
     start: string
   }
   intensity: Record<PracticeIntensity, string>
@@ -76,6 +90,7 @@ export type Messages = {
     practiceBadge: string
     practiceRepeat: string
     practiceTimed: string
+    practicePreset: string
     practiceColors: string
     tip: string
     remaining: string

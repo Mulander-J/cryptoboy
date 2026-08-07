@@ -12,12 +12,13 @@ import {
   updateSettings,
   type ProgressState,
 } from '../data/progress'
-import type { Difficulty } from '../domain/types'
+import type { Difficulty, Password } from '../domain/types'
 import { HelpController } from '../features/help/HelpController'
 import { AiCreatedBadge } from '../features/menu/AiCreatedBadge'
 import { AppChrome } from '../features/menu/AppChrome'
 import { CustomPracticeSetup } from '../features/menu/CustomPracticeSetup'
 import { Menu, type Screen } from '../features/menu/Menu'
+import { PracticeSetSecret } from '../features/menu/PracticeSetSecret'
 import { GameBoard } from '../features/solo/GameBoard'
 import { I18nProvider, type Locale } from '../i18n'
 import { applyTheme, type ThemeId } from '../ui/theme/themes'
@@ -28,6 +29,8 @@ export default function App() {
   const [customDraft, setCustomDraft] = useState<CustomPracticeOptions>(
     () => loadProgress().settings.customPractice,
   )
+  /** 预设答案仅存内存，不写 localStorage */
+  const [practiceSecret, setPracticeSecret] = useState<Password | null>(null)
 
   useEffect(() => {
     applyTheme(progress.settings.theme)
@@ -76,13 +79,19 @@ export default function App() {
     const clean = sanitizeOptions(customDraft)
     setCustomDraft(clean)
     setProgress((p) => updateSettings(p, { customPractice: clean }))
+    setPracticeSecret(null)
+    if (clean.presetSecret) {
+      setScreen({ name: 'practice-set-secret' })
+      return
+    }
     const cfg = customOptionsToLevelConfig(clean)
     setScreen({ name: 'practice', difficulty: cfg.difficulty })
   }, [customDraft])
 
+  const practiceOptions = sanitizeOptions(progress.settings.customPractice)
   const practiceConfig =
-    screen.name === 'practice'
-      ? customOptionsToLevelConfig(progress.settings.customPractice)
+    screen.name === 'practice' || screen.name === 'practice-set-secret'
+      ? customOptionsToLevelConfig(practiceOptions)
       : undefined
 
   return (
@@ -100,6 +109,7 @@ export default function App() {
             onStartSolo={startSolo}
             onOpenCustom={() => {
               setCustomDraft(progress.settings.customPractice)
+              setPracticeSecret(null)
               setScreen({ name: 'custom-setup' })
             }}
             onToggleSound={() =>
@@ -115,6 +125,21 @@ export default function App() {
             onChange={saveCustomDraft}
             onStart={startCustomPractice}
             onBack={() => setScreen({ name: 'menu' })}
+          />
+        ) : null}
+
+        {screen.name === 'practice-set-secret' && practiceConfig ? (
+          <PracticeSetSecret
+            config={practiceConfig}
+            sound={progress.settings.sound}
+            onBack={() => {
+              setPracticeSecret(null)
+              setScreen({ name: 'custom-setup' })
+            }}
+            onConfirm={(secret) => {
+              setPracticeSecret(secret)
+              setScreen({ name: 'practice', difficulty: practiceConfig.difficulty })
+            }}
           />
         ) : null}
 
@@ -142,13 +167,21 @@ export default function App() {
 
         {screen.name === 'practice' && practiceConfig ? (
           <GameBoard
-            key={`practice-${JSON.stringify(practiceConfig)}`}
+            key={
+              practiceSecret
+                ? `practice-preset-${practiceSecret.join('')}-${JSON.stringify(practiceConfig)}`
+                : `practice-${JSON.stringify(practiceConfig)}`
+            }
             mode="practice"
             difficulty={practiceConfig.difficulty}
             level={0}
             customConfig={practiceConfig}
+            initialSecret={practiceSecret ?? undefined}
             sound={progress.settings.sound}
-            onMenu={() => setScreen({ name: 'custom-setup' })}
+            onMenu={() => {
+              setPracticeSecret(null)
+              setScreen({ name: 'custom-setup' })
+            }}
           />
         ) : null}
       </HelpController>
