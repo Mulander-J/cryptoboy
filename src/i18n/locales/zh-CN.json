@@ -2,7 +2,8 @@
   "app": {
     "name": "CryptoBoy",
     "tagline": "破译四色密码 · 最多七次机会",
-    "description": "CryptoBoy — 仿照复古颜色密码小玩具的浏览器数字版（娱乐向）",
+    "description": "CryptoBoy — 仿复古颜色密码小玩具的浏览器数字版（娱乐向）",
+    "aiCreatedLead": "本项目 Agent Stats 100%",
     "aiCreated": "AI 生成",
     "aiCreatedTitle": "本应用主要由 AI 生成",
     "githubLabel": "GitHub",
@@ -15,55 +16,52 @@
     "en": "EN"
   },
   "menu": {
-    "soloTitle": "闯关 Solo",
+    "soloTitle": "单人",
+    "soloHint": "闯关按关推进；无尽整盘限时连破",
     "levelBtn": "第 {level} 关",
-    "soloHint": "Easy / Advanced 正计时记最佳用时；限时挑战倒计时（本关约 {limit}），超时即负",
-    "practiceTitle": "自由练习",
-    "practiceCta": "调整规则并练习",
-    "practiceHint": "可改难度系数、颜色数、是否重复、提示方式、限时、预设答案等；也支持 Easy 等三档快捷复用",
-    "helpTitle": "帮助与设置",
+    "endlessCta": "无尽",
+    "endlessBest": "最佳连胜 {n}",
+    "practiceTitle": "自定义试炼",
+    "practiceCta": "开始试炼",
+    "practiceHint": "不计闯关进度；可改难度预设、颜色数、是否重复、提示方式、限时与预设答案",
+    "helpTitle": "设置和其他",
+    "settingsHint": "主题、语言、音效与无障碍等",
     "helpLabel": "帮助",
+    "helpHint": "对局顶栏「？说明」也可打开；或按键「H」",
     "helpTutorial": "查看教程",
     "themeLabel": "主题",
     "soundLabel": "音效",
-    "soundOn": "开",
-    "soundOff": "关",
+    "toggleOn": "开",
+    "toggleOff": "关",
     "colorBlindLabel": "色盲图案",
-    "colorBlindOn": "开",
-    "colorBlindOff": "关",
     "colorBlindHint": "在色块上叠加几何符号，便于辨色（不是换主题）",
     "confirmSubmitLabel": "确认提交",
-    "confirmSubmitOn": "开",
-    "confirmSubmitOff": "关",
-    "confirmSubmitHint": "每次提交前多一步确认，防误触；可随时关闭",
+    "confirmSubmitHint": "提交前多一步确认，防误触",
     "progressLabel": "进度",
-    "progressReset": "重置闯关",
-    "progressResetConfirm": "确定重置全部闯关进度？三档关卡与最佳用时将清空，音效/主题等设置会保留。",
-    "aboutLabel": "关于",
-    "helpHint": "设置在本区调整；对局顶栏 Help 可开玩法说明；桌面也可按 ? 或 H"
+    "progressHint": "会重置所有关卡",
+    "progressReset": "重置进度",
+    "progressResetConfirm": "确定重置闯关与无尽进度？关卡、最佳用时与最高连胜将清空；音效、主题等设置会保留。",
+    "aboutLabel": "关于"
   },
   "difficulty": {
-    "easy": "Easy",
-    "advanced": "Advanced",
-    "challenge": "限时挑战"
+    "easy": "简单",
+    "advanced": "进阶",
+    "nightmare": "噩梦"
   },
   "custom": {
     "back": "← 返回",
-    "title": "自由练习",
-    "badge": "不计闯关进度",
-    "presetsTitle": "快捷复用",
-    "presetsHint": "一键填入三档默认规则，填完仍可改下面每一项",
-    "intensityTitle": "难度系数 · {label}",
-    "intensityAria": "难度系数",
-    "intensityMarks": "1 入门 · 3 标准 · 5 极限",
-    "intensityHint": "拖动会套用一组推荐组合（颜色数 / 重复 / 提示 / 限时）",
+    "title": "自定义试炼",
+    "intensityTitle": "难度预设 · {label}",
+    "intensityAria": "难度预设",
+    "intensityMarks": "1 入门 · 3 进阶 · 5 噩梦",
+    "intensityHint": "五档快捷：含简单 / 进阶 / 噩梦；拖动套用推荐组合，仍可改下面每一项",
     "detailsTitle": "详细选项",
     "colorCount": "颜色数",
-    "colorOption": "{n} 色",
     "allowRepeat": "允许颜色重复",
     "hintStyle": "提示方式",
-    "hintColumn": "按列直示（Easy）",
-    "hintSummary": "绿白汇总（Advanced）",
+    "hintStyleHint": "按列：每列单独显示绿 / 白 / 灭，适合入门（简单档）。\n汇总：只报绿白总数，不标明列（进阶 / 噩梦）。",
+    "hintColumn": "按列",
+    "hintSummary": "汇总",
     "timed": "限时倒计时（关闭则为正计时）",
     "timeLimit": "时限",
     "seconds": "{n} 秒",
@@ -71,35 +69,38 @@
     "presetSecretHint": "开启后由同伴先设 4 色密码，换手后再由你破译",
     "presetEntryTitle": "出题方：设置密码",
     "presetEntryHint": "请同伴输入答案；破译方请先别看屏幕",
-    "presetEntryRules": "须符合练习规则：{colors}{repeat}",
+    "presetEntryRules": "须符合试炼规则：{colors}{repeat}",
     "presetRulesRepeatOn": "·允许重复",
     "presetRulesRepeatOff": "·不可重复",
     "presetEntryTip": "填满 4 格且符合规则后，长按旋钮或按 Enter 确认",
-    "presetInvalid": "密码不符合练习规则",
+    "presetInvalid": "密码不符合试炼规则",
     "presetInvalidRepeat": "当前不允许重复颜色",
     "presetInvalidColor": "颜色不在当前可用色板内",
     "handoffTitle": "把设备交给破译方",
     "handoffBody": "密码已设好。请交给破译方后再开始，避免偷看。",
     "handoffReady": "开始破译",
-    "start": "开始练习"
+    "start": "开始试炼"
   },
   "intensity": {
     "1": "入门",
-    "2": "轻松",
-    "3": "标准",
-    "4": "吃力",
-    "5": "极限"
+    "2": "简单",
+    "3": "进阶",
+    "4": "大师",
+    "5": "噩梦"
   },
   "game": {
     "menu": "← 菜单",
     "help": "说明",
     "soloBadge": "闯关 · {difficulty}",
-    "practiceBadge": "自由练习 · {colors}{repeat}{timed}{preset}",
-    "practiceRepeat": "·可重复",
-    "practiceTimed": "·限时",
-    "practicePreset": "·预设",
-    "practiceColors": "{n}色",
-    "tip": "点格换色 · 色盘点选 · 长按旋钮提交 · Enter · ? 说明",
+    "endlessBadge": "无尽 · 连胜 {n}",
+    "practiceBadge": "自定义试炼",
+    "practiceTipColors": "颜色数 {n}",
+    "practiceTipRepeatOn": "允许重复",
+    "practiceTipRepeatOff": "不可重复",
+    "practiceTipTimedOn": "限时倒计时",
+    "practiceTipTimedOff": "正计时",
+    "practiceTipPreset": "预设答案",
+    "tip": "点格换色 · 色盘点选 · 长按旋钮或 Enter 提交 · 「？说明」",
     "remaining": "剩余",
     "elapsed": "用时",
     "paused": "暂停",
@@ -120,7 +121,11 @@
     "next": "下一关",
     "playAgain": "再来一局",
     "retry": "重试本关",
-    "mainMenu": "主菜单"
+    "mainMenu": "主菜单",
+    "endlessOver": "无尽结束",
+    "endlessStreak": "本盘连胜 {n}",
+    "endlessBest": "历史最佳 {n}",
+    "endlessAgain": "再来一盘"
   },
   "help": {
     "title": "玩法说明",
@@ -133,34 +138,35 @@
         "title": "游戏目标",
         "body": [
           "破译一组 4 位颜色密码。",
-          "每局最多猜 7 次；某次与密码完全一致即过关。",
+          "每局最多猜 7 次；完全一致即过关。",
           "7 次用尽仍未猜中则失败，可重试。"
         ]
       },
       {
-        "title": "三档难度",
+        "title": "闯关与无尽",
         "body": [
-          "Easy：按列直示绿 / 白 / 灭，适合入门。",
-          "Advanced：只汇总绿白数量，不标明列。",
-          "限时挑战：颜色更多、可重复，且有倒计时；超时与猜完 7 次一样判负。",
-          "三档闯关进度分开保存。"
+          "简单：按列直示绿 / 白 / 灭，适合入门。",
+          "进阶：只汇总绿白数量，不标明列。",
+          "噩梦：颜色更多、可重复，倒计时；超时或猜完 7 次均判负。",
+          "无尽：整盘限时连破，成功即下一密；局败或超时整盘结束，比最高连胜。",
+          "三档闯关进度分开保存；无尽另记最佳连胜。"
         ]
       },
       {
         "title": "计时与限时",
         "body": [
-          "Easy / Advanced：正计时，从 00:00 向上，结算显示用时并记本地最佳。",
-          "限时挑战：倒计时；打开说明或切走页签会暂停。",
-          "挑战档最佳同样按「用时」（限额减去剩余）计算，越短越好。",
-          "最后约 10 秒会有轻提示（可关音效；系统减少动效时动画更弱）。"
+          "简单 / 进阶：正计时，结算显示用时并记本地最佳。",
+          "噩梦 / 无尽：倒计时；打开说明或切走页签会暂停。",
+          "噩梦最佳按用时（限额减去剩余）计算，越短越好。",
+          "最后约 10 秒有轻提示（可关音效；系统减少动效时动画更弱）。"
         ]
       },
       {
         "title": "如何操作",
         "body": [
           "点灯格：选中槽位；再点同一格循环换色。",
-          "底部色盘：一键把颜色填入当前槽。",
-          "旋钮：拖转换色 · 短按移格 · 长按提交；桌面也可按 Enter。"
+          "底部色盘：一键填入当前槽。",
+          "旋钮：拖转换色 · 短按移格 · 长按提交；也可按 Enter。"
         ]
       },
       {
@@ -172,18 +178,19 @@
         ]
       },
       {
-        "title": "闯关与练习",
+        "title": "试炼与设置",
         "body": [
-          "闯关 Solo：按关卡推进，通关解锁下一关，进度保存在本机。",
-          "自由练习：可调难度系数、颜色数、是否重复、提示方式、限时；也可快捷复用 Easy / Advanced / 限时挑战。",
+          "闯关按关推进，通关解锁下一关，进度保存在本机。",
+          "自定义试炼可调难度预设、颜色数、重复、提示与限时；不计闯关进度。",
           "开启「预设答案」后，由同伴先设密码并换手，再由你破译（同设备本地双人）。",
-          "可在「帮助与设置」调整帮助、语言、主题与音效；对局顶栏 Help 或按 ? / H 打开玩法说明。"
+          "在「设置和其他」可调语言、主题与音效。",
+          "对局顶栏「？说明」或按键「H」打开本说明。"
         ]
       },
       {
         "title": "键盘快捷键",
         "body": [
-          "桌面可用键盘快速操作（不影响触屏 / 鼠标）："
+          "桌面可用键盘操作（触屏与鼠标仍可用）："
         ]
       }
     ]
@@ -210,7 +217,7 @@
       "action": "关闭弹层，或返回主菜单"
     },
     {
-      "keys": "? / H",
+      "keys": "H",
       "action": "打开 / 关闭玩法说明"
     }
   ],

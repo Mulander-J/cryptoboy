@@ -79,53 +79,74 @@
   box-sizing: border-box;
 }
 
-.custom-setup-top {
+/* 练习设置：顶栏吸顶 / 内容可滚 / 「开始练习」吸底；横向无 padding，滚动条贴右 */
+.menu-screen.custom-setup {
+  --custom-setup-pad-x: max(1.25rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  gap: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-inline: 0;
+  overflow: hidden;
+}
+
+.custom-setup-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.35rem;
+  gap: 1.75rem;
+  padding: 1rem var(--custom-setup-pad-x);
+  -webkit-overflow-scrolling: touch;
 }
 
-.custom-setup-top h1 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  color: var(--color-accent);
-}
-
-.custom-field {
-  display: flex;
+.custom-setup-top {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: minmax(4.5rem, auto) 1fr minmax(4.5rem, auto);
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
-  font-size: 0.92rem;
-  color: var(--color-text);
+  gap: 0.35rem;
+  padding:
+    max(0.55rem, env(safe-area-inset-top, 0px))
+    var(--custom-setup-pad-x)
+    0.45rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 88%, var(--color-bg));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px color-mix(in srgb, #000 14%, transparent);
+  z-index: 2;
 }
 
-.custom-field select {
-  min-width: 9rem;
-  padding: 0.4rem 0.55rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border-strong);
-  background: var(--color-surface-raised);
-  color: var(--color-text);
-  font: inherit;
+.custom-setup-top-title {
+  margin: 0;
+  justify-self: center;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-accent);
+  min-width: 0;
 }
 
-.custom-check {
-  justify-content: flex-start;
+.custom-setup-top-spacer {
+  min-width: 4.5rem;
+  min-height: 1px;
 }
 
-.custom-check input {
-  width: 1.05rem;
-  height: 1.05rem;
-  accent-color: var(--color-accent);
+.custom-setup .menu-block > h2 + .menu-hint {
+  margin-bottom: 0.35rem;
 }
 
 .custom-range {
   width: 100%;
-  margin-top: 0.65rem;
+  margin-top: 0.35rem;
   accent-color: var(--color-accent);
 }
 
@@ -138,9 +159,18 @@
 }
 
 .custom-setup-actions {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding:
+    0.75rem var(--custom-setup-pad-x)
+    max(0.85rem, env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 88%, var(--color-bg));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 -8px 24px color-mix(in srgb, #000 18%, transparent);
 }
 
 .custom-setup-actions .btn {
@@ -216,6 +246,11 @@
   object-fit: contain;
 }
 
+.menu-settings-list {
+  display: flex;
+  flex-direction: column;
+}
+
 .menu-setting-row {
   display: flex;
   align-items: center;
@@ -223,13 +258,48 @@
   gap: 0.75rem;
   width: 100%;
   min-height: 2.5rem;
-  padding: 0.35rem 0.1rem;
+  padding: 0.4rem 0.1rem;
   border-top: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
 }
 
-.menu-setting-row:first-of-type {
+.menu-setting-row:first-child,
+.menu-settings-list > .menu-setting-row:first-child {
   border-top: none;
   padding-top: 0.1rem;
+}
+
+/* 设置区下拉：与 OnOffToggle / segmented 边框色系对齐 */
+.menu-setting-select {
+  min-width: 8.5rem;
+  max-width: min(14rem, 58%);
+  padding: 0.35rem 0.55rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface-raised) 88%, transparent);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* shadcn-style kbd chip（见 https://ui.shadcn.com/docs/components/base/kbd ） */
+.menu-kbd {
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.25rem;
+  min-width: 1.25rem;
+  padding: 0 0.3rem;
+  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--color-text-muted) 18%, var(--color-surface));
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--color-text-muted);
+  user-select: none;
 }
 
 .menu-setting-label-wrap {
@@ -278,7 +348,7 @@
   bottom: calc(100% + 8px);
   z-index: 5;
   width: max-content;
-  max-width: min(16.5rem, 70vw);
+  max-width: min(18rem, 72vw);
   padding: 0.45rem 0.6rem;
   border-radius: 8px;
   border: 1px solid var(--color-border-strong);
@@ -286,7 +356,8 @@
   color: var(--color-text-muted);
   font-size: 0.75rem;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.45;
+  white-space: pre-line;
   text-align: left;
   box-shadow: 0 8px 20px color-mix(in srgb, #000 40%, transparent);
   opacity: 0;
@@ -525,11 +596,10 @@
   color: var(--text-muted);
 }
 
-.menu-hero-meta {
-  margin: 0.45rem 0 0;
+.menu-ai-badge {
+  margin: -0.35rem 0 0.75rem;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 0.3rem;
   color: var(--color-text-faint);
   font-size: 0.72rem;
@@ -585,6 +655,10 @@
   color: var(--color-accent);
 }
 
+.menu-block h2:has(+ .menu-hint) {
+  margin-bottom: 0.35rem;
+}
+
 .menu-row {
   display: flex;
   flex-wrap: wrap;
@@ -632,7 +706,7 @@
     inset 0 -1px 0 color-mix(in srgb, #fff 10%, transparent);
 }
 
-/* 右侧关卡：三档统一 */
+/* 右侧关卡 / 无尽最佳：统一 */
 .menu-solo-level {
   flex-shrink: 0;
   opacity: 0.88;
@@ -641,10 +715,22 @@
   letter-spacing: 0.02em;
 }
 
+.menu-solo-divider {
+  margin: 0.2rem 0.1rem;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--text-muted) 40%, transparent);
+}
+
 .menu-hint {
   margin: 0.65rem 0 0;
   font-size: 0.82rem;
   color: var(--text-muted);
+  line-height: 1.35;
+}
+
+/* 标题下说明（主菜单三块） */
+.menu-block > h2 + .menu-hint {
+  margin: 0 0 0.75rem;
 }
 
 .toggle-row {
@@ -689,7 +775,8 @@
   flex-shrink: 0;
 }
 
-.game-topbar-menu {
+/* 返回 / 菜单（练习设置、对局顶栏共用） */
+.nav-back-btn {
   min-width: 4.5rem;
   min-height: 2.4rem;
 }
@@ -722,19 +809,47 @@
 }
 
 .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  min-width: 0;
+  flex: 1 1 auto;
+  padding-inline: 0.15rem;
+}
+
+.badge-text {
   font-family: var(--font-pixel);
-  font-size: 0.62rem;
-  font-weight: 400;
+  font-size: 0.78rem;
+  font-weight: 600;
   letter-spacing: 0.04em;
   line-height: 1.4;
   color: var(--color-text-muted);
   text-align: center;
   min-width: 0;
-  flex: 1 1 auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding-inline: 0.15rem;
+}
+
+.badge-info {
+  flex-shrink: 0;
+}
+
+/* 顶栏 tip 向下展开，避免被裁到视口外 */
+.badge-info .menu-setting-tooltip {
+  top: calc(100% + 8px);
+  bottom: auto;
+  left: 50%;
+  right: auto;
+  z-index: 20;
+  transform: translate(-50%, -2px);
+}
+
+.badge-info:hover .menu-setting-tooltip,
+.badge-info:focus .menu-setting-tooltip,
+.badge-info:focus-visible .menu-setting-tooltip {
+  transform: translate(-50%, 0);
 }
 
 .game-timer {
@@ -826,7 +941,7 @@
     gap: 0.25rem;
   }
 
-  .game-topbar-menu,
+  .nav-back-btn,
   .game-topbar-help {
     min-height: 1.85rem;
     --btn-pad-y: 0.18rem;
@@ -834,8 +949,20 @@
     --btn-font: 0.7rem;
   }
 
-  .game-topbar-menu {
+  .nav-back-btn {
     min-width: 3.25rem;
+  }
+
+  .custom-setup-top {
+    grid-template-columns: minmax(3.25rem, auto) 1fr minmax(3.25rem, auto);
+  }
+
+  .custom-setup-top-spacer {
+    min-width: 3.25rem;
+  }
+
+  .custom-setup-top-title {
+    font-size: 1.05rem;
   }
 
   .game-topbar-help-label {
@@ -861,8 +988,8 @@
     height: 0.95rem;
   }
 
-  .badge {
-    font-size: 0.48rem;
+  .badge-text {
+    font-size: 0.62rem;
     letter-spacing: 0.02em;
     line-height: 1.2;
   }
@@ -969,7 +1096,7 @@
     padding-bottom: max(0.55rem, env(safe-area-inset-bottom, 0px));
   }
 
-  .game-topbar-menu,
+  .nav-back-btn,
   .game-topbar-help {
     min-height: 1.85rem;
     --btn-pad-y: 0.18rem;

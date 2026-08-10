@@ -26,8 +26,8 @@ export function SoloPage() {
     return <Navigate to={soloPath(difficulty, unlocked)} replace />
   }
 
-  // 规范化 URL（如 /solo/easy/01 → /solo/easy/1）
-  if (String(level) !== params.level) {
+  // 规范化 URL（如 /solo/easy/01 → /solo/easy/1；/solo/challenge/n → nightmare）
+  if (params.difficulty !== difficulty || String(level) !== params.level) {
     return <Navigate to={soloPath(difficulty, level)} replace />
   }
 

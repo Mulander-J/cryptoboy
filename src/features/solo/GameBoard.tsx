@@ -25,7 +25,7 @@ import { GameTopbar } from './GameTopbar'
 import { useGameClock } from './useGameClock'
 import { useGameKeyboard } from './useGameKeyboard'
 
-type Mode = 'solo' | 'practice'
+type Mode = 'solo' | 'practice' | 'endless'
 
 type Props = {
   mode: Mode
@@ -34,14 +34,20 @@ type Props = {
   sound: boolean
   /** 提交前二次确认（设置项） */
   confirmSubmit?: boolean
-  /** 自定义练习完整配置；有则覆盖 practiceConfig(difficulty) */
+  /** 自定义练习 / 无尽完整配置；有则覆盖默认 */
   customConfig?: LevelConfig
   /** 预设答案（本地双人）；有则跳过随机生成，重试保持同密 */
   initialSecret?: Password
   /** 该关进入前的最佳用时 */
   bestTimeMs?: number
+  /** 无尽：当前连胜（已破译局数） */
+  endlessClears?: number
   onClearLevel?: (level: number, elapsedMs: number) => void
   onNextLevel?: () => void
+  /** 无尽破译成功：带入本盘剩余时间继续 */
+  onEndlessWon?: (remainingMs: number, secret: Password) => void
+  /** 无尽本局失败（次数/超时）：整盘结束 */
+  onEndlessLost?: (secret: Password) => void
   onMenu: () => void
 }
 
@@ -51,7 +57,7 @@ function buildConfig(
   level: number,
   customConfig?: LevelConfig,
 ): LevelConfig {
-  if (mode === 'practice') {
+  if (mode === 'practice' || mode === 'endless') {
     return customConfig ?? practiceConfig(difficulty)
   }
   return levelConfig(difficulty, level)
@@ -66,7 +72,7 @@ function buildSecret(
 ): Password {
   if (initialSecret) return initialSecret
   const seed =
-    mode === 'practice'
+    mode === 'practice' || mode === 'endless'
       ? (Math.floor(Math.random() * 0xffffffff) >>> 0)
       : levelSeed(difficulty, level)
   return generate(seed, {
@@ -88,8 +94,11 @@ export function GameBoard({
   customConfig,
   initialSecret,
   bestTimeMs,
+  endlessClears = 0,
   onClearLevel,
   onNextLevel,
+  onEndlessWon,
+  onEndlessLost,
   onMenu,
 }: Props) {
   const { m, t } = useI18n()
@@ -141,26 +150,46 @@ export function GameBoard({
     if (prevStatus.current === session.status) return
     if (session.status === 'won') {
       const elapsed = clockElapsed(clockRef.current)
-      setResultElapsed(elapsed)
       playSound('win', sound)
-      if (mode === 'solo') {
+      if (mode === 'endless') {
+        const limit = session.config.timeLimitMs ?? 0
+        const remaining = Math.max(0, limit - elapsed)
+        onEndlessWon?.(remaining, session.secret)
+      } else if (mode === 'solo') {
+        setResultElapsed(elapsed)
         const prevBest = bestTimeMs
         const newer = prevBest === undefined || elapsed < prevBest
         setIsNewBest(newer)
         setResultBest(newer ? elapsed : prevBest)
         onClearLevel?.(level, elapsed)
       } else {
+        setResultElapsed(elapsed)
         setResultBest(undefined)
         setIsNewBest(false)
       }
     } else if (session.status === 'lost') {
-      setResultElapsed(clockElapsed(clockRef.current))
-      setIsNewBest(false)
-      setResultBest(bestTimeMs)
       playSound('lose', sound)
+      if (mode === 'endless') {
+        onEndlessLost?.(session.secret)
+      } else {
+        setResultElapsed(clockElapsed(clockRef.current))
+        setIsNewBest(false)
+        setResultBest(bestTimeMs)
+      }
     }
     prevStatus.current = session.status
-  }, [session.status, sound, mode, level, bestTimeMs, onClearLevel])
+  }, [
+    session.status,
+    session.secret,
+    session.config.timeLimitMs,
+    sound,
+    mode,
+    level,
+    bestTimeMs,
+    onClearLevel,
+    onEndlessWon,
+    onEndlessLost,
+  ])
 
   function restart(nextLevel = level) {
     const nextConfig = buildConfig(mode, difficulty, nextLevel, customConfig)
@@ -230,7 +259,9 @@ export function GameBoard({
   }
 
   const editing = session.status === 'editing'
-  const resultOpen = session.status === 'won' || session.status === 'lost'
+  /** 无尽胜负均由 EndlessPage 接管结算 */
+  const resultOpen =
+    mode !== 'endless' && (session.status === 'won' || session.status === 'lost')
   const statusLight =
     session.status === 'won' ? 'win' : session.status === 'lost' ? 'lose' : 'play'
 
@@ -250,23 +281,36 @@ export function GameBoard({
     onEscape: onMenu,
   })
 
-  const practiceBadge = t(m.game.practiceBadge, {
-    colors: t(m.game.practiceColors, { n: session.config.colorCount }),
-    repeat: session.config.allowRepeat ? m.game.practiceRepeat : '',
-    timed: session.config.timerMode === 'countdown' ? m.game.practiceTimed : '',
-    preset: initialSecret ? m.game.practicePreset : '',
-  })
+  const practiceHint =
+    mode === 'practice'
+      ? [
+          t(m.game.practiceTipColors, { n: session.config.colorCount }),
+          session.config.allowRepeat
+            ? m.game.practiceTipRepeatOn
+            : m.game.practiceTipRepeatOff,
+          session.config.timerMode === 'countdown'
+            ? m.game.practiceTipTimedOn
+            : m.game.practiceTipTimedOff,
+          initialSecret ? m.game.practiceTipPreset : null,
+        ]
+          .filter(Boolean)
+          .join('\n')
+      : undefined
+
+  const topBadge =
+    mode === 'practice'
+      ? m.game.practiceBadge
+      : mode === 'endless'
+        ? t(m.game.endlessBadge, { n: endlessClears })
+        : t(m.game.soloBadge, { difficulty: m.difficulty[difficulty] })
 
   return (
     <div className="game-screen">
       <GameTopbar
         menuLabel={m.game.menu}
         helpLabel={m.game.help}
-        badge={
-          mode === 'practice'
-            ? practiceBadge
-            : t(m.game.soloBadge, { difficulty: m.difficulty[difficulty] })
-        }
+        badge={topBadge}
+        badgeHint={practiceHint}
         onMenu={onMenu}
         onHelp={openHelp}
       />
@@ -278,7 +322,7 @@ export function GameBoard({
 
       <div className="game-stage">
         <DeviceShell
-          level={mode === 'practice' ? 0 : level}
+          level={mode === 'solo' ? level : mode === 'endless' ? endlessClears : 0}
           statusLight={statusLight}
           knobDisabled={!editing || confirmOpen}
           onKnobRotate={(dir) => cycleAt(session.cursor, dir)}
@@ -320,6 +364,7 @@ export function GameBoard({
         <ResultModal
           status={session.status === 'won' ? 'won' : 'lost'}
           secret={session.secret}
+          revealSecret={mode !== 'solo' || session.status === 'won'}
           showNext={mode === 'solo' && session.status === 'won'}
           loseReason={session.loseReason}
           timerMode={session.config.timerMode}

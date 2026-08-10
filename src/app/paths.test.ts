@@ -7,7 +7,8 @@ describe('paths', () => {
   })
 
   it('parseDifficulty', () => {
-    expect(parseDifficulty('challenge')).toBe('challenge')
+    expect(parseDifficulty('nightmare')).toBe('nightmare')
+    expect(parseDifficulty('challenge')).toBe('nightmare')
     expect(parseDifficulty('hard')).toBeNull()
   })
 

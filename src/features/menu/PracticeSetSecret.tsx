@@ -161,15 +161,17 @@ export function PracticeSetSecret({ config, sound, onConfirm, onBack }: Props) {
     onEscape: onBack,
   })
 
-  const badge = t(m.game.practiceBadge, {
-    colors: t(m.game.practiceColors, { n: config.colorCount }),
-    repeat: config.allowRepeat ? m.game.practiceRepeat : '',
-    timed: config.timerMode === 'countdown' ? m.game.practiceTimed : '',
-    preset: m.game.practicePreset,
-  })
+  const badgeHint = [
+    t(m.game.practiceTipColors, { n: config.colorCount }),
+    config.allowRepeat ? m.game.practiceTipRepeatOn : m.game.practiceTipRepeatOff,
+    config.timerMode === 'countdown'
+      ? m.game.practiceTipTimedOn
+      : m.game.practiceTipTimedOff,
+    m.game.practiceTipPreset,
+  ].join('\n')
 
   const rulesLine = t(m.custom.presetEntryRules, {
-    colors: t(m.game.practiceColors, { n: config.colorCount }),
+    colors: t(m.game.practiceTipColors, { n: config.colorCount }),
     repeat: config.allowRepeat ? m.custom.presetRulesRepeatOn : m.custom.presetRulesRepeatOff,
   })
 
@@ -192,7 +194,8 @@ export function PracticeSetSecret({ config, sound, onConfirm, onBack }: Props) {
       <GameTopbar
         menuLabel={m.custom.back}
         helpLabel={m.game.help}
-        badge={badge}
+        badge={m.game.practiceBadge}
+        badgeHint={badgeHint}
         onMenu={onBack}
         onHelp={openHelp}
       />

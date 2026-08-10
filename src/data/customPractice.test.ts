@@ -7,7 +7,7 @@ import {
 } from './customPractice'
 
 describe('customPractice', () => {
-  it('难度系数套用默认组合', () => {
+  it('难度预设套用默认组合', () => {
     const o = applyIntensity(5)
     expect(o.colorCount).toBe(8)
     expect(o.allowRepeat).toBe(true)
@@ -15,14 +15,18 @@ describe('customPractice', () => {
     expect('presetSecret' in o).toBe(false)
   })
 
-  it('快捷档复用 Easy/挑战', () => {
+  it('闯关三档映射到难度预设 2/3/5', () => {
     const easy = optionsFromDifficulty('easy')
+    expect(easy.intensity).toBe(2)
     expect(easy.hintStyle).toBe('column')
     expect(easy.timed).toBe(false)
 
-    const ch = optionsFromDifficulty('challenge')
-    expect(ch.timed).toBe(true)
-    expect(ch.allowRepeat).toBe(true)
+    expect(optionsFromDifficulty('advanced').intensity).toBe(3)
+
+    const nm = optionsFromDifficulty('nightmare')
+    expect(nm.intensity).toBe(5)
+    expect(nm.timed).toBe(true)
+    expect(nm.allowRepeat).toBe(true)
   })
 
   it('转为 LevelConfig', () => {

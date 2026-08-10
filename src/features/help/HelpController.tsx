@@ -51,7 +51,7 @@ export function HelpController({ initiallyOpen = false, onSeen, children }: Prop
       if (e.metaKey || e.ctrlKey || e.altKey) return
       if (isEditableTarget(e.target)) return
 
-      if (e.key === '?' || e.key === 'h' || e.key === 'H') {
+      if (e.key === 'h' || e.key === 'H') {
         e.preventDefault()
         toggleHelp()
         return

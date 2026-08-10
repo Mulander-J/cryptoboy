@@ -20,6 +20,9 @@ export type Messages = {
     name: string
     tagline: string
     description: string
+    /** 如「本项目 Agent Stats 100%」 */
+    aiCreatedLead: string
+    /** logo 后短标签，如「AI 生成」 */
     aiCreated: string
     aiCreatedTitle: string
     githubLabel: string
@@ -33,48 +36,45 @@ export type Messages = {
   }
   menu: {
     soloTitle: string
-    levelBtn: string
     soloHint: string
+    levelBtn: string
+    endlessCta: string
+    endlessBest: string
     practiceTitle: string
     practiceCta: string
     practiceHint: string
     helpTitle: string
+    settingsHint: string
     helpLabel: string
+    helpHint: string
     helpTutorial: string
     themeLabel: string
     soundLabel: string
-    soundOn: string
-    soundOff: string
+    toggleOn: string
+    toggleOff: string
     colorBlindLabel: string
-    colorBlindOn: string
-    colorBlindOff: string
     colorBlindHint: string
     confirmSubmitLabel: string
-    confirmSubmitOn: string
-    confirmSubmitOff: string
     confirmSubmitHint: string
     progressLabel: string
+    progressHint: string
     progressReset: string
     progressResetConfirm: string
     aboutLabel: string
-    helpHint: string
   }
   difficulty: Record<Difficulty, string>
   custom: {
     back: string
     title: string
-    badge: string
-    presetsTitle: string
-    presetsHint: string
     intensityTitle: string
     intensityAria: string
     intensityMarks: string
     intensityHint: string
     detailsTitle: string
     colorCount: string
-    colorOption: string
     allowRepeat: string
     hintStyle: string
+    hintStyleHint: string
     hintColumn: string
     hintSummary: string
     timed: string
@@ -101,11 +101,14 @@ export type Messages = {
     menu: string
     help: string
     soloBadge: string
+    endlessBadge: string
     practiceBadge: string
-    practiceRepeat: string
-    practiceTimed: string
-    practicePreset: string
-    practiceColors: string
+    practiceTipColors: string
+    practiceTipRepeatOn: string
+    practiceTipRepeatOff: string
+    practiceTipTimedOn: string
+    practiceTipTimedOff: string
+    practiceTipPreset: string
     tip: string
     remaining: string
     elapsed: string
@@ -128,6 +131,10 @@ export type Messages = {
     playAgain: string
     retry: string
     mainMenu: string
+    endlessOver: string
+    endlessStreak: string
+    endlessBest: string
+    endlessAgain: string
   }
   help: {
     title: string

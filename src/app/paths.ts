@@ -13,6 +13,7 @@ export const ROUTES = {
   practiceSetSecret: '/practice/set-secret',
   practicePlay: '/practice/play',
   solo: '/solo/:difficulty/:level',
+  endless: '/endless',
 } as const
 
 export function soloPath(difficulty: Difficulty, level: number): string {
@@ -20,7 +21,9 @@ export function soloPath(difficulty: Difficulty, level: number): string {
 }
 
 export function parseDifficulty(raw: string | undefined): Difficulty | null {
-  if (raw === 'easy' || raw === 'advanced' || raw === 'challenge') return raw
+  if (raw === 'easy' || raw === 'advanced' || raw === 'nightmare') return raw
+  // 旧书签 /solo/challenge/n
+  if (raw === 'challenge') return 'nightmare'
   return null
 }
 

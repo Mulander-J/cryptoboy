@@ -1,13 +1,14 @@
 import {
   applyIntensity,
   COLOR_COUNT_OPTIONS,
-  optionsFromDifficulty,
   TIME_LIMIT_OPTIONS,
   type CustomPracticeOptions,
   type PracticeIntensity,
 } from '@/data/customPractice'
-import type { Difficulty } from '@/domain/types'
 import { useI18n } from '@/i18n'
+import { MenuSettingRow } from '@/ui/MenuSettingRow'
+import { NavBackButton } from '@/ui/NavBackButton'
+import { OnOffToggle } from '@/ui/OnOffToggle'
 
 type Props = {
   value: CustomPracticeOptions
@@ -23,10 +24,6 @@ export function CustomPracticeSetup({ value, onChange, onStart, onBack }: Props)
     onChange({ ...value, ...partial })
   }
 
-  function applyPreset(difficulty: Difficulty) {
-    onChange({ ...optionsFromDifficulty(difficulty), presetSecret: value.presetSecret })
-  }
-
   function onIntensity(raw: string) {
     const n = Number(raw) as PracticeIntensity
     if (n >= 1 && n <= 5) {
@@ -39,131 +36,120 @@ export function CustomPracticeSetup({ value, onChange, onStart, onBack }: Props)
   return (
     <div className="menu-screen custom-setup">
       <header className="custom-setup-top">
-        <button type="button" className="btn btn-ghost btn-sm" onClick={onBack}>
-          {m.custom.back}
-        </button>
-        <h1>{m.custom.title}</h1>
-        <span className="badge">{m.custom.badge}</span>
+        <NavBackButton label={m.custom.back} onClick={onBack} />
+        <h1 className="custom-setup-top-title">{m.custom.title}</h1>
+        <span className="custom-setup-top-spacer" aria-hidden />
       </header>
 
-      <section className="menu-block">
-        <h2>{m.custom.presetsTitle}</h2>
-        <div className="menu-row">
-          <button type="button" className="btn btn-secondary" onClick={() => applyPreset('easy')}>
-            {m.difficulty.easy}
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => applyPreset('advanced')}
-          >
-            {m.difficulty.advanced}
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => applyPreset('challenge')}
-          >
-            {m.difficulty.challenge}
-          </button>
-        </div>
-        <p className="menu-hint">{m.custom.presetsHint}</p>
-      </section>
-
-      <section className="menu-block">
-        <h2>{t(m.custom.intensityTitle, { label: m.intensity[value.intensity] })}</h2>
-        <input
-          className="custom-range"
-          type="range"
-          min={1}
-          max={5}
-          step={1}
-          value={value.intensity}
-          onChange={(e) => onIntensity(e.target.value)}
-          aria-label={m.custom.intensityAria}
-        />
-        <div className="custom-range-labels" aria-hidden>
-          <span>{markParts[0] ?? '1'}</span>
-          <span>{markParts[1] ?? '3'}</span>
-          <span>{markParts[2] ?? '5'}</span>
-        </div>
-        <p className="menu-hint">{m.custom.intensityHint}</p>
-      </section>
-
-      <section className="menu-block">
-        <h2>{m.custom.detailsTitle}</h2>
-
-        <label className="custom-field">
-          <span>{m.custom.colorCount}</span>
-          <select
-            value={value.colorCount}
-            onChange={(e) => patch({ colorCount: Number(e.target.value) })}
-          >
-            {COLOR_COUNT_OPTIONS.map((n) => (
-              <option key={n} value={n} disabled={!value.allowRepeat && n < 4}>
-                {t(m.custom.colorOption, { n })}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className="custom-field custom-check">
+      <div className="custom-setup-scroll">
+        <section className="menu-block">
+          <h2>{t(m.custom.intensityTitle, { label: m.intensity[value.intensity] })}</h2>
+          <p className="menu-hint">{m.custom.intensityHint}</p>
           <input
-            type="checkbox"
-            checked={value.allowRepeat}
-            onChange={(e) => patch({ allowRepeat: e.target.checked })}
+            className="custom-range"
+            type="range"
+            min={1}
+            max={5}
+            step={1}
+            value={value.intensity}
+            onChange={(e) => onIntensity(e.target.value)}
+            aria-label={m.custom.intensityAria}
           />
-          <span>{m.custom.allowRepeat}</span>
-        </label>
+          <div className="custom-range-labels" aria-hidden>
+            <span>{markParts[0] ?? '1'}</span>
+            <span>{markParts[1] ?? '3'}</span>
+            <span>{markParts[2] ?? '5'}</span>
+          </div>
+        </section>
 
-        <label className="custom-field">
-          <span>{m.custom.hintStyle}</span>
-          <select
-            value={value.hintStyle}
-            onChange={(e) =>
-              patch({ hintStyle: e.target.value === 'column' ? 'column' : 'summary' })
-            }
-          >
-            <option value="column">{m.custom.hintColumn}</option>
-            <option value="summary">{m.custom.hintSummary}</option>
-          </select>
-        </label>
+        <section className="menu-block">
+          <h2>{m.custom.detailsTitle}</h2>
 
-        <label className="custom-field custom-check">
-          <input
-            type="checkbox"
-            checked={value.timed}
-            onChange={(e) => patch({ timed: e.target.checked })}
-          />
-          <span>{m.custom.timed}</span>
-        </label>
+          <div className="menu-settings-list">
+            <MenuSettingRow label={m.custom.colorCount}>
+              <select
+                className="menu-setting-select"
+                value={value.colorCount}
+                aria-label={m.custom.colorCount}
+                onChange={(e) => patch({ colorCount: Number(e.target.value) })}
+              >
+                {COLOR_COUNT_OPTIONS.map((n) => (
+                  <option key={n} value={n} disabled={!value.allowRepeat && n < 4}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+            </MenuSettingRow>
 
-        {value.timed ? (
-          <label className="custom-field">
-            <span>{m.custom.timeLimit}</span>
-            <select
-              value={value.timeLimitSec}
-              onChange={(e) => patch({ timeLimitSec: Number(e.target.value) })}
+            <MenuSettingRow label={m.custom.allowRepeat}>
+              <OnOffToggle
+                on={value.allowRepeat}
+                onChange={(allowRepeat) => patch({ allowRepeat })}
+                onLabel={m.menu.toggleOn}
+                offLabel={m.menu.toggleOff}
+                aria-label={m.custom.allowRepeat}
+              />
+            </MenuSettingRow>
+
+            <MenuSettingRow
+              label={m.custom.hintStyle}
+              hint={m.custom.hintStyleHint}
             >
-              {TIME_LIMIT_OPTIONS.map((sec) => (
-                <option key={sec} value={sec}>
-                  {t(m.custom.seconds, { n: sec })}
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : null}
+              <select
+                className="menu-setting-select"
+                value={value.hintStyle}
+                aria-label={m.custom.hintStyle}
+                onChange={(e) =>
+                  patch({ hintStyle: e.target.value === 'column' ? 'column' : 'summary' })
+                }
+              >
+                <option value="column">{m.custom.hintColumn}</option>
+                <option value="summary">{m.custom.hintSummary}</option>
+              </select>
+            </MenuSettingRow>
 
-        <label className="custom-field custom-check">
-          <input
-            type="checkbox"
-            checked={value.presetSecret}
-            onChange={(e) => patch({ presetSecret: e.target.checked })}
-          />
-          <span>{m.custom.presetSecret}</span>
-        </label>
-        <p className="menu-hint">{m.custom.presetSecretHint}</p>
-      </section>
+            <MenuSettingRow label={m.custom.timed}>
+              <OnOffToggle
+                on={value.timed}
+                onChange={(timed) => patch({ timed })}
+                onLabel={m.menu.toggleOn}
+                offLabel={m.menu.toggleOff}
+                aria-label={m.custom.timed}
+              />
+            </MenuSettingRow>
+
+            {value.timed ? (
+              <MenuSettingRow label={m.custom.timeLimit}>
+                <select
+                  className="menu-setting-select"
+                  value={value.timeLimitSec}
+                  aria-label={m.custom.timeLimit}
+                  onChange={(e) => patch({ timeLimitSec: Number(e.target.value) })}
+                >
+                  {TIME_LIMIT_OPTIONS.map((sec) => (
+                    <option key={sec} value={sec}>
+                      {t(m.custom.seconds, { n: sec })}
+                    </option>
+                  ))}
+                </select>
+              </MenuSettingRow>
+            ) : null}
+
+            <MenuSettingRow
+              label={m.custom.presetSecret}
+              hint={m.custom.presetSecretHint}
+            >
+              <OnOffToggle
+                on={value.presetSecret}
+                onChange={(presetSecret) => patch({ presetSecret })}
+                onLabel={m.menu.toggleOn}
+                offLabel={m.menu.toggleOff}
+                aria-label={m.custom.presetSecret}
+              />
+            </MenuSettingRow>
+          </div>
+        </section>
+      </div>
 
       <div className="custom-setup-actions">
         <button type="button" className="btn btn-primary" onClick={onStart}>

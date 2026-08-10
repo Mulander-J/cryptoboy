@@ -4,8 +4,6 @@ import {
   type ProgressState,
   type Settings,
 } from '@/data/progress'
-import { challengeTimeLimitMs } from '@/data/levels'
-import { formatMmSs } from '@/domain/clock'
 import { useI18n } from '@/i18n'
 import { MenuSettingRow } from '@/ui/MenuSettingRow'
 import { useHelp } from '@/features/help/HelpController'
@@ -23,6 +21,7 @@ const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`
 type Props = {
   progress: ProgressState
   onStartSolo: (difficulty: Difficulty) => void
+  onStartEndless: () => void
   onOpenCustom: () => void
   /** 局部补丁更新设置（勿回传整份 settings，避免覆盖未改字段） */
   onUpdateSettings: (patch: Partial<Settings>) => void
@@ -32,14 +31,13 @@ type Props = {
 export function Menu({
   progress,
   onStartSolo,
+  onStartEndless,
   onOpenCustom,
   onUpdateSettings,
   onResetProgress,
 }: Props) {
   const { m, t } = useI18n()
   const { openHelp } = useHelp()
-  const challengeLv = progress.solo.challenge.unlocked
-  const challengeLimit = formatMmSs(challengeTimeLimitMs(challengeLv))
   const { settings } = progress
   const canReset = hasSoloProgress(progress)
 
@@ -56,12 +54,12 @@ export function Menu({
         <div className="menu-device-preview" aria-hidden />
         <h1>{m.app.name}</h1>
         <p className="menu-hero-tagline">{m.app.tagline}</p>
-        <AiCreatedBadge />
       </div>
 
       <div className="menu-cards">
         <section className="menu-block">
           <h2>{m.menu.soloTitle}</h2>
+          <p className="menu-hint">{m.menu.soloHint}</p>
           <div className="menu-solo-list">
             <button
               type="button"
@@ -96,38 +94,58 @@ export function Menu({
             <button
               type="button"
               className="btn btn-primary menu-solo-btn"
-              onClick={() => onStartSolo('challenge')}
+              onClick={() => onStartSolo('nightmare')}
             >
               <span className="menu-solo-name">
                 <i className="menu-solo-emoji" aria-hidden>
                   ⏱️
                 </i>
-                {m.difficulty.challenge}
+                {m.difficulty.nightmare}
               </span>
               <span className="menu-solo-level">
-                {t(m.menu.levelBtn, { level: challengeLv })}
+                {t(m.menu.levelBtn, {
+                  level: progress.solo.nightmare.unlocked,
+                })}
+              </span>
+            </button>
+            <hr className="menu-solo-divider" />
+            <button
+              type="button"
+              className="btn btn-primary menu-solo-btn"
+              onClick={onStartEndless}
+            >
+              <span className="menu-solo-name">
+                <i className="menu-solo-emoji" aria-hidden>
+                  ♾️
+                </i>
+                {m.menu.endlessCta}
+              </span>
+              <span className="menu-solo-level">
+                {t(m.menu.endlessBest, { n: progress.endless.bestClears })}
               </span>
             </button>
           </div>
-          <p className="menu-hint">{t(m.menu.soloHint, { limit: challengeLimit })}</p>
         </section>
 
         <section className="menu-block">
           <h2>{m.menu.practiceTitle}</h2>
+          <p className="menu-hint">{m.menu.practiceHint}</p>
           <div className="menu-row">
             <button type="button" className="btn btn-secondary" onClick={onOpenCustom}>
               {m.menu.practiceCta}
             </button>
           </div>
-          <p className="menu-hint">{m.menu.practiceHint}</p>
         </section>
 
         <section className="menu-block">
           <h2>{m.menu.helpTitle}</h2>
+          <p className="menu-hint">{m.menu.settingsHint}</p>
+          <AiCreatedBadge />
 
-          <MenuSettingRow label={m.menu.helpLabel}>
+          <MenuSettingRow label={m.menu.helpLabel} hint={m.menu.helpHint}>
             <button type="button" className="btn btn-secondary btn-sm" onClick={openHelp}>
               {m.menu.helpTutorial}
+              <kbd className="menu-kbd">H</kbd>
             </button>
           </MenuSettingRow>
 
@@ -172,7 +190,10 @@ export function Menu({
             />
           </MenuSettingRow>
 
-          <MenuSettingRow label={m.menu.progressLabel}>
+          <MenuSettingRow
+            label={m.menu.progressLabel}
+            hint={m.menu.progressHint}
+          >
             <button
               type="button"
               className="btn btn-danger btn-sm"
@@ -209,8 +230,6 @@ export function Menu({
               </a>
             </span>
           </MenuSettingRow>
-
-          <p className="menu-hint">{m.menu.helpHint}</p>
         </section>
       </div>
     </div>

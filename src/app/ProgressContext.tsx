@@ -15,6 +15,7 @@ import { MAX_LEVELS } from '@/data/levels'
 import {
   loadProgress,
   markLevelCleared,
+  recordEndlessClears,
   resetSoloProgress,
   updateSettings,
   type ProgressState,
@@ -31,6 +32,7 @@ type ProgressContextValue = {
   resetProgress: () => void
   markTutorialSeen: () => void
   clearLevel: (difficulty: Difficulty, level: number, elapsedMs: number) => void
+  recordEndless: (clears: number) => void
   saveCustomPractice: (next: CustomPracticeOptions) => CustomPracticeOptions
 }
 
@@ -72,6 +74,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     [],
   )
 
+  const recordEndless = useCallback((clears: number) => {
+    setProgress((p) => recordEndlessClears(p, clears))
+  }, [])
+
   const saveCustomPractice = useCallback((next: CustomPracticeOptions) => {
     const clean = sanitizeOptions(next)
     setProgress((p) => updateSettings(p, { customPractice: clean }))
@@ -86,6 +92,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       resetProgress,
       markTutorialSeen,
       clearLevel,
+      recordEndless,
       saveCustomPractice,
     }),
     [
@@ -95,6 +102,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       resetProgress,
       markTutorialSeen,
       clearLevel,
+      recordEndless,
       saveCustomPractice,
     ],
   )

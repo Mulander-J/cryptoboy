@@ -4,14 +4,36 @@ import type { Difficulty, LevelConfig } from '@/domain/types'
 export const MAX_LEVELS: Record<Difficulty, number> = {
   easy: 50,
   advanced: 50,
-  challenge: 50,
+  nightmare: 50,
 }
 
-/** 挑战档：按关卡给出倒计时限额（ms） */
-export function challengeTimeLimitMs(level: number): number {
+/** 无尽整盘倒计时（ms） */
+export const ENDLESS_MATCH_MS = 300_000
+
+/** 噩梦档：按关卡给出倒计时限额（ms） */
+export function nightmareTimeLimitMs(level: number): number {
   if (level >= 31) return 60_000
   if (level >= 16) return 90_000
   return 120_000
+}
+
+/** 无尽：按本盘连胜递进颜色数 */
+export function endlessColorCount(clears: number): number {
+  if (clears >= 20) return 8
+  if (clears >= 10) return 7
+  return 6
+}
+
+export function endlessRoundConfig(clears: number, timeLimitMs: number): LevelConfig {
+  return {
+    index: clears + 1,
+    colorCount: endlessColorCount(clears),
+    allowRepeat: true,
+    hintStyle: 'summary',
+    difficulty: 'nightmare',
+    timerMode: 'countdown',
+    timeLimitMs,
+  }
 }
 
 export function levelConfig(difficulty: Difficulty, index: number): LevelConfig {
@@ -46,7 +68,7 @@ export function levelConfig(difficulty: Difficulty, index: number): LevelConfig 
     }
   }
 
-  // 限时挑战：更高颜色数 + 可重复 + 倒计时；汇总提示
+  // 噩梦：更高颜色数 + 可重复 + 倒计时；汇总提示
   let colorCount = 6
   if (level >= 11) colorCount = 7
   if (level >= 21) colorCount = 8
@@ -55,9 +77,9 @@ export function levelConfig(difficulty: Difficulty, index: number): LevelConfig 
     colorCount,
     allowRepeat: true,
     hintStyle: 'summary',
-    difficulty: 'challenge',
+    difficulty: 'nightmare',
     timerMode: 'countdown',
-    timeLimitMs: challengeTimeLimitMs(level),
+    timeLimitMs: nightmareTimeLimitMs(level),
   }
 }
 
@@ -91,7 +113,7 @@ export function practiceConfig(
     colorCount: colorCount ?? 8,
     allowRepeat: allowRepeat ?? true,
     hintStyle: 'summary',
-    difficulty: 'challenge',
+    difficulty: 'nightmare',
     timerMode: 'countdown',
     timeLimitMs: 90_000,
   }

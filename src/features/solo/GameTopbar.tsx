@@ -1,25 +1,42 @@
 import { SvgIcon } from '@/ui/icons'
+import { NavBackButton } from '@/ui/NavBackButton'
 
 type Props = {
   menuLabel: string
   helpLabel: string
   badge: string
+  /** 可选：徽章旁 info tip（如自由练习规则摘要） */
+  badgeHint?: string
   onMenu: () => void
   onHelp: () => void
 }
 
-export function GameTopbar({ menuLabel, helpLabel, badge, onMenu, onHelp }: Props) {
+export function GameTopbar({
+  menuLabel,
+  helpLabel,
+  badge,
+  badgeHint,
+  onMenu,
+  onHelp,
+}: Props) {
   return (
     <header className="game-topbar">
-      <button
-        type="button"
-        className="btn btn-ghost btn-sm game-topbar-menu"
-        onClick={onMenu}
-        aria-label={menuLabel}
-      >
-        <span className="game-topbar-menu-label">{menuLabel}</span>
-      </button>
-      <span className="badge">{badge}</span>
+      <NavBackButton label={menuLabel} onClick={onMenu} />
+      <span className="badge">
+        <span className="badge-text">{badge}</span>
+        {badgeHint ? (
+          <button
+            type="button"
+            className="menu-setting-info badge-info"
+            aria-label={badgeHint.replace(/\s*\n\s*/g, ' ')}
+          >
+            <SvgIcon name="info-circle" size={14} />
+            <span className="menu-setting-tooltip" role="tooltip">
+              {badgeHint}
+            </span>
+          </button>
+        ) : null}
+      </span>
       <button
         type="button"
         className="btn btn-sm game-topbar-help"

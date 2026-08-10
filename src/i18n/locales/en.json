@@ -3,11 +3,12 @@
     "name": "CryptoBoy",
     "tagline": "Crack a 4-color code · 7 attempts max",
     "description": "CryptoBoy — a browser remake of a retro color-code toy, for fun",
-    "aiCreated": "Built with AI",
-    "aiCreatedTitle": "Built with AI assistance",
+    "aiCreatedLead": "This project · Agent Stats 100%",
+    "aiCreated": "AI-built",
+    "aiCreatedTitle": "This app is largely AI-built",
     "githubLabel": "GitHub",
-    "githubTitle": "Open GitHub repository",
-    "mitLicenseTitle": "Open source under the MIT License — view full text"
+    "githubTitle": "Open the GitHub repository",
+    "mitLicenseTitle": "Open source under MIT — view the full license"
   },
   "lang": {
     "label": "Language",
@@ -15,60 +16,57 @@
     "en": "EN"
   },
   "menu": {
-    "soloTitle": "Solo Campaign",
+    "soloTitle": "Solo",
+    "soloHint": "Campaign levels and Endless timed streaks",
     "levelBtn": "Level {level}",
-    "soloHint": "Easy / Advanced count up and track best times; Challenge counts down (~{limit} this level) — timeout loses",
-    "practiceTitle": "Free Practice",
-    "practiceCta": "Tune rules & play",
-    "practiceHint": "Adjust intensity, colors, repeats, hints, timer, and preset secret; or reuse Easy / Advanced / Challenge presets",
-    "helpTitle": "Help & Settings",
+    "endlessCta": "Endless",
+    "endlessBest": "Best streak {n}",
+    "practiceTitle": "Custom",
+    "practiceCta": "Start",
+    "practiceHint": "No campaign progress; tune difficulty preset, colors, repeats, hints, timer, and preset secret",
+    "helpTitle": "Settings & more",
+    "settingsHint": "Theme, language, sound, and accessibility",
     "helpLabel": "Help",
+    "helpHint": "Also via in-game “? Help”; or press “H”",
     "helpTutorial": "View tutorial",
     "themeLabel": "Theme",
     "soundLabel": "Sound",
-    "soundOn": "On",
-    "soundOff": "Off",
+    "toggleOn": "On",
+    "toggleOff": "Off",
     "colorBlindLabel": "Color patterns",
-    "colorBlindOn": "On",
-    "colorBlindOff": "Off",
-    "colorBlindHint": "Overlay shapes on colors to tell them apart (not a new theme)",
+    "colorBlindHint": "Overlay shapes on colors to tell them apart (not a theme)",
     "confirmSubmitLabel": "Confirm submit",
-    "confirmSubmitOn": "On",
-    "confirmSubmitOff": "Off",
-    "confirmSubmitHint": "Ask before each submit to avoid accidents; turn off anytime",
+    "confirmSubmitHint": "Ask before each submit to avoid mis-taps",
     "progressLabel": "Progress",
-    "progressReset": "Reset campaign",
-    "progressResetConfirm": "Reset all campaign progress? Levels and best times for all difficulties will clear. Sound, theme, and other settings are kept.",
-    "aboutLabel": "About",
-    "helpHint": "Adjust settings here; in-game top-bar Help opens the tutorial; or press ? / H"
+    "progressHint": "Resets all levels",
+    "progressReset": "Reset progress",
+    "progressResetConfirm": "Reset campaign and Endless progress? Levels, best times, and best streak will clear. Sound, theme, and other settings stay.",
+    "aboutLabel": "About"
   },
   "difficulty": {
     "easy": "Easy",
     "advanced": "Advanced",
-    "challenge": "Challenge"
+    "nightmare": "Nightmare"
   },
   "custom": {
     "back": "← Back",
-    "title": "Free Practice",
-    "badge": "No campaign progress",
-    "presetsTitle": "Quick presets",
-    "presetsHint": "Load a mode’s defaults, then tweak any option below",
-    "intensityTitle": "Intensity · {label}",
-    "intensityAria": "Intensity",
-    "intensityMarks": "1 Intro · 3 Standard · 5 Extreme",
-    "intensityHint": "Dragging applies a recommended combo (colors / repeat / hints / timer)",
+    "title": "Custom",
+    "intensityTitle": "Difficulty preset · {label}",
+    "intensityAria": "Difficulty preset",
+    "intensityMarks": "1 Intro · 3 Advanced · 5 Nightmare",
+    "intensityHint": "Five presets including Easy / Advanced / Nightmare; drag to apply, then tweak below",
     "detailsTitle": "Details",
     "colorCount": "Colors",
-    "colorOption": "{n} colors",
     "allowRepeat": "Allow color repeats",
     "hintStyle": "Hint style",
-    "hintColumn": "Per-column (Easy)",
-    "hintSummary": "Green/white totals (Advanced)",
+    "hintStyleHint": "Column: green / white / off per slot — good for learning (Easy).\nSummary: only totals, no column marks (Advanced / Nightmare).",
+    "hintColumn": "Column",
+    "hintSummary": "Summary",
     "timed": "Countdown timer (off = count up)",
     "timeLimit": "Time limit",
     "seconds": "{n} sec",
     "presetSecret": "Preset secret (local duo)",
-    "presetSecretHint": "A friend sets the 4-color code first, then you crack it after a handoff",
+    "presetSecretHint": "A friend sets the 4-color code first; you crack it after a handoff",
     "presetEntryTitle": "Setter: enter the code",
     "presetEntryHint": "Have a friend enter the answer; the cracker should look away",
     "presetEntryRules": "Must match practice rules: {colors}{repeat}",
@@ -81,25 +79,28 @@
     "handoffTitle": "Pass the device to the cracker",
     "handoffBody": "Secret is set. Hand over the device before starting so they cannot peek.",
     "handoffReady": "Start cracking",
-    "start": "Start practice"
+    "start": "Start"
   },
   "intensity": {
     "1": "Intro",
     "2": "Easy",
-    "3": "Standard",
-    "4": "Hard",
-    "5": "Extreme"
+    "3": "Advanced",
+    "4": "Master",
+    "5": "Nightmare"
   },
   "game": {
     "menu": "← Menu",
     "help": "Help",
     "soloBadge": "Solo · {difficulty}",
-    "practiceBadge": "Practice · {colors}{repeat}{timed}{preset}",
-    "practiceRepeat": "·repeat",
-    "practiceTimed": "·timed",
-    "practicePreset": "·preset",
-    "practiceColors": "{n} colors",
-    "tip": "Tap cells · palette · long-press knob / Enter to submit · ? help",
+    "endlessBadge": "Endless · streak {n}",
+    "practiceBadge": "Custom",
+    "practiceTipColors": "Colors {n}",
+    "practiceTipRepeatOn": "Repeats allowed",
+    "practiceTipRepeatOff": "No repeats",
+    "practiceTipTimedOn": "Countdown",
+    "practiceTipTimedOff": "Count up",
+    "practiceTipPreset": "Preset secret",
+    "tip": "Tap cells · palette · long-press knob or Enter to submit · “? Help”",
     "remaining": "Left",
     "elapsed": "Time",
     "paused": "Paused",
@@ -120,7 +121,11 @@
     "next": "Next level",
     "playAgain": "Play again",
     "retry": "Retry",
-    "mainMenu": "Main menu"
+    "mainMenu": "Main menu",
+    "endlessOver": "Run over",
+    "endlessStreak": "Streak {n}",
+    "endlessBest": "Best {n}",
+    "endlessAgain": "New run"
   },
   "help": {
     "title": "How to play",
@@ -133,25 +138,26 @@
         "title": "Goal",
         "body": [
           "Crack a secret 4-color code.",
-          "You get up to 7 guesses; match the code exactly to win.",
+          "You get up to 7 guesses; match exactly to win.",
           "Use all 7 without matching and you lose — retry anytime."
         ]
       },
       {
-        "title": "Three modes",
+        "title": "Campaign & Endless",
         "body": [
           "Easy: per-column green / white / off — great for learning.",
           "Advanced: only totals of greens and whites, no column marks.",
-          "Challenge: more colors, repeats allowed, countdown — timeout loses like running out of guesses.",
-          "Campaign progress is saved separately per mode."
+          "Nightmare: more colors, repeats allowed, countdown — timeout or 7 misses loses.",
+          "Endless: one timed streak of codes; a miss or timeout ends the run — chase your best streak.",
+          "Campaign progress is saved per mode; Endless tracks best streak separately."
         ]
       },
       {
         "title": "Timers",
         "body": [
           "Easy / Advanced: count up from 00:00; results show time and local bests.",
-          "Challenge: countdown; help open or a hidden tab pauses the clock.",
-          "Challenge bests use elapsed time (limit minus remaining) — shorter is better.",
+          "Nightmare / Endless: countdown; opening help or hiding the tab pauses the clock.",
+          "Nightmare bests use elapsed time (limit minus remaining) — shorter is better.",
           "The last ~10 seconds show a light cue (mute sound; reduced motion softens animation)."
         ]
       },
@@ -172,18 +178,19 @@
         ]
       },
       {
-        "title": "Campaign & practice",
+        "title": "Practice & settings",
         "body": [
-          "Solo campaign: clear levels to unlock the next; progress stays on this device.",
-          "Free Practice: tune intensity, colors, repeats, hints, timer; or reuse Easy / Advanced / Challenge.",
+          "Solo advances level by level; progress stays on this device.",
+          "Custom lets you tune the difficulty preset, colors, repeats, hints, and timer — no campaign progress.",
           "Turn on “Preset secret” so a friend sets the code, you hand over the device, then you crack it (local duo).",
-          "Under Help & Settings you can open the tutorial and change language, theme, and sound; in-game Help or ? / H opens the guide."
+          "Change language, theme, and sound under Settings & more.",
+          "Open this guide via in-game “? Help” or press “H”."
         ]
       },
       {
         "title": "Keyboard",
         "body": [
-          "On desktop you can play with the keyboard (touch / mouse still work):"
+          "On desktop you can play with the keyboard (touch and mouse still work):"
         ]
       }
     ]
@@ -191,27 +198,27 @@
   "shortcuts": [
     {
       "keys": "1–6 (or 7–8)",
-      "action": "Fill current slot with that color"
+      "action": "Fill the current slot with that color"
     },
     {
       "keys": "← / → or A / D",
-      "action": "Move edit cursor"
+      "action": "Move the edit cursor"
     },
     {
       "keys": "↑ / ↓, W / S, Space",
-      "action": "Cycle color in current cell"
+      "action": "Cycle the color in the current cell"
     },
     {
       "keys": "Enter",
-      "action": "Submit row (all 4 cells filled)"
+      "action": "Submit the row (all 4 cells filled)"
     },
     {
       "keys": "Esc",
-      "action": "Close dialog, or return to menu"
+      "action": "Close a dialog, or return to the menu"
     },
     {
-      "keys": "? / H",
-      "action": "Toggle how-to-play"
+      "keys": "H",
+      "action": "Open / close the guide"
     }
   ],
   "device": {

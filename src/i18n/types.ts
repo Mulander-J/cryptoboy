@@ -25,3 +25,12 @@ export function resolveLocale(value: unknown): Locale {
   if (isLocale(value)) return value
   return DEFAULT_LOCALE
 }
+
+/**
+ * 语言：优先客户端检测；其次读缓存。
+ * 有合法缓存（含用户手动切换写入）时用缓存，否则 detectLocale()。
+ */
+export function resolveInitialLocale(cached: unknown): Locale {
+  if (isLocale(cached)) return cached
+  return detectLocale()
+}

@@ -15,6 +15,10 @@ export function MenuPage() {
     void navigate(soloPath(difficulty, level))
   }
 
+  function startEndless() {
+    void navigate(ROUTES.endless)
+  }
+
   function openCustom() {
     hydrateDraftFromProgress()
     clearSecret()
@@ -25,6 +29,7 @@ export function MenuPage() {
     <Menu
       progress={progress}
       onStartSolo={startSolo}
+      onStartEndless={startEndless}
       onOpenCustom={openCustom}
       onUpdateSettings={updateSettingsPatch}
       onResetProgress={resetProgress}

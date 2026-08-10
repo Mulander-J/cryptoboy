@@ -109,8 +109,9 @@
 
   --font-ui: 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
     sans-serif;
-  /* 像素风（短英文 / 数字）；中文会回落到系统字体 */
-  --font-pixel: 'Press Start 2P', 'Courier New', monospace;
+  /* 像素风（短英文 / 数字）；中文回落到系统 UI 字体 */
+  --font-pixel: 'Press Start 2P', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', sans-serif;
   /* 中文标题等展示字：保持清晰可读 */
   --font-display: 'DIN Alternate', 'Avenir Next Condensed', 'Segoe UI',
     'PingFang SC', sans-serif;

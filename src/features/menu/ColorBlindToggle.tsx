@@ -1,5 +1,5 @@
 import { useI18n } from '@/i18n'
-import { SegmentedControl } from '@/ui/SegmentedControl'
+import { OnOffToggle } from '@/ui/OnOffToggle'
 
 type Props = {
   on: boolean
@@ -10,13 +10,11 @@ export function ColorBlindToggle({ on, onChange }: Props) {
   const { m } = useI18n()
 
   return (
-    <SegmentedControl
-      value={on ? 'on' : 'off'}
-      options={[
-        { value: 'on', label: m.menu.colorBlindOn },
-        { value: 'off', label: m.menu.colorBlindOff },
-      ]}
-      onChange={(v) => onChange(v === 'on')}
+    <OnOffToggle
+      on={on}
+      onChange={onChange}
+      onLabel={m.menu.toggleOn}
+      offLabel={m.menu.toggleOff}
       aria-label={m.menu.colorBlindLabel}
     />
   )

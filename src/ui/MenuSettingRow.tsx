@@ -15,7 +15,11 @@ export function MenuSettingRow({ label, hint, children }: Props) {
       <span className="menu-setting-label-wrap">
         <span className="menu-setting-label">{label}</span>
         {hint ? (
-          <button type="button" className="menu-setting-info" aria-label={hint}>
+          <button
+            type="button"
+            className="menu-setting-info"
+            aria-label={hint.replace(/\s*\n\s*/g, ' ')}
+          >
             <SvgIcon name="info-circle" size={14} />
             <span className="menu-setting-tooltip" role="tooltip">
               {hint}

@@ -5,6 +5,7 @@ export {
   LOCALES,
   detectLocale,
   isLocale,
+  resolveInitialLocale,
   resolveLocale,
   type Locale,
 } from './types'

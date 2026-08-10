@@ -1,7 +1,20 @@
 /** 颜色与局内核心类型（零 UI） */
 
-export const COLOR_IDS = ['R', 'O', 'Y', 'G', 'B', 'P', 'C', 'K'] as const
+/** 彩虹光谱序：红 → 橙 → 黄 → 绿 → 青 → 蓝 → 紫 → 粉 */
+export const COLOR_IDS = ['R', 'O', 'Y', 'G', 'C', 'B', 'P', 'K'] as const
 export type ColorToken = (typeof COLOR_IDS)[number]
+
+/** 解锁序：前 6 色不含青/粉；第 7 加青、第 8 加粉（与光谱序可不同） */
+export const COLOR_UNLOCK_ORDER: readonly ColorToken[] = [
+  'R',
+  'O',
+  'Y',
+  'G',
+  'B',
+  'P',
+  'C',
+  'K',
+]
 
 export const PASSWORD_LENGTH = 4
 export const MAX_ATTEMPTS = 7
@@ -25,8 +38,8 @@ export type Attempt = {
   rowIndex: number
 }
 
-/** 三档：普通 Easy/Advanced 正计时；challenge 限时倒计时 */
-export type Difficulty = 'easy' | 'advanced' | 'challenge'
+/** 闯关三档：Easy/Advanced 正计时；nightmare 倒计时 */
+export type Difficulty = 'easy' | 'advanced' | 'nightmare'
 export type HintStyle = 'column' | 'summary'
 export type GameStatus = 'editing' | 'won' | 'lost'
 export type LoseReason = 'attempts' | 'timeout'
@@ -52,5 +65,5 @@ export type GenerateConfig = {
 export const DIFFICULTY_LABELS: Record<Difficulty, string> = {
   easy: 'Easy',
   advanced: 'Advanced',
-  challenge: 'Challenge',
+  nightmare: 'Nightmare',
 }

@@ -1,8 +1,7 @@
 import type { Difficulty } from '@/domain/types'
 import {
-  DEFAULT_LOCALE,
   detectLocale,
-  resolveLocale,
+  resolveInitialLocale,
   type Locale,
 } from '@/i18n/types'
 import { DEFAULT_THEME, resolveTheme, type ThemeId } from '@/ui/theme/themes'
@@ -22,6 +21,11 @@ export type DifficultyProgress = {
   bestTimes: Record<string, number>
 }
 
+export type EndlessProgress = {
+  /** 历史最高连胜（破译局数） */
+  bestClears: number
+}
+
 export type Settings = {
   sound: boolean
   confirmSubmit: boolean
@@ -36,6 +40,7 @@ export type Settings = {
 
 export type ProgressState = {
   solo: Record<Difficulty, DifficultyProgress>
+  endless: EndlessProgress
   settings: Settings
 }
 
@@ -45,22 +50,31 @@ const emptyProgress = (): DifficultyProgress => ({
   bestTimes: {},
 })
 
+const emptyEndless = (): EndlessProgress => ({ bestClears: 0 })
+
+/** 设置默认：主题 classic、音效开、色盲关、确认关；语言见 resolveInitialLocale */
+export const DEFAULT_SETTINGS: Settings = {
+  sound: true,
+  confirmSubmit: false,
+  colorBlindPatterns: false,
+  seenTutorial: false,
+  theme: DEFAULT_THEME,
+  /** 占位；加载时由 resolveInitialLocale 覆盖 */
+  locale: 'zh-CN',
+  customPractice: DEFAULT_CUSTOM_PRACTICE,
+}
+
 const DEFAULT_PROGRESS: ProgressState = {
   solo: {
     easy: emptyProgress(),
     advanced: emptyProgress(),
-    challenge: emptyProgress(),
+    nightmare: emptyProgress(),
   },
-  settings: {
-    sound: true,
-    confirmSubmit: false,
-    colorBlindPatterns: false,
-    seenTutorial: false,
-    theme: DEFAULT_THEME,
-    locale: DEFAULT_LOCALE,
-    customPractice: DEFAULT_CUSTOM_PRACTICE,
-  },
+  endless: emptyEndless(),
+  settings: { ...DEFAULT_SETTINGS },
 }
+
+type LegacySolo = Partial<Record<Difficulty | 'challenge', Partial<DifficultyProgress>>>
 
 function canUseStorage(): boolean {
   return typeof localStorage !== 'undefined'
@@ -78,17 +92,60 @@ function mergeDiff(
 }
 
 function resolveSettingsLocale(raw: Partial<Settings> | undefined): Locale {
-  if (raw && 'locale' in raw && raw.locale != null) {
-    return resolveLocale(raw.locale)
+  return resolveInitialLocale(raw?.locale)
+}
+
+function freshSettings(): Settings {
+  return { ...DEFAULT_SETTINGS, locale: detectLocale() }
+}
+
+/** 从旧 challenge 键或 nightmare 键合并噩梦进度 */
+function resolveNightmareProgress(solo: LegacySolo | undefined): DifficultyProgress {
+  const fromNightmare = solo?.nightmare
+  const fromChallenge = solo?.challenge
+  if (fromNightmare) return mergeDiff(emptyProgress(), fromNightmare)
+  if (fromChallenge) return mergeDiff(emptyProgress(), fromChallenge)
+  return emptyProgress()
+}
+
+function normalizeProgress(parsed: {
+  solo?: LegacySolo
+  endless?: Partial<EndlessProgress>
+  settings?: Partial<Settings>
+}): ProgressState {
+  return {
+    solo: {
+      easy: mergeDiff(emptyProgress(), parsed.solo?.easy),
+      advanced: mergeDiff(emptyProgress(), parsed.solo?.advanced),
+      nightmare: resolveNightmareProgress(parsed.solo),
+    },
+    endless: {
+      bestClears: Math.max(0, Math.floor(parsed.endless?.bestClears ?? 0)),
+    },
+    settings: {
+      ...DEFAULT_SETTINGS,
+      ...parsed.settings,
+      sound: typeof parsed.settings?.sound === 'boolean' ? parsed.settings.sound : true,
+      confirmSubmit:
+        typeof parsed.settings?.confirmSubmit === 'boolean'
+          ? parsed.settings.confirmSubmit
+          : false,
+      colorBlindPatterns:
+        typeof parsed.settings?.colorBlindPatterns === 'boolean'
+          ? parsed.settings.colorBlindPatterns
+          : false,
+      theme: resolveTheme(parsed.settings?.theme),
+      locale: resolveSettingsLocale(parsed.settings),
+      customPractice: sanitizeOptions(parsed.settings?.customPractice),
+    },
   }
-  return detectLocale()
 }
 
 export function loadProgress(): ProgressState {
   if (!canUseStorage()) {
     return {
       ...structuredClone(DEFAULT_PROGRESS),
-      settings: { ...DEFAULT_PROGRESS.settings, locale: detectLocale() },
+      settings: freshSettings(),
     }
   }
   try {
@@ -96,50 +153,42 @@ export function loadProgress(): ProgressState {
     if (!raw) {
       const legacy = localStorage.getItem(LEGACY_KEY)
       if (legacy) {
-        const parsed = JSON.parse(legacy) as ProgressState
-        const migrated: ProgressState = {
-          solo: {
-            easy: mergeDiff(emptyProgress(), parsed.solo?.easy),
-            advanced: mergeDiff(emptyProgress(), parsed.solo?.advanced),
-            challenge: emptyProgress(),
-          },
-          settings: {
-            ...DEFAULT_PROGRESS.settings,
-            ...parsed.settings,
-            theme: resolveTheme(parsed.settings?.theme),
-            locale: resolveSettingsLocale(parsed.settings),
-            customPractice: sanitizeOptions(parsed.settings?.customPractice),
-          },
+        const parsed = JSON.parse(legacy) as {
+          solo?: LegacySolo
+          settings?: Partial<Settings>
         }
+        const migrated = normalizeProgress({
+          solo: {
+            easy: parsed.solo?.easy,
+            advanced: parsed.solo?.advanced,
+          },
+          settings: parsed.settings,
+        })
         saveProgress(migrated)
         return migrated
       }
       const fresh = {
         ...structuredClone(DEFAULT_PROGRESS),
-        settings: { ...DEFAULT_PROGRESS.settings, locale: detectLocale() },
+        settings: freshSettings(),
       }
       saveProgress(fresh)
       return fresh
     }
-    const parsed = JSON.parse(raw) as ProgressState
-    return {
-      solo: {
-        easy: mergeDiff(emptyProgress(), parsed.solo?.easy),
-        advanced: mergeDiff(emptyProgress(), parsed.solo?.advanced),
-        challenge: mergeDiff(emptyProgress(), parsed.solo?.challenge),
-      },
-      settings: {
-        ...DEFAULT_PROGRESS.settings,
-        ...parsed.settings,
-        theme: resolveTheme(parsed.settings?.theme),
-        locale: resolveSettingsLocale(parsed.settings),
-        customPractice: sanitizeOptions(parsed.settings?.customPractice),
-      },
+    const parsed = JSON.parse(raw) as {
+      solo?: LegacySolo
+      endless?: Partial<EndlessProgress>
+      settings?: Partial<Settings>
     }
+    const normalized = normalizeProgress(parsed)
+    // 若仍带旧 challenge 键，写回 nightmare 形态
+    if (parsed.solo && 'challenge' in parsed.solo && !('nightmare' in parsed.solo)) {
+      saveProgress(normalized)
+    }
+    return normalized
   } catch {
     return {
       ...structuredClone(DEFAULT_PROGRESS),
-      settings: { ...DEFAULT_PROGRESS.settings, locale: detectLocale() },
+      settings: freshSettings(),
     }
   }
 }
@@ -193,6 +242,20 @@ export function markLevelCleared(
   return next
 }
 
+export function recordEndlessClears(
+  state: ProgressState,
+  clears: number,
+): ProgressState {
+  const bestClears = Math.max(state.endless.bestClears, Math.max(0, Math.floor(clears)))
+  if (bestClears === state.endless.bestClears) return state
+  const next: ProgressState = {
+    ...state,
+    endless: { bestClears },
+  }
+  saveProgress(next)
+  return next
+}
+
 export function updateSettings(
   state: ProgressState,
   patch: Partial<Settings>,
@@ -205,25 +268,27 @@ export function updateSettings(
   return next
 }
 
-/** 是否已有可清空的闯关进度（解锁/通关/最佳用时） */
+/** 是否已有可清空的闯关/无尽进度 */
 export function hasSoloProgress(state: ProgressState): boolean {
-  return (Object.keys(state.solo) as Difficulty[]).some((d) => {
+  const soloHas = (Object.keys(state.solo) as Difficulty[]).some((d) => {
     const cur = state.solo[d]
     return (
       cur.unlocked > 1 || cur.cleared > 0 || Object.keys(cur.bestTimes).length > 0
     )
   })
+  return soloHas || state.endless.bestClears > 0
 }
 
-/** 重置三档闯关进度与最佳用时；保留设置（音效/主题/语言等） */
+/** 重置闯关与无尽进度；保留设置 */
 export function resetSoloProgress(state: ProgressState): ProgressState {
   const next: ProgressState = {
     ...state,
     solo: {
       easy: emptyProgress(),
       advanced: emptyProgress(),
-      challenge: emptyProgress(),
+      nightmare: emptyProgress(),
     },
+    endless: emptyEndless(),
   }
   saveProgress(next)
   return next

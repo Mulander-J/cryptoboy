@@ -1,6 +1,5 @@
 # CryptoBoy · 代码规范
 
-> 配套：[PRODUCT.md](./PRODUCT.md) · [PLAN.md](./PLAN.md)  
 > 范围：目录约定、页面路由（规划）、组件模块化、TypeScript/React、i18n、安全默认、测试与本地服务
 
 ---
@@ -31,7 +30,8 @@
 | `/practice/setup` | 自由练习配置 | `features/menu/pages/PracticeSetupPage` |
 | `/practice/set-secret` | 预设答案设密 | `features/menu/pages/PracticeSetSecretPage` |
 | `/practice/play` | 自由练习对局 | `features/solo/pages/PracticePlayPage` |
-| `/solo/:difficulty/:level` | 闯关 | `features/solo/pages/SoloPage` |
+| `/solo/:difficulty/:level` | 闯关（`easy` / `advanced` / `nightmare`） | `features/solo/pages/SoloPage` |
+| `/endless` | 无尽连破 | `features/solo/pages/EndlessPage` |
 | `/404` | 未知路径 | `app/NotFoundPage` |
 | `/duo`（预留） | 联机双人（远期） | `features/duo` |
 | `/settings`（预留） | 独立设置页（远期） | `features/settings` |
@@ -54,6 +54,8 @@
 | ------ | ------ | ------ |
 | `DropdownPanel` | `src/ui/` | 可滚动下拉 + 上下更多箭头 |
 | `SegmentedControl` | `src/ui/` | 分段 pill 开关 |
+| `OnOffToggle` | `src/ui/` | 开/关（基于 SegmentedControl） |
+| `NavBackButton` | `src/ui/` | 返回 / 菜单 ghost 钮 |
 | `MenuSettingRow` | `src/ui/` | 设置区标签行 |
 | `ModalBackdrop` | `src/ui/` | 弹层遮罩外壳 |
 | Icons（`<SvgIcon name="..." />` + `assets/*.svg`） | `src/ui/icons/` | 按 name 引用；需变色用 `currentColor`，多色可写死 |
@@ -146,6 +148,25 @@ npm run build
 | ------ | ------ |
 | `PRODUCT.md` | 产品规格与实现对照 |
 | `PLAN.md` | 任务进度与下一步 |
+| `ITEMS.md` | 左轮彩蛋草案（P7） |
+| `DUO.md` | 联机 / 中段道具草案 |
 | `CODE_STANDARDS.md`（本文） | 工程与组件约定 |
 
 改目录 / 抽组件 / 换 i18n 格式 / 落地或调整路由表时，同步更新本文与 PLAN 状态。
+
+### 9.1 Markdown 写作约定
+
+**不装** markdownlint；写 / 改 `docs/**/*.md`、`README.md` 时由作者与 AI **自行遵守**（对齐常见 MD060 compact）：
+
+- 表格每个 `|` **左右都要有空格**：`| 列 A | 列 B |`；分隔行同理 `| ------ | ------ |`。
+- **禁止**挤在一起：`|----|------|`、`|列|列|`。
+- 不要求各列竖线对齐；中文行宽不硬卡 80；示意代码块可不写语言标记。
+
+示例：
+
+```md
+| 模式 | 说明 |
+| ------ | ------ |
+| 无尽 | 整盘连破 |
+```
+
