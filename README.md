@@ -1,13 +1,14 @@
 # CryptoBoy
 
-[![React](https://img.shields.io/badge/React-Vite_TypeScript-61dafb?style=flat-square&logo=react&logoColor=white)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-19.2.8-61dafb?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 
 破译四色密码 · 最多七次机会。  
 仿照复古「颜色密码破译」小玩具做的 **浏览器数字版**，纯属娱乐、非商业用途；无账号、纯前端单机，界面支持 **简体中文 / English**。
 
 **在线试玩 → [mulander-j.github.io/cryptoboy](https://mulander-j.github.io/cryptoboy/)**
 
-![CryptoBoy 游戏界面](./docs/screenshots/gameboard.png)
+<!-- markdownlint-disable-next-line MD033 -->
+<img src="./docs/screenshots/gameboard.png" alt="CryptoBoy 游戏界面" width="280" />
 
 ## 特性
 
