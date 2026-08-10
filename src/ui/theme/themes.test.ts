@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { resolveFateCasePlayMode, THEME_FATE_CASE_PLAY_MODE } from '@/domain/fateCase'
 import { CATALOG } from '@/i18n/messages'
 import { DEFAULT_THEME, isThemeId, resolveTheme, THEME_IDS, THEMES } from './themes'
 
@@ -32,5 +33,12 @@ describe('themes catalog', () => {
     expect(resolveTheme('nope')).toBe(DEFAULT_THEME)
     expect(resolveTheme('macintosh')).toBe('classic')
     expect(isThemeId('cny')).toBe(true)
+  })
+
+  it('全部主题默认厄运时刻玩法为左轮', () => {
+    for (const id of THEME_IDS) {
+      expect(THEME_FATE_CASE_PLAY_MODE[id]).toBe('revolver')
+      expect(resolveFateCasePlayMode(id)).toBe('revolver')
+    }
   })
 })

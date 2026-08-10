@@ -14,6 +14,7 @@ export const ROUTES = {
   practicePlay: '/practice/play',
   solo: '/solo/:difficulty/:level',
   endless: '/endless',
+  stats: '/stats',
 } as const
 
 export function soloPath(difficulty: Difficulty, level: number): string {

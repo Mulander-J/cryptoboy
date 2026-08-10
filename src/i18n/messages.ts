@@ -60,7 +60,22 @@ export type Messages = {
     progressHint: string
     progressReset: string
     progressResetConfirm: string
+    statsLabel: string
+    statsHint: string
+    statsCta: string
     aboutLabel: string
+  }
+  stats: {
+    back: string
+    title: string
+    lead: string
+    unlocked: string
+    cleared: string
+    levelOfMax: string
+    levelLabel: string
+    noBest: string
+    endlessBest: string
+    endlessBestValue: string
   }
   difficulty: Record<Difficulty, string>
   custom: {
@@ -82,6 +97,15 @@ export type Messages = {
     seconds: string
     presetSecret: string
     presetSecretHint: string
+    fateCase: string
+    fateCaseHint: string
+    fateCaseAutoStart: string
+    fateCaseAutoStartHint: string
+    fateCaseOneShot: string
+    fateCaseOneShotHint: string
+    fateCaseSpinSpeed: string
+    fateCaseSpinSpeedHint: string
+    fateCaseSpinSpeedOption: string
     presetEntryTitle: string
     presetEntryHint: string
     presetEntryRules: string
@@ -109,20 +133,38 @@ export type Messages = {
     practiceTipTimedOn: string
     practiceTipTimedOff: string
     practiceTipPreset: string
+    practiceTipFateCase: string
     tip: string
     remaining: string
     elapsed: string
     paused: string
+    frozen: string
     confirmSubmitTitle: string
     confirmSubmitBody: string
     confirmSubmitOk: string
     confirmSubmitCancel: string
+    fateCasePlayTitle: string
+    fateCaseTimer: string
+    fateCaseChamberAria: string
+    fateCaseBlank: string
+    fateCaseSpinning: string
+    fateCaseReady: string
+    fateCaseFire: string
+    fateCaseIntro: string
+    fateCaseIntroOneShot: string
+    fateCaseMissRetry: string
+    fateCaseStart: string
   }
   result: {
     won: string
     lost: string
     timeout: string
+    fateCaseMiss: string
+    fateCaseShot: string
     timeUsed: string
+    timeSolve: string
+    timeFateCase: string
+    timeTotal: string
     withinLimit: string
     best: string
     newRecord: string

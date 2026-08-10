@@ -40,6 +40,52 @@ export function elapsedMs(clock: GameClock): number {
   return Math.max(0, clock.limitMs - clock.displayedMs)
 }
 
+/**
+ * 厄运时刻双计时锚点：主钟冻结在入场瞬间；收官另跑 windowMs。
+ * 结算用时 = baseElapsedMs + (windowMs - remainingMs)。
+ */
+export type FateCaseClockAnchor = {
+  baseElapsedMs: number
+  windowMs: number
+  /** 收官窗口剩余 ms */
+  remainingMs: number
+}
+
+export type ScoreBreakdown = {
+  baseMs: number
+  fateCaseMs: number
+  totalMs: number
+}
+
+export function fateCaseConsumedMs(anchor: FateCaseClockAnchor): number {
+  return Math.max(0, anchor.windowMs - anchor.remainingMs)
+}
+
+/** 结算 / 最佳用时：有收官锚点时用真实耗时，否则同 elapsedMs */
+export function scoreElapsedMs(
+  clock: GameClock,
+  fateCase: FateCaseClockAnchor | null,
+): number {
+  if (!fateCase) return elapsedMs(clock)
+  return fateCase.baseElapsedMs + fateCaseConsumedMs(fateCase)
+}
+
+export function scoreBreakdown(
+  clock: GameClock,
+  fateCase: FateCaseClockAnchor | null,
+): ScoreBreakdown {
+  if (!fateCase) {
+    const total = elapsedMs(clock)
+    return { baseMs: total, fateCaseMs: 0, totalMs: total }
+  }
+  const fateCaseMs = fateCaseConsumedMs(fateCase)
+  return {
+    baseMs: fateCase.baseElapsedMs,
+    fateCaseMs,
+    totalMs: fateCase.baseElapsedMs + fateCaseMs,
+  }
+}
+
 export function isUrgent(clock: GameClock, thresholdMs = 10_000): boolean {
   return (
     clock.mode === 'countdown' &&
@@ -101,6 +147,24 @@ export function freeze(clock: GameClock): GameClock {
     ...clock,
     status: 'frozen',
     pauseReasons: [],
+  }
+}
+
+/**
+ * 倒计时入左轮：剩余统一重置为 remainingMs（不超过本局限额）；
+ * 可从 expired 拉回；正计时不变。
+ */
+export function setCountdownRemaining(clock: GameClock, remainingMs: number): GameClock {
+  if (clock.mode !== 'countdown') return clock
+  if (clock.status === 'frozen') return clock
+  const target = Math.min(Math.max(0, remainingMs), clock.limitMs)
+  if (target <= 0) {
+    return { ...clock, displayedMs: 0, status: 'expired', pauseReasons: [] }
+  }
+  return {
+    ...clock,
+    displayedMs: target,
+    status: clock.pauseReasons.length === 0 ? 'running' : 'paused',
   }
 }
 

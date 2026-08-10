@@ -12,13 +12,13 @@
 
 | 目录 | 说明 |
 | ------ | ------ |
-| `menu/` | 主菜单、主题/语言/音效、自由练习配置、关于 / 交流、预设答案与换手 |
-| `solo/` | 闯关与练习共用的 `GameBoard`、顶栏、计时 / 键盘 hooks |
+| `menu/` | 主菜单、主题/语言/音效、自由练习配置、数据页、关于 |
+| `solo/` | 闯关 / 练习 / 无尽共用的 `GameBoard`、`FateCaseMoment`、顶栏、计时 / 键盘 hooks |
 | `help/` | 全局帮助 `HelpController` / `HelpPanel`、快捷键 |
 
 ## 路由页面
 
-各特性下 `pages/` 为路由入口；路径表见 [CODE_STANDARDS §1.1](../../docs/CODE_STANDARDS.md) 与 `src/app/paths.ts`。
+各特性下 `pages/` 为路由入口（含 `StatsPage` → `/stats`）；路径表见 [CODE_STANDARDS §1.1](../../docs/CODE_STANDARDS.md) 与 `src/app/paths.ts`。
 
 ## 相关
 

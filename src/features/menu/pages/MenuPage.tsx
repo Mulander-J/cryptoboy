@@ -7,7 +7,7 @@ import { Menu } from '../Menu'
 
 export function MenuPage() {
   const navigate = useNavigate()
-  const { progress, updateSettingsPatch, resetProgress } = useProgress()
+  const { progress, updateSettingsPatch } = useProgress()
   const { hydrateDraftFromProgress, clearSecret } = usePracticeSession()
 
   function startSolo(difficulty: Difficulty) {
@@ -32,7 +32,7 @@ export function MenuPage() {
       onStartEndless={startEndless}
       onOpenCustom={openCustom}
       onUpdateSettings={updateSettingsPatch}
-      onResetProgress={resetProgress}
+      onOpenStats={() => void navigate(ROUTES.stats)}
     />
   )
 }

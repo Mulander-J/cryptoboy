@@ -26,23 +26,28 @@ export function ColorPalette({
   const blocked = new Set(disabledColors ?? [])
   return (
     <div className="color-palette" role="listbox" aria-label={m.device.paletteAria}>
-      {palette.map((c) => {
+      {palette.map((c, i) => {
         const blockedHere = blocked.has(c) && selected !== c
+        const keyNum = i + 1
         return (
-          <button
-            key={c}
-            type="button"
-            role="option"
-            aria-selected={selected === c}
-            className={`palette-swatch${selected === c ? ' selected' : ''}${blockedHere ? ' blocked' : ''}`}
-            style={{ background: COLOR_META[c].hex }}
-            disabled={disabled || blockedHere}
-            onClick={() => onPick(c)}
-            title={m.color[c]}
-            aria-label={m.color[c]}
-          >
-            {showPattern ? <ColorPatternMark color={c} /> : null}
-          </button>
+          <div key={c} className="palette-item">
+            <button
+              type="button"
+              role="option"
+              aria-selected={selected === c}
+              className={`palette-swatch${selected === c ? ' selected' : ''}${blockedHere ? ' blocked' : ''}`}
+              style={{ background: COLOR_META[c].hex }}
+              disabled={disabled || blockedHere}
+              onClick={() => onPick(c)}
+              title={`${keyNum}. ${m.color[c]}`}
+              aria-label={`${keyNum}. ${m.color[c]}`}
+            >
+              {showPattern ? <ColorPatternMark color={c} /> : null}
+            </button>
+            <span className="palette-key" aria-hidden>
+              {keyNum}
+            </span>
+          </div>
         )
       })}
     </div>

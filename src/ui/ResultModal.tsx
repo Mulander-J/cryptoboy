@@ -1,5 +1,6 @@
 import { COLOR_META } from '@/domain/colors'
 import { formatMmSs } from '@/domain/clock'
+import type { FateCaseChoice } from '@/domain/fateCase'
 import type { LoseReason, Password, TimerMode } from '@/domain/types'
 import { useI18n } from '@/i18n'
 import { useColorBlindPatterns } from '@/ui/colorBlind/ColorBlindContext'
@@ -17,9 +18,15 @@ type Props = {
   onMenu: () => void
   loseReason?: LoseReason | null
   timerMode?: TimerMode
-  /** 本局用时（三档统一：倒计时档=限额-剩余） */
+  /** 合计用时（最佳记录按此累加覆盖） */
   elapsedMs?: number
-  /** 该关历史最佳用时 */
+  /** 左轮前推理用时（有左轮时分开展示） */
+  baseElapsedMs?: number
+  /** 左轮窗口用时（有左轮时分开展示） */
+  fateCaseElapsedMs?: number
+  /** 左轮打中的颜色 / 空弹 */
+  fateCaseShot?: FateCaseChoice | null
+  /** 该关历史最佳用时（合计） */
   bestTimeMs?: number
   isNewBest?: boolean
   /** 无尽结算 */
@@ -39,6 +46,9 @@ export function ResultModal({
   loseReason,
   timerMode = 'countup',
   elapsedMs,
+  baseElapsedMs,
+  fateCaseElapsedMs,
+  fateCaseShot = null,
   bestTimeMs,
   isNewBest,
   endlessClears,
@@ -55,13 +65,40 @@ export function ResultModal({
       ? m.result.won
       : loseReason === 'timeout'
         ? m.result.timeout
-        : m.result.lost
+        : loseReason === 'fateCase'
+          ? m.result.fateCaseMiss
+          : m.result.lost
   const titleId = 'result-modal-title'
+  const showSplit =
+    typeof baseElapsedMs === 'number' &&
+    typeof fateCaseElapsedMs === 'number' &&
+    fateCaseElapsedMs > 0
+  const shotBlank = fateCaseShot === 'blank'
+  const shotColor = fateCaseShot && fateCaseShot !== 'blank' ? fateCaseShot : null
 
   return (
     <ModalBackdrop labelledBy={titleId}>
       <div className={`result-modal ${won && !endless ? 'won' : 'lost'}`}>
         <h2 id={titleId}>{title}</h2>
+        {fateCaseShot != null ? (
+          <p className="result-fate-case-shot">
+            <span>{m.result.fateCaseShot}</span>
+            {shotBlank ? (
+              <span className="secret-chip fate-case-shot-blank" title={m.game.fateCaseBlank}>
+                ∅
+              </span>
+            ) : shotColor ? (
+              <span
+                className="secret-chip"
+                style={{ background: COLOR_META[shotColor].hex }}
+                title={m.color[shotColor]}
+                aria-label={m.color[shotColor]}
+              >
+                {showPattern ? <ColorPatternMark color={shotColor} /> : null}
+              </span>
+            ) : null}
+          </p>
+        ) : null}
         {endless ? (
           <p className="result-time">
             {t(m.result.endlessStreak, { n: endlessClears })}
@@ -74,21 +111,48 @@ export function ResultModal({
             </span>
           </p>
         ) : typeof elapsedMs === 'number' ? (
-          <p className="result-time">
-            {m.result.timeUsed} <strong>{formatMmSs(elapsedMs)}</strong>
-            {timerMode === 'countdown' ? (
-              <span className="result-time-hint">{m.result.withinLimit}</span>
-            ) : null}
+          <div className="result-time">
+            {showSplit ? (
+              <div className="result-time-split">
+                <div className="result-time-row plus">
+                  <span>
+                    <span className="result-time-op" aria-hidden>
+                      +
+                    </span>
+                    {m.result.timeSolve}
+                  </span>
+                  <strong>{formatMmSs(baseElapsedMs)}</strong>
+                </div>
+                <div className="result-time-row plus">
+                  <span>
+                    <span className="result-time-op" aria-hidden>
+                      +
+                    </span>
+                    {m.result.timeFateCase}
+                  </span>
+                  <strong>{formatMmSs(fateCaseElapsedMs)}</strong>
+                </div>
+                <div className="result-time-rule" aria-hidden />
+                <div className="result-time-row total">
+                  <span>{m.result.timeTotal}</span>
+                  <strong>{formatMmSs(elapsedMs)}</strong>
+                </div>
+              </div>
+            ) : (
+              <p>
+                {m.result.timeUsed} <strong>{formatMmSs(elapsedMs)}</strong>
+                {timerMode === 'countdown' ? (
+                  <span className="result-time-hint">{m.result.withinLimit}</span>
+                ) : null}
+              </p>
+            )}
             {won && typeof bestTimeMs === 'number' ? (
-              <>
-                <br />
-                <span className="result-best">
-                  {m.result.best} {formatMmSs(bestTimeMs)}
-                  {isNewBest ? m.result.newRecord : ''}
-                </span>
-              </>
+              <p className="result-best">
+                {m.result.best} {formatMmSs(bestTimeMs)}
+                {isNewBest ? m.result.newRecord : ''}
+              </p>
             ) : null}
-          </p>
+          </div>
         ) : null}
         {revealSecret ? (
           <p className="result-secret">

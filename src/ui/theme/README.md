@@ -43,6 +43,7 @@
 - **机身描边**：`--shell-rim`（壳色贴近页面时拉开层次）
 - **切换入口**：设置区 / 对局可用的 `ThemePicker`；写入 `settings.theme`
 - 文案标签走 i18n（`theme.labels`），勿在 CSS 写死中文名
+- **厄运时刻玩法**：主题 → `fateCasePlayMode` 见 `domain/fateCase` 的 `THEME_FATE_CASE_PLAY_MODE`；当前全部主题默认左轮（`revolver`）
 
 ## 对比打磨
 

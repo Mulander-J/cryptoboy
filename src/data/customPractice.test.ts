@@ -13,6 +13,10 @@ describe('customPractice', () => {
     expect(o.allowRepeat).toBe(true)
     expect(o.timed).toBe(true)
     expect('presetSecret' in o).toBe(false)
+    expect('fateCase' in o).toBe(false)
+    expect('fateCaseAutoStart' in o).toBe(false)
+    expect('fateCaseOneShot' in o).toBe(false)
+    expect('fateCaseSpinSpeed' in o).toBe(false)
   })
 
   it('闯关三档映射到难度预设 2/3/5', () => {
@@ -38,21 +42,81 @@ describe('customPractice', () => {
       timed: true,
       timeLimitSec: 60,
       presetSecret: true,
+      fateCase: true,
+      fateCaseAutoStart: true,
+      fateCaseOneShot: true,
+      fateCaseSpinSpeed: 5,
     })
     expect(cfg.colorCount).toBe(7)
     expect(cfg.timerMode).toBe('countdown')
     expect(cfg.timeLimitMs).toBe(60_000)
+    expect(cfg.fateCaseEnabled).toBe(true)
+    expect(cfg.fateCaseAutoStart).toBe(true)
+    expect(cfg.fateCaseOneShot).toBe(true)
+    expect(cfg.fateCaseSpinSpeed).toBe(5)
   })
 
-  it('sanitize 校正非法值并默认 presetSecret', () => {
-    const o = sanitizeOptions({ colorCount: 99, timeLimitSec: 12, hintStyle: 'nope' as never })
+  it('sanitize 校正非法值并默认左轮子项；intensity 恒为 3', () => {
+    const o = sanitizeOptions({
+      colorCount: 99,
+      timeLimitSec: 12,
+      hintStyle: 'nope' as never,
+      intensity: 5,
+      fateCaseSpinSpeed: 9 as never,
+    })
     expect(o.colorCount).toBe(8)
     expect(o.timeLimitSec).toBe(90)
     expect(o.hintStyle).toBe('summary')
     expect(o.presetSecret).toBe(false)
+    expect(o.fateCase).toBe(false)
+    expect(o.fateCaseAutoStart).toBe(false)
+    expect(o.fateCaseOneShot).toBe(false)
+    expect(o.fateCaseSpinSpeed).toBe(3)
+    expect(o.intensity).toBe(3)
   })
 
-  it('sanitize 保留 presetSecret', () => {
+  it('sanitize 保留 presetSecret / fateCase 子项', () => {
     expect(sanitizeOptions({ presetSecret: true }).presetSecret).toBe(true)
+    expect(sanitizeOptions({ fateCase: true }).fateCase).toBe(true)
+    expect(sanitizeOptions({ fateCase: true, fateCaseAutoStart: true }).fateCaseAutoStart).toBe(
+      true,
+    )
+    expect(sanitizeOptions({ fateCaseOneShot: true }).fateCaseOneShot).toBe(true)
+    expect(sanitizeOptions({ fateCaseSpinSpeed: 2 }).fateCaseSpinSpeed).toBe(2)
+  })
+
+  it('sanitize 兼容旧键 revolver*', () => {
+    const o = sanitizeOptions({
+      revolver: true,
+      revolverAutoStart: true,
+      revolverOneShot: true,
+      revolverSpinSpeed: 4,
+    } as never)
+    expect(o.fateCase).toBe(true)
+    expect(o.fateCaseAutoStart).toBe(true)
+    expect(o.fateCaseOneShot).toBe(true)
+    expect(o.fateCaseSpinSpeed).toBe(4)
+  })
+
+  it('限时试炼 difficulty=nightmare 但 fateCase 默认关', () => {
+    const cfg = customOptionsToLevelConfig({
+      intensity: 5,
+      colorCount: 8,
+      allowRepeat: true,
+      hintStyle: 'summary',
+      timed: true,
+      timeLimitSec: 90,
+      presetSecret: false,
+      fateCase: false,
+      fateCaseAutoStart: true,
+      fateCaseOneShot: true,
+      fateCaseSpinSpeed: 4,
+    })
+    expect(cfg.difficulty).toBe('nightmare')
+    expect(cfg.fateCaseEnabled).toBe(false)
+    expect(cfg.fateCaseAutoStart).toBe(false)
+    expect(cfg.fateCaseSpinSpeed).toBe(4)
+    // 总开关关时不带出一枪定负
+    expect(cfg.fateCaseOneShot).toBe(false)
   })
 })

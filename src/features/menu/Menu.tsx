@@ -1,9 +1,5 @@
 import type { Difficulty } from '@/domain/types'
-import {
-  hasSoloProgress,
-  type ProgressState,
-  type Settings,
-} from '@/data/progress'
+import { type ProgressState, type Settings } from '@/data/progress'
 import { useI18n } from '@/i18n'
 import { MenuSettingRow } from '@/ui/MenuSettingRow'
 import { useHelp } from '@/features/help/HelpController'
@@ -25,7 +21,7 @@ type Props = {
   onOpenCustom: () => void
   /** 局部补丁更新设置（勿回传整份 settings，避免覆盖未改字段） */
   onUpdateSettings: (patch: Partial<Settings>) => void
-  onResetProgress: () => void
+  onOpenStats: () => void
 }
 
 export function Menu({
@@ -34,19 +30,11 @@ export function Menu({
   onStartEndless,
   onOpenCustom,
   onUpdateSettings,
-  onResetProgress,
+  onOpenStats,
 }: Props) {
   const { m, t } = useI18n()
   const { openHelp } = useHelp()
   const { settings } = progress
-  const canReset = hasSoloProgress(progress)
-
-  function handleResetProgress() {
-    if (!canReset) return
-    if (window.confirm(m.menu.progressResetConfirm)) {
-      onResetProgress()
-    }
-  }
 
   return (
     <div className="menu-screen">
@@ -149,6 +137,16 @@ export function Menu({
             </button>
           </MenuSettingRow>
 
+          <MenuSettingRow label={m.menu.statsLabel} hint={m.menu.statsHint}>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={onOpenStats}
+            >
+              {m.menu.statsCta}
+            </button>
+          </MenuSettingRow>
+
           <MenuSettingRow label={m.menu.themeLabel}>
             <ThemePicker
               variant="inline"
@@ -188,20 +186,6 @@ export function Menu({
               on={settings.confirmSubmit}
               onChange={(confirmSubmit) => onUpdateSettings({ confirmSubmit })}
             />
-          </MenuSettingRow>
-
-          <MenuSettingRow
-            label={m.menu.progressLabel}
-            hint={m.menu.progressHint}
-          >
-            <button
-              type="button"
-              className="btn btn-danger btn-sm"
-              disabled={!canReset}
-              onClick={handleResetProgress}
-            >
-              {m.menu.progressReset}
-            </button>
           </MenuSettingRow>
 
           <MenuSettingRow label={m.menu.aboutLabel}>

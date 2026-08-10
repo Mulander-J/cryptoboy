@@ -1,3 +1,4 @@
+import { sanitizeSpinSpeed, type FateCaseSpinSpeed } from '@/domain/fateCase'
 import type { Difficulty, HintStyle, LevelConfig, TimerMode } from '@/domain/types'
 
 /** 难度预设 1–5：一键套用一组默认值，仍可再改单项 */
@@ -13,10 +14,19 @@ export type CustomPracticeOptions = {
   timeLimitSec: number
   /** 开启后由同伴设答案再换手开局（本地双人） */
   presetSecret: boolean
+  /** 厄运时刻（默认关；与噩梦/无尽默认开不同；当前玩法左轮） */
+  fateCase: boolean
+  /** 自动开始：入场即开窗口 / 转盘 */
+  fateCaseAutoStart: boolean
+  /** 一枪定负（同无尽）；关则窗口内可连开（同噩梦） */
+  fateCaseOneShot: boolean
+  /** 码数速率 1–5 */
+  fateCaseSpinSpeed: FateCaseSpinSpeed
 }
 
 export const COLOR_COUNT_OPTIONS = [4, 5, 6, 7, 8] as const
 export const TIME_LIMIT_OPTIONS = [60, 90, 120, 180] as const
+export const FATE_CASE_SPIN_SPEED_OPTIONS = [1, 2, 3, 4, 5] as const
 
 export const DEFAULT_CUSTOM_PRACTICE: CustomPracticeOptions = {
   intensity: 3,
@@ -26,9 +36,19 @@ export const DEFAULT_CUSTOM_PRACTICE: CustomPracticeOptions = {
   timed: false,
   timeLimitSec: 90,
   presetSecret: false,
+  fateCase: false,
+  fateCaseAutoStart: false,
+  fateCaseOneShot: false,
+  fateCaseSpinSpeed: 3,
 }
 
-type IntensityPreset = Omit<CustomPracticeOptions, 'intensity' | 'presetSecret'>
+type FateCaseOpts =
+  | 'presetSecret'
+  | 'fateCase'
+  | 'fateCaseAutoStart'
+  | 'fateCaseOneShot'
+  | 'fateCaseSpinSpeed'
+type IntensityPreset = Omit<CustomPracticeOptions, 'intensity' | FateCaseOpts>
 
 /** 5 档：2/3/5 对齐闯关简单 / 进阶 / 噩梦 */
 const INTENSITY_PRESETS: Record<PracticeIntensity, IntensityPreset> = {
@@ -48,24 +68,47 @@ export const INTENSITY_LABELS: Record<PracticeIntensity, string> = {
   5: 'Nightmare',
 }
 
-/** 闯关三档 → 难度预设（不改动 presetSecret，由调用方合并保留） */
+/** 闯关三档 → 难度预设（不改动 presetSecret / 厄运时刻项，由调用方合并保留） */
 export function optionsFromDifficulty(
   difficulty: Difficulty,
-): Omit<CustomPracticeOptions, 'presetSecret'> {
+): Omit<CustomPracticeOptions, FateCaseOpts> {
   const intensity: PracticeIntensity =
     difficulty === 'easy' ? 2 : difficulty === 'advanced' ? 3 : 5
   return applyIntensity(intensity)
 }
 
-/** 套用难度预设推荐组合（不改动 presetSecret，由调用方合并保留） */
+/** 套用难度预设推荐组合（不改动 presetSecret / 厄运时刻项，由调用方合并保留） */
 export function applyIntensity(
   intensity: PracticeIntensity,
-): Omit<CustomPracticeOptions, 'presetSecret'> {
+): Omit<CustomPracticeOptions, FateCaseOpts> {
   return { intensity, ...INTENSITY_PRESETS[intensity] }
 }
 
 export function sanitizeOptions(raw: Partial<CustomPracticeOptions> | undefined): CustomPracticeOptions {
-  const base = { ...DEFAULT_CUSTOM_PRACTICE, ...raw }
+  // 兼容旧键 revolver* → fateCase*
+  const legacy = raw as Partial<CustomPracticeOptions> & {
+    revolver?: boolean
+    revolverAutoStart?: boolean
+    revolverOneShot?: boolean
+    revolverSpinSpeed?: unknown
+  }
+  const base = {
+    ...DEFAULT_CUSTOM_PRACTICE,
+    ...raw,
+    fateCase: legacy.fateCase ?? legacy.revolver ?? DEFAULT_CUSTOM_PRACTICE.fateCase,
+    fateCaseAutoStart:
+      legacy.fateCaseAutoStart ??
+      legacy.revolverAutoStart ??
+      DEFAULT_CUSTOM_PRACTICE.fateCaseAutoStart,
+    fateCaseOneShot:
+      legacy.fateCaseOneShot ??
+      legacy.revolverOneShot ??
+      DEFAULT_CUSTOM_PRACTICE.fateCaseOneShot,
+    fateCaseSpinSpeed:
+      legacy.fateCaseSpinSpeed ??
+      legacy.revolverSpinSpeed ??
+      DEFAULT_CUSTOM_PRACTICE.fateCaseSpinSpeed,
+  }
   let colorCount = Math.min(8, Math.max(4, Math.round(base.colorCount) || 6))
   const allowRepeat = Boolean(base.allowRepeat)
   if (!allowRepeat && colorCount < 4) colorCount = 4
@@ -77,12 +120,27 @@ export function sanitizeOptions(raw: Partial<CustomPracticeOptions> | undefined)
   }
 
   const hintStyle: HintStyle = base.hintStyle === 'column' ? 'column' : 'summary'
-  const intensity = ([1, 2, 3, 4, 5] as const).includes(base.intensity as PracticeIntensity)
-    ? (base.intensity as PracticeIntensity)
-    : 3
+  // intensity 仅作 UI 快捷档位，不持久化回显；存盘恒为默认 3
+  const intensity: PracticeIntensity = 3
   const presetSecret = Boolean(base.presetSecret)
+  const fateCase = Boolean(base.fateCase)
+  const fateCaseAutoStart = Boolean(base.fateCaseAutoStart)
+  const fateCaseOneShot = Boolean(base.fateCaseOneShot)
+  const fateCaseSpinSpeed = sanitizeSpinSpeed(base.fateCaseSpinSpeed)
 
-  return { intensity, colorCount, allowRepeat, hintStyle, timed, timeLimitSec, presetSecret }
+  return {
+    intensity,
+    colorCount,
+    allowRepeat,
+    hintStyle,
+    timed,
+    timeLimitSec,
+    presetSecret,
+    fateCase,
+    fateCaseAutoStart,
+    fateCaseOneShot,
+    fateCaseSpinSpeed,
+  }
 }
 
 export function customOptionsToLevelConfig(opts: CustomPracticeOptions): LevelConfig {
@@ -103,5 +161,9 @@ export function customOptionsToLevelConfig(opts: CustomPracticeOptions): LevelCo
     difficulty,
     timerMode,
     timeLimitMs: clean.timed ? clean.timeLimitSec * 1000 : undefined,
+    fateCaseEnabled: clean.fateCase,
+    fateCaseAutoStart: clean.fateCase ? clean.fateCaseAutoStart : false,
+    fateCaseSpinSpeed: clean.fateCaseSpinSpeed,
+    fateCaseOneShot: clean.fateCase ? clean.fateCaseOneShot : false,
   }
 }

@@ -35,25 +35,33 @@ export function HelpPanel({ open, onClose }: Props) {
 
         <div className="help-body" aria-live="polite">
           <h3>{current.title}</h3>
-          <ul>
-            {current.body.map((line) => (
-              <li key={line}>{line}</li>
-            ))}
-          </ul>
           {isKeys ? (
-            <table className="help-keys">
-              <tbody>
-                {m.shortcuts.map((row) => (
-                  <tr key={row.keys}>
-                    <th scope="row">
-                      <kbd>{row.keys}</kbd>
-                    </th>
-                    <td>{row.action}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : null}
+            <>
+              {current.body.map((line) => (
+                <p key={line} className="help-body-lead">
+                  {line}
+                </p>
+              ))}
+              <table className="help-keys">
+                <tbody>
+                  {m.shortcuts.map((row) => (
+                    <tr key={row.keys}>
+                      <th scope="row">
+                        <kbd>{row.keys}</kbd>
+                      </th>
+                      <td>{row.action}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <ul>
+              {current.body.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <div className="help-dots" aria-hidden>

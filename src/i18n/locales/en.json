@@ -23,7 +23,7 @@
     "endlessBest": "Best streak {n}",
     "practiceTitle": "Custom",
     "practiceCta": "Start",
-    "practiceHint": "No campaign progress; tune difficulty preset, colors, repeats, hints, timer, and preset secret",
+    "practiceHint": "No campaign progress; tune difficulty preset, colors, repeats, hints, timer, preset secret, and Fate Night",
     "helpTitle": "Settings & more",
     "settingsHint": "Theme, language, sound, and accessibility",
     "helpLabel": "Help",
@@ -35,13 +35,28 @@
     "toggleOff": "Off",
     "colorBlindLabel": "Color patterns",
     "colorBlindHint": "Overlay shapes on colors to tell them apart (not a theme)",
-    "confirmSubmitLabel": "Confirm submit",
-    "confirmSubmitHint": "Ask before each submit to avoid mis-taps",
+    "confirmSubmitLabel": "Pre-confirm",
+    "confirmSubmitHint": "Ask before each guess submit to avoid mis-taps",
     "progressLabel": "Progress",
     "progressHint": "Resets all levels",
     "progressReset": "Reset progress",
     "progressResetConfirm": "Reset campaign and Endless progress? Levels, best times, and best streak will clear. Sound, theme, and other settings stay.",
+    "statsLabel": "Data",
+    "statsHint": "Campaign progress and per-level best times",
+    "statsCta": "View data",
     "aboutLabel": "About"
+  },
+  "stats": {
+    "back": "Back",
+    "title": "Data",
+    "lead": "Local progress and per-level best times (total, lower is better)",
+    "unlocked": "Unlocked",
+    "cleared": "Cleared",
+    "levelOfMax": "{n} / {max}",
+    "levelLabel": "Level {n}",
+    "noBest": "No best times yet",
+    "endlessBest": "Best streak",
+    "endlessBestValue": "{n} clears"
   },
   "difficulty": {
     "easy": "Easy",
@@ -54,7 +69,7 @@
     "intensityTitle": "Difficulty preset · {label}",
     "intensityAria": "Difficulty preset",
     "intensityMarks": "1 Intro · 3 Advanced · 5 Nightmare",
-    "intensityHint": "Five presets including Easy / Advanced / Nightmare; drag to apply, then tweak below",
+    "intensityHint": "Quick presets (defaults to Advanced each visit); tweak details below — edits below won’t move this slider",
     "detailsTitle": "Details",
     "colorCount": "Colors",
     "allowRepeat": "Allow color repeats",
@@ -67,6 +82,15 @@
     "seconds": "{n} sec",
     "presetSecret": "Preset secret (local duo)",
     "presetSecretHint": "A friend sets the 4-color code first; you crack it after a handoff",
+    "fateCase": "Fate Night",
+    "fateCaseHint": "Settle the last color when three locks are in. Current mode: Revolver. Keep firing until a hit or timeout",
+    "fateCaseAutoStart": "Auto-start",
+    "fateCaseAutoStartHint": "Skip Start — drum and 3s window begin on entry",
+    "fateCaseOneShot": "One-shot",
+    "fateCaseOneShotHint": "On: miss loses immediately (like Endless). Off: keep firing until a hit or timeout (like Nightmare)",
+    "fateCaseSpinSpeed": "Rating rate",
+    "fateCaseSpinSpeedHint": "Rating = full laps ÷ 3s × 100. E.g. 1 lap/3s → 33, 5 laps/3s → 167. Higher = faster drum, harder to lock on",
+    "fateCaseSpinSpeedOption": "{rating}",
     "presetEntryTitle": "Setter: enter the code",
     "presetEntryHint": "Have a friend enter the answer; the cracker should look away",
     "presetEntryRules": "Must match practice rules: {colors}{repeat}",
@@ -100,20 +124,38 @@
     "practiceTipTimedOn": "Countdown",
     "practiceTipTimedOff": "Count up",
     "practiceTipPreset": "Preset secret",
+    "practiceTipFateCase": "Fate Night",
     "tip": "Tap cells · palette · long-press knob or Enter to submit · “? Help”",
     "remaining": "Left",
     "elapsed": "Time",
     "paused": "Paused",
+    "frozen": "Frozen",
     "confirmSubmitTitle": "Submit this row?",
     "confirmSubmitBody": "You can’t edit after submit. Guess with these four colors?",
     "confirmSubmitOk": "Submit",
-    "confirmSubmitCancel": "Not yet"
+    "confirmSubmitCancel": "Not yet",
+    "fateCasePlayTitle": "Revolver moment",
+    "fateCaseTimer": "Revolver",
+    "fateCaseChamberAria": "Revolver chamber",
+    "fateCaseBlank": "Blank",
+    "fateCaseSpinning": "Spinning…",
+    "fateCaseReady": "Fire · Space / Enter",
+    "fateCaseFire": "Fire",
+    "fateCaseIntro": "Keep firing until you hit or time runs out\nStart or Space / Enter · 3s",
+    "fateCaseIntroOneShot": "One shot · miss and you lose\nAuto-starts · 3s",
+    "fateCaseMissRetry": "Miss · keep going",
+    "fateCaseStart": "Start"
   },
   "result": {
     "won": "Cracked!",
     "lost": "Failed",
     "timeout": "Time’s up",
+    "fateCaseMiss": "Miss",
+    "fateCaseShot": "Shot",
     "timeUsed": "Time",
+    "timeSolve": "Solve",
+    "timeFateCase": "Revolver",
+    "timeTotal": "Total",
     "withinLimit": "(within limit)",
     "best": "Best",
     "newRecord": " · New record!",
@@ -157,7 +199,7 @@
         "body": [
           "Easy / Advanced: count up from 00:00; results show time and local bests.",
           "Nightmare / Endless: countdown; opening help or hiding the tab pauses the clock.",
-          "Nightmare bests use elapsed time (limit minus remaining) — shorter is better.",
+          "Campaign bests use total time (including any Fate Night window) — shorter is better.",
           "The last ~10 seconds show a light cue (mute sound; reduced motion softens animation)."
         ]
       },
@@ -181,23 +223,33 @@
         "title": "Practice & settings",
         "body": [
           "Solo advances level by level; progress stays on this device.",
-          "Custom lets you tune the difficulty preset, colors, repeats, hints, and timer — no campaign progress.",
+          "Custom lets you tune the difficulty preset, colors, repeats, hints, timer, and Fate Night — no campaign progress.",
           "Turn on “Preset secret” so a friend sets the code, you hand over the device, then you crack it (local duo).",
+          "Data shows per-mode progress and per-level bests; reset progress is there too.",
           "Change language, theme, and sound under Settings & more.",
           "Open this guide via in-game “? Help” or press “H”."
         ]
       },
       {
+        "title": "Fate Night",
+        "body": [
+          "A dramatic closer, not required — four greens still wins outright. Current mode: American Revolver.",
+          "Triggers when a guess hits exactly three greens: three locks reveal, one hanging slot to settle.",
+          "Revolver mode: Fire or Space / Enter when the cursor lines up. Main timer freezes on entry.",
+          "Nightmare: keep firing in the 3s window until a hit or timeout. Endless: one shot — miss and you lose; auto-starts at a higher rating. Custom can tune auto-start, one-shot, and rating."
+        ]
+      },
+      {
         "title": "Keyboard",
         "body": [
-          "On desktop you can play with the keyboard (touch and mouse still work):"
+          "On desktop you can play with the keyboard (touch and mouse still work)"
         ]
       }
     ]
   },
   "shortcuts": [
     {
-      "keys": "1–6 (or 7–8)",
+      "keys": "1-8",
       "action": "Fill the current slot with that color"
     },
     {

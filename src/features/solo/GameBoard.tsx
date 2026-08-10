@@ -1,6 +1,16 @@
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react'
+import { useProgress } from '@/app/ProgressContext'
+import { levelConfig, practiceConfig } from '@/data/levels'
 import { colorsForCount, nextColor } from '@/domain/colors'
-import { elapsedMs as clockElapsed } from '@/domain/clock'
+import {
+  resolveFateCaseAutoStart,
+  resolveFateCaseEnabled,
+  resolveFateCaseOneShot,
+  resolveFateCasePlayMode,
+  resolveFateCaseSpinSpeed,
+  resolveShot,
+  type FateCaseChoice,
+} from '@/domain/fateCase'
 import { generate, levelSeed } from '@/domain/generate'
 import {
   createSession,
@@ -11,7 +21,6 @@ import {
 } from '@/domain/session'
 import type { ColorToken, Difficulty, LevelConfig, Password } from '@/domain/types'
 import { PASSWORD_LENGTH } from '@/domain/types'
-import { levelConfig, practiceConfig } from '@/data/levels'
 import { useI18n } from '@/i18n'
 import { ColorPalette } from '@/ui/device/ColorPalette'
 import { DeviceShell } from '@/ui/device/DeviceShell'
@@ -22,6 +31,7 @@ import { TimerDisplay } from '@/ui/TimerDisplay'
 import { playSound } from '@/ui/audio/sound'
 import { useHelp } from '@/features/help/HelpController'
 import { GameTopbar } from './GameTopbar'
+import { FateCaseMoment } from './FateCaseMoment'
 import { useGameClock } from './useGameClock'
 import { useGameKeyboard } from './useGameKeyboard'
 
@@ -55,12 +65,21 @@ function buildConfig(
   mode: Mode,
   difficulty: Difficulty,
   level: number,
+  themeId: string,
   customConfig?: LevelConfig,
 ): LevelConfig {
-  if (mode === 'practice' || mode === 'endless') {
-    return customConfig ?? practiceConfig(difficulty)
+  const base =
+    mode === 'practice' || mode === 'endless'
+      ? (customConfig ?? practiceConfig(difficulty))
+      : levelConfig(difficulty, level)
+  return {
+    ...base,
+    fateCaseEnabled: resolveFateCaseEnabled(mode, difficulty, base.fateCaseEnabled),
+    fateCaseAutoStart: resolveFateCaseAutoStart(mode, difficulty, base.fateCaseAutoStart),
+    fateCaseSpinSpeed: resolveFateCaseSpinSpeed(mode, difficulty, base.fateCaseSpinSpeed),
+    fateCaseOneShot: resolveFateCaseOneShot(mode, difficulty, base.fateCaseOneShot),
+    fateCasePlayMode: resolveFateCasePlayMode(themeId, base.fateCasePlayMode),
   }
-  return levelConfig(difficulty, level)
 }
 
 function buildSecret(
@@ -102,10 +121,12 @@ export function GameBoard({
   onMenu,
 }: Props) {
   const { m, t } = useI18n()
+  const { progress } = useProgress()
   const { open: helpOpen, openHelp } = useHelp()
+  const themeId = progress.settings.theme
   const config = useMemo(
-    () => buildConfig(mode, difficulty, level, customConfig),
-    [mode, difficulty, level, customConfig],
+    () => buildConfig(mode, difficulty, level, themeId, customConfig),
+    [mode, difficulty, level, themeId, customConfig],
   )
 
   const [session, dispatch] = useReducer(
@@ -117,6 +138,8 @@ export function GameBoard({
 
   const [clockResetKey, setClockResetKey] = useState(0)
   const [resultElapsed, setResultElapsed] = useState<number | undefined>()
+  const [resultBaseMs, setResultBaseMs] = useState<number | undefined>()
+  const [resultFateCaseMs, setResultFateCaseMs] = useState<number | undefined>()
   const [resultBest, setResultBest] = useState<number | undefined>(bestTimeMs)
   const [isNewBest, setIsNewBest] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)
@@ -124,7 +147,11 @@ export function GameBoard({
   const urgentBeeped = useRef(false)
 
   const clock = useGameClock({
-    config,
+    config: {
+      timerMode: config.timerMode,
+      timeLimitMs: config.timeLimitMs,
+      fateCaseAutoStart: config.fateCaseAutoStart,
+    },
     helpOpen,
     confirmOpen,
     gameStatus: session.status,
@@ -143,27 +170,30 @@ export function GameBoard({
     }
   }, [clock.displayedMs, clock.mode, clock.status, sound])
 
-  const clockRef = useRef(clock)
-  clockRef.current = clock
-
   useEffect(() => {
     if (prevStatus.current === session.status) return
-    if (session.status === 'won') {
-      const elapsed = clockElapsed(clockRef.current)
+    if (session.status === 'fateCase') {
+      playSound('submit', sound)
+    } else if (session.status === 'won') {
+      const parts = clock.scoreBreakdown()
       playSound('win', sound)
       if (mode === 'endless') {
         const limit = session.config.timeLimitMs ?? 0
-        const remaining = Math.max(0, limit - elapsed)
+        const remaining = Math.max(0, limit - parts.totalMs)
         onEndlessWon?.(remaining, session.secret)
       } else if (mode === 'solo') {
-        setResultElapsed(elapsed)
+        setResultElapsed(parts.totalMs)
+        setResultBaseMs(parts.fateCaseMs > 0 ? parts.baseMs : undefined)
+        setResultFateCaseMs(parts.fateCaseMs > 0 ? parts.fateCaseMs : undefined)
         const prevBest = bestTimeMs
-        const newer = prevBest === undefined || elapsed < prevBest
+        const newer = prevBest === undefined || parts.totalMs < prevBest
         setIsNewBest(newer)
-        setResultBest(newer ? elapsed : prevBest)
-        onClearLevel?.(level, elapsed)
+        setResultBest(newer ? parts.totalMs : prevBest)
+        onClearLevel?.(level, parts.totalMs)
       } else {
-        setResultElapsed(elapsed)
+        setResultElapsed(parts.totalMs)
+        setResultBaseMs(parts.fateCaseMs > 0 ? parts.baseMs : undefined)
+        setResultFateCaseMs(parts.fateCaseMs > 0 ? parts.fateCaseMs : undefined)
         setResultBest(undefined)
         setIsNewBest(false)
       }
@@ -172,7 +202,10 @@ export function GameBoard({
       if (mode === 'endless') {
         onEndlessLost?.(session.secret)
       } else {
-        setResultElapsed(clockElapsed(clockRef.current))
+        const parts = clock.scoreBreakdown()
+        setResultElapsed(parts.totalMs)
+        setResultBaseMs(parts.fateCaseMs > 0 ? parts.baseMs : undefined)
+        setResultFateCaseMs(parts.fateCaseMs > 0 ? parts.fateCaseMs : undefined)
         setIsNewBest(false)
         setResultBest(bestTimeMs)
       }
@@ -189,6 +222,7 @@ export function GameBoard({
     onClearLevel,
     onEndlessWon,
     onEndlessLost,
+    clock.scoreBreakdown,
   ])
 
   function restart(nextLevel = level) {
@@ -198,6 +232,8 @@ export function GameBoard({
     prevStatus.current = 'editing'
     urgentBeeped.current = false
     setResultElapsed(undefined)
+    setResultBaseMs(undefined)
+    setResultFateCaseMs(undefined)
     setIsNewBest(false)
     setResultBest(bestTimeMs)
     setConfirmOpen(false)
@@ -258,7 +294,20 @@ export function GameBoard({
     dispatch({ type: 'SET_SLOT', index: session.cursor, color })
   }
 
+  function onFateCaseFire(choice: FateCaseChoice): 'hit' | 'miss' {
+    if (session.status !== 'fateCase' || !session.fateCase) return 'miss'
+    const outcome = resolveShot(
+      choice,
+      session.secret,
+      session.fateCase.hangingIndex,
+    )
+    playSound('submit', sound)
+    dispatch({ type: 'FIRE', choice })
+    return outcome
+  }
+
   const editing = session.status === 'editing'
+  const fateCaseOpen = session.status === 'fateCase' && session.fateCase !== null
   /** 无尽胜负均由 EndlessPage 接管结算 */
   const resultOpen =
     mode !== 'endless' && (session.status === 'won' || session.status === 'lost')
@@ -268,7 +317,7 @@ export function GameBoard({
   useGameKeyboard({
     active: true,
     helpOpen,
-    resultOpen,
+    resultOpen: resultOpen || fateCaseOpen,
     confirmOpen,
     onConfirmSubmit: commitSubmit,
     onCancelConfirm: () => setConfirmOpen(false),
@@ -292,6 +341,7 @@ export function GameBoard({
             ? m.game.practiceTipTimedOn
             : m.game.practiceTipTimedOff,
           initialSecret ? m.game.practiceTipPreset : null,
+          session.fateCaseEnabled ? m.game.practiceTipFateCase : null,
         ]
           .filter(Boolean)
           .join('\n')
@@ -305,7 +355,7 @@ export function GameBoard({
         : t(m.game.soloBadge, { difficulty: m.difficulty[difficulty] })
 
   return (
-    <div className="game-screen">
+    <div className={`game-screen${fateCaseOpen ? ' fate-case-active' : ''}`}>
       <GameTopbar
         menuLabel={m.game.menu}
         helpLabel={m.game.help}
@@ -316,7 +366,13 @@ export function GameBoard({
       />
 
       <TimerDisplay
-        clock={clock}
+        clock={{
+          mode: clock.mode,
+          displayedMs: clock.displayedMs,
+          limitMs: clock.limitMs,
+          status: clock.status,
+          pauseReasons: clock.pauseReasons,
+        }}
         label={clock.mode === 'countdown' ? m.game.remaining : m.game.elapsed}
       />
 
@@ -360,6 +416,18 @@ export function GameBoard({
         />
       ) : null}
 
+      {fateCaseOpen && session.fateCase ? (
+        <FateCaseMoment
+          phase={session.fateCase}
+          onFire={onFateCaseFire}
+          onStart={clock.startFateCaseWindow}
+          live={clock.fateCaseLive}
+          remainingMs={clock.fateCaseRemainingMs ?? 0}
+          spinSpeed={session.config.fateCaseSpinSpeed ?? 3}
+          oneShot={Boolean(session.config.fateCaseOneShot)}
+        />
+      ) : null}
+
       {resultOpen ? (
         <ResultModal
           status={session.status === 'won' ? 'won' : 'lost'}
@@ -369,6 +437,9 @@ export function GameBoard({
           loseReason={session.loseReason}
           timerMode={session.config.timerMode}
           elapsedMs={resultElapsed}
+          baseElapsedMs={resultBaseMs}
+          fateCaseElapsedMs={resultFateCaseMs}
+          fateCaseShot={session.fateCaseShot}
           bestTimeMs={mode === 'solo' ? resultBest : undefined}
           isNewBest={isNewBest}
           onRetry={() => restart(level)}

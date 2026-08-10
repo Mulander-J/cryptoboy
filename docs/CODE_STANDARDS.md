@@ -32,6 +32,7 @@
 | `/practice/play` | 自由练习对局 | `features/solo/pages/PracticePlayPage` |
 | `/solo/:difficulty/:level` | 闯关（`easy` / `advanced` / `nightmare`） | `features/solo/pages/SoloPage` |
 | `/endless` | 无尽连破 | `features/solo/pages/EndlessPage` |
+| `/stats` | 进度数据 | `features/menu/pages/StatsPage` |
 | `/404` | 未知路径 | `app/NotFoundPage` |
 | `/duo`（预留） | 联机双人（远期） | `features/duo` |
 | `/settings`（预留） | 独立设置页（远期） | `features/settings` |
@@ -146,9 +147,8 @@ npm run build
 
 | 文档 | 内容 |
 | ------ | ------ |
-| `PRODUCT.md` | 产品规格与实现对照 |
+| `PRODUCT.md` | 产品规格与实现对照（含厄运时刻） |
 | `PLAN.md` | 任务进度与下一步 |
-| `ITEMS.md` | 左轮彩蛋草案（P7） |
 | `DUO.md` | 联机 / 中段道具草案 |
 | `CODE_STANDARDS.md`（本文） | 工程与组件约定 |
 

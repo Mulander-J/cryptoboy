@@ -97,4 +97,91 @@ describe('GameSession', () => {
     expect(s.status).toBe('editing')
     expect(s.attempts).toHaveLength(0)
   })
+
+  it('左轮一枪定负：失靶即负；命中即胜', () => {
+    const revConfig: LevelConfig = {
+      ...config,
+      difficulty: 'nightmare',
+      timerMode: 'countdown',
+      timeLimitMs: 60_000,
+      fateCaseEnabled: true,
+      fateCaseOneShot: true,
+    }
+    let s = createSession(secret, revConfig)
+    const almost: Password = ['R', 'O', 'Y', 'B'] as unknown as Password
+    for (let i = 0; i < 4; i++) {
+      s = reduceSession(s, { type: 'SET_SLOT', index: i, color: almost[i]! })
+    }
+    s = reduceSession(s, { type: 'SUBMIT' })
+    expect(s.status).toBe('fateCase')
+    expect(s.fateCase?.hangingIndex).toBe(3)
+
+    const miss = reduceSession(s, { type: 'FIRE', choice: 'blank' })
+    expect(miss.status).toBe('lost')
+    expect(miss.loseReason).toBe('fateCase')
+    expect(miss.fateCaseShot).toBe('blank')
+
+    const hit = reduceSession(s, { type: 'FIRE', choice: 'G' })
+    expect(hit.status).toBe('won')
+    expect(hit.fateCaseShot).toBe('G')
+  })
+
+  it('厄运时刻可连开：失靶仍保持 fateCase，再开枪可胜', () => {
+    const revConfig: LevelConfig = {
+      ...config,
+      difficulty: 'nightmare',
+      timerMode: 'countdown',
+      timeLimitMs: 60_000,
+      fateCaseEnabled: true,
+      fateCaseOneShot: false,
+    }
+    let s = createSession(secret, revConfig)
+    const almost: Password = ['R', 'O', 'Y', 'B'] as unknown as Password
+    for (let i = 0; i < 4; i++) {
+      s = reduceSession(s, { type: 'SET_SLOT', index: i, color: almost[i]! })
+    }
+    s = reduceSession(s, { type: 'SUBMIT' })
+    s = reduceSession(s, { type: 'FIRE', choice: 'blank' })
+    expect(s.status).toBe('fateCase')
+    expect(s.loseReason).toBeNull()
+    expect(s.fateCaseShot).toBe('blank')
+    s = reduceSession(s, { type: 'FIRE', choice: 'G' })
+    expect(s.status).toBe('won')
+    expect(s.fateCaseShot).toBe('G')
+  })
+
+  it('左轮优先于第 7 次 attempts 判负', () => {
+    const revConfig: LevelConfig = { ...config, fateCaseEnabled: true }
+    let s = createSession(secret, revConfig)
+    const wrong: Password = ['B', 'P', 'B', 'P'] as unknown as Password
+    for (let n = 0; n < 6; n++) {
+      for (let i = 0; i < 4; i++) {
+        s = reduceSession(s, { type: 'SET_SLOT', index: i, color: wrong[i]! })
+      }
+      s = reduceSession(s, { type: 'SUBMIT' })
+    }
+    const almost: Password = ['R', 'O', 'Y', 'B'] as unknown as Password
+    for (let i = 0; i < 4; i++) {
+      s = reduceSession(s, { type: 'SET_SLOT', index: i, color: almost[i]! })
+    }
+    s = reduceSession(s, { type: 'SUBMIT' })
+    expect(s.status).toBe('fateCase')
+    expect(s.loseReason).toBeNull()
+    expect(s.attempts).toHaveLength(7)
+  })
+
+  it('左轮期间可 TIMEOUT；编辑动作忽略', () => {
+    const revConfig: LevelConfig = { ...config, fateCaseEnabled: true }
+    let s = createSession(secret, revConfig)
+    const almost: Password = ['R', 'O', 'Y', 'B'] as unknown as Password
+    for (let i = 0; i < 4; i++) {
+      s = reduceSession(s, { type: 'SET_SLOT', index: i, color: almost[i]! })
+    }
+    s = reduceSession(s, { type: 'SUBMIT' })
+    s = reduceSession(s, { type: 'CYCLE_SLOT' })
+    expect(s.status).toBe('fateCase')
+    s = reduceSession(s, { type: 'TIMEOUT' })
+    expect(s.status).toBe('lost')
+    expect(s.loseReason).toBe('timeout')
+  })
 })

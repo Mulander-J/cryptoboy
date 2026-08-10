@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { MenuPage } from '@/features/menu/pages/MenuPage'
 import { PracticeSetSecretPage } from '@/features/menu/pages/PracticeSetSecretPage'
 import { PracticeSetupPage } from '@/features/menu/pages/PracticeSetupPage'
+import { StatsPage } from '@/features/menu/pages/StatsPage'
 import { EndlessPage } from '@/features/solo/pages/EndlessPage'
 import { PracticePlayPage } from '@/features/solo/pages/PracticePlayPage'
 import { SoloPage } from '@/features/solo/pages/SoloPage'
@@ -25,6 +26,7 @@ export default function App() {
             <Route path={ROUTES.practicePlay} element={<PracticePlayPage />} />
             <Route path={ROUTES.solo} element={<SoloPage />} />
             <Route path={ROUTES.endless} element={<EndlessPage />} />
+            <Route path={ROUTES.stats} element={<StatsPage />} />
             <Route path="/404" element={<NotFoundPage />} />
             <Route path="*" element={<Navigate to="/404" replace />} />
           </Route>

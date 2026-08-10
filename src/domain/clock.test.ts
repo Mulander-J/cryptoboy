@@ -7,6 +7,8 @@ import {
   isUrgent,
   pause,
   resume,
+  scoreElapsedMs,
+  setCountdownRemaining,
   tick,
 } from './clock'
 
@@ -72,5 +74,42 @@ describe('GameClock', () => {
     expect(elapsedMs(c)).toBe(30_000)
     c = freeze(c)
     expect(elapsedMs(c)).toBe(30_000)
+  })
+
+  it('setCountdownRemaining 统一重置倒计时剩余', () => {
+    let c = createClock({ timerMode: 'countdown', timeLimitMs: 60_000 })
+    c = tick(c, 10_000)
+    expect(c.displayedMs).toBe(50_000)
+    c = setCountdownRemaining(c, 5_000)
+    expect(c.displayedMs).toBe(5_000)
+
+    let up = createClock({ timerMode: 'countup' })
+    up = tick(up, 500)
+    expect(setCountdownRemaining(up, 5_000).displayedMs).toBe(500)
+  })
+
+  it('setCountdownRemaining 可从 expired 拉回', () => {
+    let c = createClock({ timerMode: 'countdown', timeLimitMs: 2_000 })
+    c = tick(c, 2_000)
+    expect(c.status).toBe('expired')
+    c = setCountdownRemaining(c, 5_000)
+    expect(c.displayedMs).toBe(2_000)
+    expect(c.status).toBe('running')
+  })
+
+  it('scoreElapsedMs：主钟冻结 + 左轮窗口消耗记账', () => {
+    let c = createClock({ timerMode: 'countdown', timeLimitMs: 120_000 })
+    c = tick(c, 30_000)
+    expect(elapsedMs(c)).toBe(30_000)
+
+    const anchor = {
+      baseElapsedMs: elapsedMs(c),
+      windowMs: 5_000,
+      remainingMs: 5_000,
+    }
+    expect(scoreElapsedMs(c, anchor)).toBe(30_000)
+    expect(
+      scoreElapsedMs(c, { ...anchor, remainingMs: 3_000 }),
+    ).toBe(32_000)
   })
 })

@@ -5,7 +5,7 @@ export type ShortcutKeys = {
 
 /** 与 i18n shortcuts 顺序对齐的键位（语言无关） */
 export const GAME_SHORTCUT_KEYS: ShortcutKeys[] = [
-  { keys: '1–6 / 7–8' },
+  { keys: '1-8' },
   { keys: '← / → · A / D' },
   { keys: '↑ / ↓ · W / S · Space' },
   { keys: 'Enter' },

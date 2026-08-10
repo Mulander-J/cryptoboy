@@ -6,7 +6,7 @@ type Props = {
   onCancel: () => void
 }
 
-/** 提交前二次确认（设置「确认提交」开启时） */
+/** 提交前二次确认（设置「前置确认」开启时） */
 export function ConfirmSubmitModal({ onConfirm, onCancel }: Props) {
   const { m } = useI18n()
   const titleId = 'confirm-submit-title'

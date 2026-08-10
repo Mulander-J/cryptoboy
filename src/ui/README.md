@@ -17,7 +17,7 @@
 | `colorBlind/` | `ColorBlindProvider` + 色块符号标记（读 `settings.colorBlindPatterns`） |
 | `icons/` | `SvgIcon` + `assets/*.svg`；需变色用 `currentColor` |
 | `audio/` | 轻量音效 |
-| 根下组件 | `DropdownPanel`、`SegmentedControl`、`MenuSettingRow`、`ModalBackdrop`、`ResultModal`、`TimerDisplay` 等 |
+| 根下组件 | `DropdownPanel`、`SegmentedControl`、`MenuSettingRow`、`ModalBackdrop`、`ResultModal`（含推理/左轮用时拆分）、`TimerDisplay`、`ConfirmSubmitModal`、`NavBackButton` 等 |
 
 ## 相关
 

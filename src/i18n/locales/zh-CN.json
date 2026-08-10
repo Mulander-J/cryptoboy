@@ -23,7 +23,7 @@
     "endlessBest": "最佳连胜 {n}",
     "practiceTitle": "自定义试炼",
     "practiceCta": "开始试炼",
-    "practiceHint": "不计闯关进度；可改难度预设、颜色数、是否重复、提示方式、限时与预设答案",
+    "practiceHint": "不计闯关进度；可改难度预设、颜色数、是否重复、提示方式、限时、预设答案与厄运时刻",
     "helpTitle": "设置和其他",
     "settingsHint": "主题、语言、音效与无障碍等",
     "helpLabel": "帮助",
@@ -35,13 +35,28 @@
     "toggleOff": "关",
     "colorBlindLabel": "色盲图案",
     "colorBlindHint": "在色块上叠加几何符号，便于辨色（不是换主题）",
-    "confirmSubmitLabel": "确认提交",
-    "confirmSubmitHint": "提交前多一步确认，防误触",
+    "confirmSubmitLabel": "前置确认",
+    "confirmSubmitHint": "提交猜测前多一步确认，防误触",
     "progressLabel": "进度",
     "progressHint": "会重置所有关卡",
     "progressReset": "重置进度",
     "progressResetConfirm": "确定重置闯关与无尽进度？关卡、最佳用时与最高连胜将清空；音效、主题等设置会保留。",
+    "statsLabel": "数据",
+    "statsHint": "各模式进度与各关最佳用时",
+    "statsCta": "查看数据",
     "aboutLabel": "关于"
+  },
+  "stats": {
+    "back": "返回",
+    "title": "数据",
+    "lead": "本机进度与各关最佳用时（合计，越短越好）",
+    "unlocked": "已解锁",
+    "cleared": "已通关",
+    "levelOfMax": "{n} / {max}",
+    "levelLabel": "第 {n} 关",
+    "noBest": "尚无最佳用时",
+    "endlessBest": "最高连胜",
+    "endlessBestValue": "{n} 局"
   },
   "difficulty": {
     "easy": "简单",
@@ -54,7 +69,7 @@
     "intensityTitle": "难度预设 · {label}",
     "intensityAria": "难度预设",
     "intensityMarks": "1 入门 · 3 进阶 · 5 噩梦",
-    "intensityHint": "五档快捷：含简单 / 进阶 / 噩梦；拖动套用推荐组合，仍可改下面每一项",
+    "intensityHint": "快捷套用推荐组合（每次进入默认进阶）；套用后仍可改下面每一项，下方改动不会回写此档位",
     "detailsTitle": "详细选项",
     "colorCount": "颜色数",
     "allowRepeat": "允许颜色重复",
@@ -67,6 +82,15 @@
     "seconds": "{n} 秒",
     "presetSecret": "预设答案（本地双人）",
     "presetSecretHint": "开启后由同伴先设 4 色密码，换手后再由你破译",
+    "fateCase": "厄运时刻",
+    "fateCaseHint": "残局三锁一悬时敲定末色；当前玩法为左轮。可连开至命中或超时",
+    "fateCaseAutoStart": "自动开始",
+    "fateCaseAutoStartHint": "开启后入场即转盘并开 3 秒窗口，无需点「开始」",
+    "fateCaseOneShot": "一枪定负",
+    "fateCaseOneShotHint": "开启后失靶立即判负（同无尽）；关闭则可在窗口内连开（同噩梦）",
+    "fateCaseSpinSpeed": "码数速率",
+    "fateCaseSpinSpeedHint": "码数 = 整圈数÷3秒×100。例：1圈/3秒→33，5圈/3秒→167。越高转得越快、越难锁定",
+    "fateCaseSpinSpeedOption": "{rating}",
     "presetEntryTitle": "出题方：设置密码",
     "presetEntryHint": "请同伴输入答案；破译方请先别看屏幕",
     "presetEntryRules": "须符合试炼规则：{colors}{repeat}",
@@ -100,20 +124,38 @@
     "practiceTipTimedOn": "限时倒计时",
     "practiceTipTimedOff": "正计时",
     "practiceTipPreset": "预设答案",
+    "practiceTipFateCase": "厄运时刻",
     "tip": "点格换色 · 色盘点选 · 长按旋钮或 Enter 提交 · 「？说明」",
     "remaining": "剩余",
     "elapsed": "用时",
     "paused": "暂停",
+    "frozen": "冻结",
     "confirmSubmitTitle": "提交本行？",
     "confirmSubmitBody": "提交后不可改。确认用当前四色发起猜测？",
     "confirmSubmitOk": "确认提交",
-    "confirmSubmitCancel": "再看看"
+    "confirmSubmitCancel": "再看看",
+    "fateCasePlayTitle": "左轮时刻",
+    "fateCaseTimer": "左轮",
+    "fateCaseChamberAria": "左轮弹巢",
+    "fateCaseBlank": "空弹",
+    "fateCaseSpinning": "转盘中…",
+    "fateCaseReady": "「开枪」或 Space / Enter",
+    "fateCaseFire": "开枪",
+    "fateCaseIntro": "对准末色连开，直至命中或时间到\n「开始」或 Space / Enter · 3 秒",
+    "fateCaseIntroOneShot": "一枪定胜负 · 失靶即负\n自动开始 · 3 秒",
+    "fateCaseMissRetry": "未中 · 继续",
+    "fateCaseStart": "开始"
   },
   "result": {
     "won": "破译成功！",
     "lost": "破译失败",
     "timeout": "时间到",
+    "fateCaseMiss": "左轮失靶",
+    "fateCaseShot": "这一枪",
     "timeUsed": "用时",
+    "timeSolve": "推理",
+    "timeFateCase": "左轮",
+    "timeTotal": "合计",
     "withinLimit": "（限时内）",
     "best": "最佳",
     "newRecord": " · 新纪录！",
@@ -157,7 +199,7 @@
         "body": [
           "简单 / 进阶：正计时，结算显示用时并记本地最佳。",
           "噩梦 / 无尽：倒计时；打开说明或切走页签会暂停。",
-          "噩梦最佳按用时（限额减去剩余）计算，越短越好。",
+          "闯关最佳按合计用时（含厄运时刻窗口）覆盖，越短越好。",
           "最后约 10 秒有轻提示（可关音效；系统减少动效时动画更弱）。"
         ]
       },
@@ -181,23 +223,33 @@
         "title": "试炼与设置",
         "body": [
           "闯关按关推进，通关解锁下一关，进度保存在本机。",
-          "自定义试炼可调难度预设、颜色数、重复、提示与限时；不计闯关进度。",
+          "自定义试炼可调难度预设、颜色数、重复、提示、限时与厄运时刻；不计闯关进度。",
           "开启「预设答案」后，由同伴先设密码并换手，再由你破译（同设备本地双人）。",
+          "「数据」可看各模式进度与各关最佳；重置进度也在该页。",
           "在「设置和其他」可调语言、主题与音效。",
           "对局顶栏「？说明」或按键「H」打开本说明。"
         ]
       },
       {
+        "title": "厄运时刻",
+        "body": [
+          "戏剧收官，不是必经：第 4 绿仍可直接过关。当前玩法为美式「左轮」。",
+          "某次提交刚好 3 绿（三锁一悬）时触发：揭晓三锁，悬一格敲定末色。",
+          "左轮玩法：对准光标按「开枪」或 Space / Enter。主倒计时在入场时冻结。",
+          "噩梦：3 秒内可连开至命中或超时。无尽：一枪定负，自动开始且码数更快。试炼可另配自动开始 / 一枪定负 / 码数。"
+        ]
+      },
+      {
         "title": "键盘快捷键",
         "body": [
-          "桌面可用键盘操作（触屏与鼠标仍可用）："
+          "桌面可用键盘操作（触屏与鼠标仍可用）"
         ]
       }
     ]
   },
   "shortcuts": [
     {
-      "keys": "1–6（或 7–8）",
+      "keys": "1-8",
       "action": "将对应颜色填入当前槽"
     },
     {

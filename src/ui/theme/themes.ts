@@ -2,6 +2,7 @@
  *  菜单顺序：经典原皮置顶；其余按色点相似邻近
  *  色点三色：外壳/背景 + 旋钮 + 主按钮
  *  文案见 i18n theme.labels / blurbs
+ *  厄运时刻玩法：主题 → playMode 见 domain/fateCase `THEME_FATE_CASE_PLAY_MODE`（当前全主题默认左轮）
  */
 
 export const THEME_IDS = [

@@ -1,10 +1,13 @@
+import { useState } from 'react'
 import {
   applyIntensity,
   COLOR_COUNT_OPTIONS,
+  FATE_CASE_SPIN_SPEED_OPTIONS,
   TIME_LIMIT_OPTIONS,
   type CustomPracticeOptions,
   type PracticeIntensity,
 } from '@/data/customPractice'
+import { fateCaseSpeedRating, type FateCaseSpinSpeed } from '@/domain/fateCase'
 import { useI18n } from '@/i18n'
 import { MenuSettingRow } from '@/ui/MenuSettingRow'
 import { NavBackButton } from '@/ui/NavBackButton'
@@ -17,17 +20,29 @@ type Props = {
   onBack: () => void
 }
 
+/** 难度预设滑条：仅快捷套用，每次进入固定落在 3，不回显缓存 */
+const DEFAULT_INTENSITY_UI: PracticeIntensity = 3
+
 export function CustomPracticeSetup({ value, onChange, onStart, onBack }: Props) {
   const { m, t } = useI18n()
+  const [intensityUi, setIntensityUi] = useState<PracticeIntensity>(DEFAULT_INTENSITY_UI)
 
   function patch(partial: Partial<CustomPracticeOptions>) {
-    onChange({ ...value, ...partial })
+    onChange({ ...value, ...partial, intensity: DEFAULT_INTENSITY_UI })
   }
 
   function onIntensity(raw: string) {
     const n = Number(raw) as PracticeIntensity
     if (n >= 1 && n <= 5) {
-      onChange({ ...applyIntensity(n), presetSecret: value.presetSecret })
+      setIntensityUi(n)
+      onChange({
+        ...applyIntensity(n),
+        intensity: DEFAULT_INTENSITY_UI,
+        presetSecret: value.presetSecret,
+        fateCase: value.fateCase,
+        fateCaseAutoStart: value.fateCaseAutoStart,
+        fateCaseSpinSpeed: value.fateCaseSpinSpeed,
+      })
     }
   }
 
@@ -43,7 +58,7 @@ export function CustomPracticeSetup({ value, onChange, onStart, onBack }: Props)
 
       <div className="custom-setup-scroll">
         <section className="menu-block">
-          <h2>{t(m.custom.intensityTitle, { label: m.intensity[value.intensity] })}</h2>
+          <h2>{t(m.custom.intensityTitle, { label: m.intensity[intensityUi] })}</h2>
           <p className="menu-hint">{m.custom.intensityHint}</p>
           <input
             className="custom-range"
@@ -51,7 +66,7 @@ export function CustomPracticeSetup({ value, onChange, onStart, onBack }: Props)
             min={1}
             max={5}
             step={1}
-            value={value.intensity}
+            value={intensityUi}
             onChange={(e) => onIntensity(e.target.value)}
             aria-label={m.custom.intensityAria}
           />
@@ -108,32 +123,35 @@ export function CustomPracticeSetup({ value, onChange, onStart, onBack }: Props)
               </select>
             </MenuSettingRow>
 
-            <MenuSettingRow label={m.custom.timed}>
-              <OnOffToggle
-                on={value.timed}
-                onChange={(timed) => patch({ timed })}
-                onLabel={m.menu.toggleOn}
-                offLabel={m.menu.toggleOff}
-                aria-label={m.custom.timed}
-              />
-            </MenuSettingRow>
-
-            {value.timed ? (
-              <MenuSettingRow label={m.custom.timeLimit}>
-                <select
-                  className="menu-setting-select"
-                  value={value.timeLimitSec}
-                  aria-label={m.custom.timeLimit}
-                  onChange={(e) => patch({ timeLimitSec: Number(e.target.value) })}
-                >
-                  {TIME_LIMIT_OPTIONS.map((sec) => (
-                    <option key={sec} value={sec}>
-                      {t(m.custom.seconds, { n: sec })}
-                    </option>
-                  ))}
-                </select>
+            <div className="menu-setting-group">
+              <MenuSettingRow label={m.custom.timed}>
+                <OnOffToggle
+                  on={value.timed}
+                  onChange={(timed) => patch({ timed })}
+                  onLabel={m.menu.toggleOn}
+                  offLabel={m.menu.toggleOff}
+                  aria-label={m.custom.timed}
+                />
               </MenuSettingRow>
-            ) : null}
+              {value.timed ? (
+                <div className="menu-setting-group-children">
+                  <MenuSettingRow label={m.custom.timeLimit}>
+                    <select
+                      className="menu-setting-select"
+                      value={value.timeLimitSec}
+                      aria-label={m.custom.timeLimit}
+                      onChange={(e) => patch({ timeLimitSec: Number(e.target.value) })}
+                    >
+                      {TIME_LIMIT_OPTIONS.map((sec) => (
+                        <option key={sec} value={sec}>
+                          {t(m.custom.seconds, { n: sec })}
+                        </option>
+                      ))}
+                    </select>
+                  </MenuSettingRow>
+                </div>
+              ) : null}
+            </div>
 
             <MenuSettingRow
               label={m.custom.presetSecret}
@@ -147,6 +165,72 @@ export function CustomPracticeSetup({ value, onChange, onStart, onBack }: Props)
                 aria-label={m.custom.presetSecret}
               />
             </MenuSettingRow>
+
+            <div className="menu-setting-group">
+              <MenuSettingRow
+                label={m.custom.fateCase}
+                hint={m.custom.fateCaseHint}
+              >
+                <OnOffToggle
+                  on={value.fateCase}
+                  onChange={(fateCase) => patch({ fateCase })}
+                  onLabel={m.menu.toggleOn}
+                  offLabel={m.menu.toggleOff}
+                  aria-label={m.custom.fateCase}
+                />
+              </MenuSettingRow>
+              {value.fateCase ? (
+                <div className="menu-setting-group-children">
+                  <MenuSettingRow
+                    label={m.custom.fateCaseAutoStart}
+                    hint={m.custom.fateCaseAutoStartHint}
+                  >
+                    <OnOffToggle
+                      on={value.fateCaseAutoStart}
+                      onChange={(fateCaseAutoStart) => patch({ fateCaseAutoStart })}
+                      onLabel={m.menu.toggleOn}
+                      offLabel={m.menu.toggleOff}
+                      aria-label={m.custom.fateCaseAutoStart}
+                    />
+                  </MenuSettingRow>
+                  <MenuSettingRow
+                    label={m.custom.fateCaseOneShot}
+                    hint={m.custom.fateCaseOneShotHint}
+                  >
+                    <OnOffToggle
+                      on={value.fateCaseOneShot}
+                      onChange={(fateCaseOneShot) => patch({ fateCaseOneShot })}
+                      onLabel={m.menu.toggleOn}
+                      offLabel={m.menu.toggleOff}
+                      aria-label={m.custom.fateCaseOneShot}
+                    />
+                  </MenuSettingRow>
+                  <MenuSettingRow
+                    label={m.custom.fateCaseSpinSpeed}
+                    hint={m.custom.fateCaseSpinSpeedHint}
+                  >
+                    <select
+                      className="menu-setting-select"
+                      value={value.fateCaseSpinSpeed}
+                      aria-label={m.custom.fateCaseSpinSpeed}
+                      onChange={(e) =>
+                        patch({
+                          fateCaseSpinSpeed: Number(e.target.value) as FateCaseSpinSpeed,
+                        })
+                      }
+                    >
+                      {FATE_CASE_SPIN_SPEED_OPTIONS.map((n) => (
+                        <option key={n} value={n}>
+                          {t(m.custom.fateCaseSpinSpeedOption, {
+                            rating: fateCaseSpeedRating(n),
+                          })}
+                        </option>
+                      ))}
+                    </select>
+                  </MenuSettingRow>
+                </div>
+              ) : null}
+            </div>
           </div>
         </section>
       </div>

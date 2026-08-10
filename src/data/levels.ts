@@ -33,6 +33,10 @@ export function endlessRoundConfig(clears: number, timeLimitMs: number): LevelCo
     difficulty: 'nightmare',
     timerMode: 'countdown',
     timeLimitMs,
+    fateCaseEnabled: true,
+    fateCaseAutoStart: true,
+    fateCaseSpinSpeed: 5,
+    fateCaseOneShot: true,
   }
 }
 
@@ -80,6 +84,10 @@ export function levelConfig(difficulty: Difficulty, index: number): LevelConfig 
     difficulty: 'nightmare',
     timerMode: 'countdown',
     timeLimitMs: nightmareTimeLimitMs(level),
+    fateCaseEnabled: true,
+    fateCaseAutoStart: false,
+    fateCaseSpinSpeed: 3,
+    fateCaseOneShot: false,
   }
 }
 
