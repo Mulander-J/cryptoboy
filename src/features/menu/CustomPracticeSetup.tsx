@@ -41,6 +41,7 @@ export function CustomPracticeSetup({ value, onChange, onStart, onBack }: Props)
         presetSecret: value.presetSecret,
         fateCase: value.fateCase,
         fateCaseAutoStart: value.fateCaseAutoStart,
+        fateCaseOneShot: value.fateCaseOneShot,
         fateCaseSpinSpeed: value.fateCaseSpinSpeed,
       })
     }

@@ -226,7 +226,7 @@ export function GameBoard({
   ])
 
   function restart(nextLevel = level) {
-    const nextConfig = buildConfig(mode, difficulty, nextLevel, customConfig)
+    const nextConfig = buildConfig(mode, difficulty, nextLevel, themeId, customConfig)
     const secret = buildSecret(mode, difficulty, nextLevel, nextConfig, initialSecret)
     dispatch({ type: 'RESTART', secret, config: nextConfig })
     prevStatus.current = 'editing'
