@@ -20,11 +20,11 @@ type Props = {
   timerMode?: TimerMode
   /** 合计用时（最佳记录按此累加覆盖） */
   elapsedMs?: number
-  /** 左轮前推理用时（有左轮时分开展示） */
+  /** Fate Night 前推理用时（有收官时分开展示） */
   baseElapsedMs?: number
-  /** 左轮窗口用时（有左轮时分开展示） */
+  /** Fate Night 窗口用时（有收官时分开展示） */
   fateCaseElapsedMs?: number
-  /** 左轮打中的颜色 / 空弹 */
+  /** Fate Night 定色结果：颜色 / 空弹 */
   fateCaseShot?: FateCaseChoice | null
   /** 该关历史最佳用时（合计） */
   bestTimeMs?: number

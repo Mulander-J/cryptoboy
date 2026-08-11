@@ -132,6 +132,7 @@ export function pause(clock: GameClock, reason: ClockPauseReason): GameClock {
 
 export function resume(clock: GameClock, reason: ClockPauseReason): GameClock {
   if (clock.status === 'frozen' || clock.status === 'expired') return clock
+  if (!clock.pauseReasons.includes(reason)) return clock
   const pauseReasons = clock.pauseReasons.filter((r) => r !== reason)
   return {
     ...clock,
@@ -151,7 +152,7 @@ export function freeze(clock: GameClock): GameClock {
 }
 
 /**
- * 倒计时入左轮：剩余统一重置为 remainingMs（不超过本局限额）；
+ * 倒计时入 Fate Night：剩余统一重置为 remainingMs（不超过本局限额）；
  * 可从 expired 拉回；正计时不变。
  */
 export function setCountdownRemaining(clock: GameClock, remainingMs: number): GameClock {

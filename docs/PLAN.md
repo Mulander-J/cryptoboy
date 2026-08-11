@@ -18,14 +18,15 @@ P0 工程骨架
  → P3 机身视觉还原
  → P4 闯关 / 难度 / 持久化
  → P4.5 计时 / 限时挑战
- → P4.6 主题体系 / 自由练习（可配置）
+ → P4.6 主题体系 / 自定义试炼（可配置）
  → P4.7 i18n（简中 / EN）+ CryptoBoy 品牌
- → P4.8 工程规范深化（组件模块化 / i18n JSON）
+ → P4.8 工程规范深化（组件模块化 / i18n JSON / hooks·模式条文）
  → P4.9 页面路由体系
  → P4.10 GitHub Pages 404 / SPA 回退
  → P5 设置 / 抛光 / 本地双人（练习预设答案）
  → P6 噩梦 · 无尽
- → P7 厄运时刻（当前玩法：左轮）
+ → P7 厄运时刻（收官定色）
+ → P7.1 主题玩法（默认 beat / 美式左轮）
  → （延后）联机 Duo 等
 ```
 
@@ -42,20 +43,21 @@ P0 工程骨架
 | P4 闯关进度 | ✅ | 三档、localStorage、种子关卡 |
 | P4.5 计时 | ✅ | 正计时 / 倒计时挑战 / 最佳用时 |
 | 多主题 + 右上角切换 | ✅ | 9 套主题、三色点、对比打磨 |
-| 自由练习（可配置） | ✅ | 系数 / 颜色数 / 重复 / 提示 / 限时 + 三档快捷 |
+| 自定义试炼（可配置） | ✅ | 系数 / 颜色数 / 重复 / 提示 / 限时 + 三档快捷 |
 | 玩法说明 + 键盘 | ✅ | HelpPanel、快捷键 |
 | i18n 简中 / EN + CryptoBoy | ✅ | 设置区语言；文案 `locales/*.json` |
-| 代码规范文档 | ✅ | [CODE_STANDARDS.md](./CODE_STANDARDS.md) |
-| P4.8 组件模块化（续） | ⏳ | 高/中优已落地；低优见 CODE_STANDARDS §2 |
+| 代码规范文档 | ✅ | [CODE_STANDARDS.md](./CODE_STANDARDS.md)；含 hooks / rAF / 轻量设计模式（§3.1–3.4） |
+| P4.8 工程规范深化 | ⏳ | 组件高/中优已落地；STD hooks/模式条文 ✅；低优组件见 §2 |
 | P4.9 页面路由体系 | ✅ | React Router；见 CODE_STANDARDS §1.1 / `src/app/paths.ts` |
 | GitHub Pages 自动部署 | ✅ | `main` → Actions → Pages；见 `.github/workflows/deploy-pages.yml` |
 | P4.10 Pages 404 / SPA 回退 | ✅ | `scripts/copy-404.mjs` → `dist/404.html`；客户端 `/404` |
-| P5-1 本地双人（练习预设答案） | ✅ | 自由练习 `presetSecret` + 设密/换手 |
+| P5-1 本地双人（练习预设答案） | ✅ | 自定义试炼 `presetSecret` + 设密/换手 |
 | P5-2 完整设置 | ✅ | 音效 / 主题 / 语言 / 进度重置 / 色盲图案 / 确认提交 |
 | 像素字体自托管 | ✅ | Press Start 2P → `public/fonts` + `injectPixelFont`（兼容 Pages base） |
 | P5-4/5 响应式与 a11y | ✅ | 安全区 / 小屏顶栏 / 矮屏缩放；焦点陷阱 + focus-visible；色盲见 PRODUCT §3.6 |
 | P6 噩梦 · 无尽 | ✅ | 改名 / 迁移 / 无尽连破；见 PRODUCT.md |
-| P7 厄运时刻 | ✅ | 三锁一悬 · 一枪；当前玩法左轮；见 PRODUCT.md |
+| P7 厄运时刻 | ✅ | 三锁一悬 · 定色；见 PRODUCT.md；玩法映射见 P7.1 |
+| P7.1 主题玩法映射 | ✅ | 默认 beat；americana→revolver；见 PRODUCT.md |
 | 联网 Duo / Wasm / 上架 | ❌ | 延后；见 DUO.md |
 
 ---
@@ -101,7 +103,7 @@ P0 工程骨架
 | ID | 任务 | 状态 |
 | ---- | ------ | ------ |
 | P4-1 ~ P4-4 | Easy/Advanced、种子关、进度、重试解锁 | ✅ |
-| P4-5 | 自由练习（可配置规则） | ✅ |
+| P4-5 | 自定义试炼（可配置规则） | ✅ |
 
 ---
 
@@ -113,13 +115,13 @@ P0 工程骨架
 
 ---
 
-## P4.6 · 主题与自由练习
+## P4.6 · 主题与自定义试炼
 
 | ID | 任务 | 状态 |
 | ---- | ------ | ------ |
 | TH-1 | 多主题 token + 右上角 ThemePicker | ✅ |
 | TH-2 | 三色点 / 对比打磨 / 节庆皮 | ✅ |
-| CP-1 | 自由练习可配置 + 难度系数 + 三档快捷 | ✅ |
+| CP-1 | 自定义试炼可配置 + 难度系数 + 三档快捷 | ✅ |
 | CP-2 | 选项持久化 `settings.customPractice` | ✅ |
 
 ---
@@ -131,6 +133,9 @@ P0 工程骨架
 | ID | 任务 | 状态 |
 | ---- | ------ | ------ |
 | STD-1 | 新增 `docs/CODE_STANDARDS.md` | ✅ |
+| STD-2 | 条文：hooks / 副作用 / rAF（CODE_STANDARDS §3.1–3.2）；对照落地 `useGameClock` / `useFateNightPlay` | ✅ |
+| STD-3 | 条文：hooks 用量归仓（§3.3）+ 轻量设计模式（§3.4 Reducer / Strategy / Facade 等） | ✅ |
+| STD-4 | （可选）按 §3.3 收敛页面平行 `useState`（如 GameBoard 结算字段） | ⏳ |
 | I18N-1 | 文案迁到 `src/i18n/locales/*.json` | ✅ |
 | I18N-2 | 两语结构对齐单测（`localeShapeKeys`） | ✅ |
 | I18N-3 | （可选）再接入 i18next；当前 Context 可保留 | ⏳ |
@@ -166,7 +171,7 @@ P0 工程骨架
 
 | ID | 任务 | 状态 |
 | ---- | ------ | ------ |
-| P5-1 | 自由练习「预设答案」：出题 → 换手 → 破译 | ✅ |
+| P5-1 | 自定义试炼「预设答案」：出题 → 换手 → 破译 | ✅ |
 | P5-2a | 设置：进度重置（确认框；保留 settings） | ✅ |
 | P5-2b | 设置：色盲图案（灯阵 / 色盘 / 结算叠加符号） | ✅ |
 | P5-2c | 设置：确认提交（UI 弹窗，非 window.confirm） | ✅ |
@@ -188,15 +193,27 @@ P0 工程骨架
 
 ---
 
-## P7 · 厄运时刻（当前玩法：左轮）
+## P7 · 厄运时刻（收官定色）
 
-规格见 **[PRODUCT.md](./PRODUCT.md)** §厄运时刻。总称与玩法分离：左轮 = 美式轮盘玩法。
+规格见 **[PRODUCT.md](./PRODUCT.md)** §厄运时刻。总称 Fate Night；玩法子集见 P7.1（首版落地为左轮 UI，现已拆为 `playMode`）。
 
 | ID | 任务 | 状态 |
 | ---- | ------ | ------ |
 | I0b | `FATE_CASE_*` 常量与空弹规则（候选项唯一则加空弹）单测 | ✅ |
-| I2 | 厄运时刻状态机 + UI（玩法 `revolver`）；噩梦 / 无尽启用 + 试炼开关 | ✅ |
-| I3 | 转盘动画 + 开火 / 连开 + 3s 窗口 + 空弹表现 | ✅ |
+| I2 | 厄运时刻状态机 + UI；噩梦 / 无尽启用 + 试炼开关 | ✅ |
+| I3 | 收官动效 + 定色 / 连开 + 3s 窗口 + 空弹表现 | ✅ |
+
+---
+
+## P7.1 · 主题玩法（默认 beat / 美式左轮）
+
+规格见 **[PRODUCT.md](./PRODUCT.md)** §3.7。默认节拍玩法；`americana`（自由美式）挂左轮。
+
+| ID | 任务 | 状态 |
+| ---- | ------ | ------ |
+| FC-1 | `FateCasePlayMode` 含 `beat`；默认 beat；`americana = revolver` | ✅ |
+| FC-2 | 节拍 UI：加宽均匀音符 + 判定线步长脉冲；共用 3s / 一次机会 / 五档难度 | ✅ |
+| FC-3 | 设置与结算文案通用化；局内 slogan 按 playMode 分支 | ✅ |
 
 ---
 
@@ -204,7 +221,7 @@ P0 工程骨架
 
 - 联机 Duo（含中段改色/改位等道具赛；草案见 [DUO.md](./DUO.md)）
 - 一键截图分享（结算 / 数据页 → 生成卡片图，分享到社交；后续做）
-- **其他主题的厄运时刻玩法**（左轮之外；见下节）
+- **其他主题的厄运时刻玩法**（左轮 / 默认节拍之外；见下节）
 - Wasm
 - Capacitor 上架
 - 与任何厂商关卡表 / 官方数据对齐
@@ -222,16 +239,19 @@ P0 工程骨架
 
 ### 厄运时刻 · 主题玩法扩展
 
-现状（P7 已落地）：
+现状（P7 + P7.1）：
 
-- 总称 `fateCase*`（Fate Night）；玩法子集 `playMode`（当前仅 `revolver` / 左轮）。
-- 映射表 `THEME_FATE_CASE_PLAY_MODE`：**全部视觉主题默认左轮**（见 [PRODUCT.md](./PRODUCT.md) §厄运时刻）。
+- **体验核心**：不确定的趣味短时玩法 → 确定的悬格色球；左轮 / 节拍是子集；限时加压（见 [PRODUCT.md](./PRODUCT.md) §3.7）。
+- 总称 `fateCase*`（Fate Night）；玩法子集 `playMode`：`revolver` | `beat`。
+- 映射表 `THEME_FATE_CASE_PLAY_MODE`：**americana → revolver**；其余主题 → beat。
+- 设置三项通用：自动开始 / 一次机会 / 收官难度（五档，`fateCaseDifficulty`）；各玩法自行解释。
+- **彩蛋**：Help 不设厄运专章；收官 UI 不堆规则说明，玩家自行探索。
 
 后续（延后做）：
 
-- 按主题挂不同玩法（例：居合 / 其他），共用触发（三锁一悬）与胜负契约；UI / 动效分玩法实现。
-- 改 `THEME_FATE_CASE_PLAY_MODE` + 扩展 `FateCasePlayMode` 联合类型；slogan / 帮助按 `playMode` 分支。
-- 规格另开；不挡当前主路径。候选方向可随主题气质定（如战车 / 三星堆 / 新春等），**未定具体哪几个主题换哪套玩法**。
+- 按其他主题挂不同玩法，共用触发（三锁一悬）与胜负契约；UI / 动效分玩法实现。
+- 改 `THEME_FATE_CASE_PLAY_MODE` + 扩展 `FateCasePlayMode`；规格 / 文案按 `playMode` 分支（仍可不进 Help）。
+- 候选方向可随主题气质定（如战车 / 三星堆 / 新春等）。
 
 ### 联机 Duo · WebRTC
 
@@ -268,6 +288,6 @@ P0 工程骨架
 ## 下一步建议
 
 1. （延后）一键截图分享社交  
-2. （延后）其他主题的厄运时刻玩法（非左轮）  
+2. （延后）其他主题的厄运时刻玩法（默认 beat / 美式左轮已落地）  
 3. （延后）[DUO.md](./DUO.md) 联机与中段道具  
 4. （更远）链上纪念 NFT；密码 4→6  

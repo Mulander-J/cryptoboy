@@ -19,7 +19,7 @@
 | `session.ts` | `GameSession` 状态机（输入 / 提交 / 胜负 / 收官态） |
 | `passwordInput.ts` | 预设答案等密码输入校验 |
 | `clock.ts` | 正计时 / 倒计时、合计拆分、`formatMmSs` |
-| `fateCase.ts` | 厄运时刻总称层：启用面、转速、玩法映射（主题→左轮等）、收官相位 |
+| `fateCase.ts` | Fate Night：启用面、难度档、玩法映射（默认 beat / americana→revolver）、收官相位 |
 
 ## 相关
 

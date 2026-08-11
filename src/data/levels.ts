@@ -35,7 +35,7 @@ export function endlessRoundConfig(clears: number, timeLimitMs: number): LevelCo
     timeLimitMs,
     fateCaseEnabled: true,
     fateCaseAutoStart: true,
-    fateCaseSpinSpeed: 5,
+    fateCaseDifficulty: 5,
     fateCaseOneShot: true,
   }
 }
@@ -86,7 +86,7 @@ export function levelConfig(difficulty: Difficulty, index: number): LevelConfig 
     timeLimitMs: nightmareTimeLimitMs(level),
     fateCaseEnabled: true,
     fateCaseAutoStart: false,
-    fateCaseSpinSpeed: 3,
+    fateCaseDifficulty: 3,
     fateCaseOneShot: false,
   }
 }

@@ -79,7 +79,7 @@
   box-sizing: border-box;
 }
 
-/* 练习设置：顶栏吸顶 / 内容可滚 / 「开始练习」吸底；横向无 padding，滚动条贴右 */
+/* 练习设置：顶栏吸顶 / 内容可滚；「开始」仅高度不够时吸底（--dock-actions） */
 .menu-screen.custom-setup {
   --custom-setup-pad-x: max(1.25rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   height: 100vh;
@@ -103,6 +103,12 @@
   gap: 1.75rem;
   padding: 1rem var(--custom-setup-pad-x);
   -webkit-overflow-scrolling: touch;
+}
+
+.custom-setup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
 
 .custom-setup-top {
@@ -158,11 +164,16 @@
   color: var(--color-text-muted);
 }
 
+/* 默认跟在表单后；吸底时由 --dock-actions 恢复底栏 */
 .custom-setup-actions {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding: 0.25rem 0 max(0.5rem, env(safe-area-inset-bottom, 0px));
+}
+
+.custom-setup--dock-actions .custom-setup-actions {
   padding:
     0.75rem var(--custom-setup-pad-x)
     max(0.85rem, env(safe-area-inset-bottom, 0px));
@@ -458,11 +469,14 @@
   outline-offset: 2px;
 }
 
+/* fixed + --tip-*，避免被 custom-setup 等 overflow 祖先裁切 */
 .menu-setting-tooltip {
-  position: absolute;
-  left: 0;
-  bottom: calc(100% + 8px);
-  z-index: 5;
+  position: fixed;
+  left: var(--tip-left, 0);
+  top: var(--tip-top, 0);
+  bottom: auto;
+  right: auto;
+  z-index: 40;
   width: max-content;
   max-width: min(18rem, 72vw);
   padding: 0.45rem 0.6rem;
@@ -950,22 +964,6 @@
 
 .badge-info {
   flex-shrink: 0;
-}
-
-/* 顶栏 tip 向下展开，避免被裁到视口外 */
-.badge-info .menu-setting-tooltip {
-  top: calc(100% + 8px);
-  bottom: auto;
-  left: 50%;
-  right: auto;
-  z-index: 20;
-  transform: translate(-50%, -2px);
-}
-
-.badge-info:hover .menu-setting-tooltip,
-.badge-info:focus .menu-setting-tooltip,
-.badge-info:focus-visible .menu-setting-tooltip {
-  transform: translate(-50%, 0);
 }
 
 .game-timer {
@@ -2042,9 +2040,10 @@
 
 .fate-case-title-wrap {
   margin: 0.15rem 0 0.55rem;
-  min-height: 2.4rem;
+  min-height: 3.1rem;
   display: grid;
   place-items: center;
+  gap: 0.2rem;
 }
 
 .fate-case-moment h2 {
@@ -2061,9 +2060,23 @@
     3px 3px 0 #00000077;
 }
 
+.fate-case-subtitle {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-pixel);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+}
+
 .fate-case-moment.has-entrance .fate-case-title-text {
   display: inline-block;
   animation: fate-case-title-slam 0.78s 0.06s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fate-case-moment.has-entrance .fate-case-subtitle {
+  animation: fate-case-content-fade 0.4s 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .fate-case-moment.has-entrance .fate-case-title-wrap::after {
@@ -2071,7 +2084,7 @@
   display: block;
   width: 7.5rem;
   height: 2px;
-  margin: 0.45rem auto 0;
+  margin: 0.35rem auto 0;
   transform: scaleX(0);
   transform-origin: center;
   background: linear-gradient(
@@ -2088,10 +2101,15 @@
   text-shadow: 0 0 12px color-mix(in srgb, var(--color-danger) 55%, transparent);
 }
 
+.fate-case-moment.is-urgent .fate-case-subtitle {
+  color: color-mix(in srgb, var(--color-danger) 55%, var(--color-text-muted));
+}
+
 /* 正文稍后淡入，把注意力留给标题 */
 .fate-case-moment.has-entrance .fate-case-moment-hint,
 .fate-case-moment.has-entrance .fate-case-countdown,
 .fate-case-moment.has-entrance .fate-case-wheel-stage,
+.fate-case-moment.has-entrance .fate-case-beat-stage,
 .fate-case-moment.has-entrance .fate-case-fire-btn {
   animation: fate-case-content-fade 0.48s 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -2112,11 +2130,6 @@
   gap: 0.4rem;
   margin: 0 0 0.75rem;
   font-variant-numeric: tabular-nums;
-}
-
-.fate-case-countdown-label {
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
 }
 
 .fate-case-countdown-digits {
@@ -2198,9 +2211,193 @@
   animation: fate-case-digits-pulse 0.45s ease-in-out infinite;
 }
 
-.fate-case-wheel-stage.dimmed {
+.fate-case-wheel-stage.dimmed,
+.fate-case-beat-stage.dimmed {
   opacity: 0.72;
   filter: saturate(0.85);
+}
+
+.fate-case-beat-stage {
+  position: relative;
+  width: min(100%, 300px);
+  margin: 0 auto 0.75rem;
+  padding-top: 0.45rem;
+}
+
+.fate-case-beat-cursor {
+  top: -0.1rem;
+}
+
+.fate-case-beat {
+  width: 100%;
+  --beat-note-w: 42px;
+  --beat-note-h: 22px;
+  --beat-gap: 14px;
+  --beat-step: 56px;
+  --beat-step-ms: 500ms;
+}
+
+.fate-case-beat-window {
+  position: relative;
+  height: calc(var(--beat-note-h) + 26px);
+  border-radius: 8px;
+  border: 2px solid var(--color-border-strong);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-surface) 88%, #000) 0%,
+      color-mix(in srgb, var(--color-surface) 62%, #000) 45%,
+      color-mix(in srgb, var(--color-surface) 62%, #000) 55%,
+      color-mix(in srgb, var(--color-surface) 88%, #000) 100%
+    );
+  box-shadow: inset 0 -2px 0 #00000033, 0 6px 14px #00000055;
+  overflow: hidden;
+}
+
+/* 两侧淡出：像音游判定线前后的视野 */
+.fate-case-beat-window::before,
+.fate-case-beat-window::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 22%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.fate-case-beat-window::before {
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-surface) 92%, #000),
+    transparent
+  );
+}
+
+.fate-case-beat-window::after {
+  right: 0;
+  background: linear-gradient(
+    270deg,
+    color-mix(in srgb, var(--color-surface) 92%, #000),
+    transparent
+  );
+}
+
+.fate-case-beat-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: color-mix(in srgb, #fff 14%, transparent);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.fate-case-beat-rail.rail-top {
+  top: 6px;
+}
+
+.fate-case-beat-rail.rail-bot {
+  bottom: 6px;
+}
+
+.fate-case-beat-strip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  height: var(--beat-note-h);
+  margin-top: calc(var(--beat-note-h) / -2);
+  will-change: transform;
+  z-index: 1;
+}
+
+.fate-case-beat-step {
+  flex: 0 0 var(--beat-step);
+  width: var(--beat-step);
+  height: var(--beat-note-h);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.fate-case-beat-note {
+  flex: 0 0 var(--beat-note-w);
+  width: var(--beat-note-w);
+  height: var(--beat-note-h);
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 2px solid color-mix(in srgb, #fff 22%, transparent);
+  display: grid;
+  place-items: center;
+  background: #2a2f36;
+  box-shadow: inset 0 -1px 0 #00000044, 0 1px 2px #00000055;
+  transition: border-color 0.1s ease, filter 0.1s ease, box-shadow 0.1s ease, transform 0.1s ease;
+}
+
+.fate-case-beat-note.blank {
+  border-color: color-mix(in srgb, #fff 10%, transparent);
+  background: #1c2127;
+}
+
+.fate-case-beat-note.active {
+  border-color: #fff;
+  transform: scale(1.14);
+  box-shadow:
+    inset 0 -1px 0 #00000044,
+    0 0 0 2px #000000bb,
+    0 0 14px color-mix(in srgb, #ff3b3b 65%, transparent);
+  filter: brightness(1.1);
+  z-index: 2;
+}
+
+.fate-case-beat-mark {
+  color: #fff;
+  font-size: 0.62rem;
+  line-height: 1;
+  text-shadow: 0 1px 0 #00000088;
+}
+
+/* 中央判定线（音游击打线）；按单步周期脉冲，不改命中判定 */
+.fate-case-beat-judge {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, #ff3b3b 85%, #fff),
+    transparent
+  );
+  box-shadow: 0 0 6px color-mix(in srgb, #ff3b3b 55%, transparent);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.fate-case-moment.play-beat.spinning .fate-case-beat-judge {
+  animation: fate-case-beat-pulse var(--beat-step-ms, 500ms) ease-in-out infinite;
+}
+
+.fate-case-moment.reduce-motion .fate-case-beat-judge {
+  animation: none;
+}
+
+.fate-case-beat-reticle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--beat-note-w) + 8px);
+  height: calc(var(--beat-note-h) + 8px);
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  border: 2px solid color-mix(in srgb, #ff3b3b 65%, #fff);
+  box-shadow: inset 0 0 0 1px #00000044;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .fate-case-countdown.waiting .fate-case-countdown-digits {
@@ -2542,6 +2739,21 @@
   }
 }
 
+@keyframes fate-case-beat-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translateX(-50%) scaleY(0.92);
+    filter: brightness(0.95);
+  }
+  45%,
+  55% {
+    opacity: 1;
+    transform: translateX(-50%) scaleY(1.06);
+    filter: brightness(1.25);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fate-case-moment.is-miss-flash,
   .fate-case-moment.has-entrance,
@@ -2549,16 +2761,19 @@
   .fate-case-moment.has-entrance .fate-case-slash,
   .fate-case-moment.has-entrance .fate-case-corner,
   .fate-case-moment.has-entrance .fate-case-title-text,
+  .fate-case-moment.has-entrance .fate-case-subtitle,
   .fate-case-moment.has-entrance .fate-case-title-wrap::after,
   .fate-case-moment.has-entrance .fate-case-moment-hint,
   .fate-case-moment.has-entrance .fate-case-countdown,
   .fate-case-moment.has-entrance .fate-case-wheel-stage,
+  .fate-case-moment.has-entrance .fate-case-beat-stage,
   .fate-case-moment.has-entrance .fate-case-fire-btn,
   .fate-case-moment.has-entrance .fate-case-lock,
   .fate-case-moment.has-entrance .fate-case-lock.hanging,
   .fate-case-wheel-shake,
   .fate-case-countdown.urgent .fate-case-countdown-digits,
-  .fate-case-lock.hanging {
+  .fate-case-lock.hanging,
+  .fate-case-moment.play-beat.spinning .fate-case-beat-judge {
     animation: none !important;
   }
 }

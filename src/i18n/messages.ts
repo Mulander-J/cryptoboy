@@ -93,6 +93,7 @@ export type Messages = {
     hintColumn: string
     hintSummary: string
     timed: string
+    timedHint: string
     timeLimit: string
     seconds: string
     presetSecret: string
@@ -103,9 +104,9 @@ export type Messages = {
     fateCaseAutoStartHint: string
     fateCaseOneShot: string
     fateCaseOneShotHint: string
-    fateCaseSpinSpeed: string
-    fateCaseSpinSpeedHint: string
-    fateCaseSpinSpeedOption: string
+    fateCaseDifficulty: string
+    fateCaseDifficultyHint: string
+    fateCaseDifficultyOption: string
     presetEntryTitle: string
     presetEntryHint: string
     presetEntryRules: string
@@ -134,7 +135,6 @@ export type Messages = {
     practiceTipTimedOff: string
     practiceTipPreset: string
     practiceTipFateCase: string
-    tip: string
     remaining: string
     elapsed: string
     paused: string
@@ -143,15 +143,18 @@ export type Messages = {
     confirmSubmitBody: string
     confirmSubmitOk: string
     confirmSubmitCancel: string
-    fateCasePlayTitle: string
-    fateCaseTimer: string
+    /** 收官大标题（总称 Fate Night） */
+    fateCaseTitle: string
+    fateCaseSubtitleRevolver: string
+    fateCaseSubtitleBeat: string
     fateCaseChamberAria: string
+    fateCaseBeatAria: string
     fateCaseBlank: string
     fateCaseSpinning: string
-    fateCaseReady: string
+    fateCaseReadyRevolver: string
+    fateCaseReadyBeat: string
     fateCaseFire: string
-    fateCaseIntro: string
-    fateCaseIntroOneShot: string
+    fateCaseLock: string
     fateCaseMissRetry: string
     fateCaseStart: string
   }

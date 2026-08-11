@@ -14,6 +14,9 @@ import {
 const STORAGE_KEY = 'code-hack-progress-v2'
 const LEGACY_KEY = 'code-hack-progress-v1'
 
+/** 进度相关 localStorage 键（含已废弃键；升级清场时一并扫掉） */
+const PROGRESS_STORAGE_KEYS = [STORAGE_KEY, LEGACY_KEY] as const
+
 export type DifficultyProgress = {
   unlocked: number
   cleared: number
@@ -164,6 +167,7 @@ export function loadProgress(): ProgressState {
           },
           settings: parsed.settings,
         })
+        clearProgressStorageCache()
         saveProgress(migrated)
         return migrated
       }
@@ -279,7 +283,24 @@ export function hasSoloProgress(state: ProgressState): boolean {
   return soloHas || state.endless.bestClears > 0
 }
 
-/** 重置闯关与无尽进度；保留设置 */
+/**
+ * 清除进度相关 localStorage（含废弃键），不改内存态。
+ * 升级废弃键、reset 清场、或需要彻底重写存档时调用；调用方负责再 `saveProgress`。
+ */
+export function clearProgressStorageCache(
+  keys: readonly string[] = PROGRESS_STORAGE_KEYS,
+): void {
+  if (!canUseStorage()) return
+  for (const key of keys) {
+    try {
+      localStorage.removeItem(key)
+    } catch {
+      // 隐私模式等：静默失败
+    }
+  }
+}
+
+/** 重置闯关与无尽进度；保留设置；顺带清掉废弃存档键后回写 */
 export function resetSoloProgress(state: ProgressState): ProgressState {
   const next: ProgressState = {
     ...state,
@@ -290,6 +311,7 @@ export function resetSoloProgress(state: ProgressState): ProgressState {
     },
     endless: emptyEndless(),
   }
+  clearProgressStorageCache()
   saveProgress(next)
   return next
 }

@@ -129,7 +129,7 @@
   --glow-strength: 0.45;
 }
 
-/* —— 自由美国：深蓝 / 白 / 绯红 —— */
+/* —— 自由美式：深蓝 / 白 / 绯红 —— */
 [data-theme='americana'] {
   --color-bg: #0b1220;
   --color-bg-elevated: #142038;
@@ -192,7 +192,7 @@
 }
 
 /* —— 踏雪寻梅：冬雪冷白 + 梅朱红（浅色皮加强边与字色） —— */
-[data-theme='plum-snow'] {
+[data-theme='snowplum'] {
   --color-bg: #d8e0ea;
   --color-bg-elevated: #c8d4e2;
   --color-surface: #eef3f8;
@@ -514,7 +514,7 @@
   --hint-absent: #3a3a30;
 }
 
-[data-theme='plum-snow'] body {
+[data-theme='snowplum'] body {
   background:
     radial-gradient(ellipse 80% 50% at 50% 0%, #b8c8dccc 0%, transparent 55%),
     linear-gradient(180deg, var(--page-bg-top), var(--page-bg-bottom));
@@ -541,22 +541,22 @@
 }
 
 /* 浅色皮：卡片 / 浮层边框更硬 */
-[data-theme='plum-snow'] .menu-block,
-[data-theme='plum-snow'] .theme-dock-panel,
-[data-theme='plum-snow'] .theme-dock-trigger,
-[data-theme='plum-snow'] .game-timer,
-[data-theme='plum-snow'] .result-modal,
-[data-theme='plum-snow'] .help-panel {
+[data-theme='snowplum'] .menu-block,
+[data-theme='snowplum'] .theme-dock-panel,
+[data-theme='snowplum'] .theme-dock-trigger,
+[data-theme='snowplum'] .game-timer,
+[data-theme='snowplum'] .result-modal,
+[data-theme='snowplum'] .help-panel {
   border-color: var(--color-border-strong);
   box-shadow: 0 2px 12px color-mix(in srgb, #141c26 12%, transparent);
 }
 
-[data-theme='plum-snow'] .btn-ghost {
+[data-theme='snowplum'] .btn-ghost {
   border-color: var(--color-border-strong);
   color: var(--color-text-muted);
 }
 
-[data-theme='plum-snow'] .menu-hero h1 {
+[data-theme='snowplum'] .menu-hero h1 {
   text-shadow:
     0 1px 0 #fff,
     0 2px 0 var(--color-accent-shadow);

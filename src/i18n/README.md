@@ -1,14 +1,14 @@
 # i18n
 
 > 简体中文 / English：文案 JSON、Context、插值与文档语言同步。  
-> 含菜单、数据页、帮助教程、厄运时刻 / 左轮局内文案等；键结构须中英对齐。
+> 含菜单、数据页、帮助教程、厄运时刻（左轮 / 节拍）局内文案等；键结构须中英对齐。
 
 ## 约束
 
 - 用户可见文案放 `locales/*.json`，**不用** YAML、不在组件内硬编码长句
 - 两语结构键须对齐（`i18n.test.ts` 校验）
 - `domain` 不依赖本层
-- 产品命名：总称厄运时刻 / Fate Night（代码 `fateCase*`）；局内 slogan 左轮时刻 / Revolver moment（`playMode: 'revolver'`，见 PRODUCT）
+- 产品命名：总称 / 收官大标题 Fate Night（代码 `fateCase*`）；副标题按玩法：左轮 / Revolver、节拍 / Beat（见 PRODUCT）
 
 ## 主要文件
 

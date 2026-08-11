@@ -12,8 +12,8 @@
 
 | 目录 | 说明 |
 | ------ | ------ |
-| `menu/` | 主菜单、主题/语言/音效、自由练习配置、数据页、关于 |
-| `solo/` | 闯关 / 练习 / 无尽共用的 `GameBoard`、`FateCaseMoment`、顶栏、计时 / 键盘 hooks |
+| `menu/` | 主菜单、主题/语言/音效、自定义试炼配置、数据页、关于 |
+| `solo/` | 闯关 / 练习 / 无尽共用的 `GameBoard`、`fateNight/`（FateNightWatcher）、顶栏、计时 / 键盘 hooks |
 | `help/` | 全局帮助 `HelpController` / `HelpPanel`、快捷键 |
 
 ## 路由页面

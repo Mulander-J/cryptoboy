@@ -47,6 +47,11 @@ describe('GameClock', () => {
     expect(c.status).toBe('running')
   })
 
+  it('resume 无对应 pause 时保持同一引用', () => {
+    const c = createClock({ timerMode: 'countup' })
+    expect(resume(c, 'help')).toBe(c)
+  })
+
   it('倒计时超时 → expired', () => {
     let c = createClock({ timerMode: 'countdown', timeLimitMs: 3000 })
     c = tick(c, 2500)
@@ -97,7 +102,7 @@ describe('GameClock', () => {
     expect(c.status).toBe('running')
   })
 
-  it('scoreElapsedMs：主钟冻结 + 左轮窗口消耗记账', () => {
+  it('scoreElapsedMs：主钟冻结 + Fate Night 窗口消耗记账', () => {
     let c = createClock({ timerMode: 'countdown', timeLimitMs: 120_000 })
     c = tick(c, 30_000)
     expect(elapsedMs(c)).toBe(30_000)

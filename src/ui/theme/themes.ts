@@ -2,7 +2,7 @@
  *  菜单顺序：经典原皮置顶；其余按色点相似邻近
  *  色点三色：外壳/背景 + 旋钮 + 主按钮
  *  文案见 i18n theme.labels / blurbs
- *  厄运时刻玩法：主题 → playMode 见 domain/fateCase `THEME_FATE_CASE_PLAY_MODE`（当前全主题默认左轮）
+ *  厄运时刻玩法：主题 → playMode 见 domain/fateCase `THEME_FATE_CASE_PLAY_MODE`（americana→revolver，其余→beat）
  */
 
 export const THEME_IDS = [
@@ -11,7 +11,7 @@ export const THEME_IDS = [
   'xmas',
   'cyber',
   'cappuccino',
-  'plum-snow',
+  'snowplum',
   'cny',
   'panzer',
   'americana',
@@ -61,7 +61,7 @@ export const THEMES: ThemeMeta[] = [
     swatchButton: '#c4a484',
   },
   {
-    id: 'plum-snow',
+    id: 'snowplum',
     swatchShell: '#f7fafc',
     swatchKnob: '#c45c5c',
     swatchButton: '#a04048',
@@ -93,6 +93,7 @@ const THEME_MIGRATIONS: Record<string, ThemeId> = {
   glass: 'classic',
   aurora: 'cyber',
   macintosh: 'classic',
+  'plum-snow': 'snowplum',
 }
 
 export function isThemeId(value: unknown): value is ThemeId {

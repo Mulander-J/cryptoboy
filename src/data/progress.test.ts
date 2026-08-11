@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   DEFAULT_SETTINGS,
+  clearProgressStorageCache,
   hasSoloProgress,
   loadProgress,
   markLevelCleared,
@@ -30,12 +31,13 @@ describe('resetSoloProgress', () => {
     stubLocalStorage()
   })
 
-  it('清空三档闯关进度，保留设置', () => {
+  it('清空三档闯关进度，保留设置，并清掉废弃存档键', () => {
     let state = loadProgress()
     state = updateSettings(state, { sound: false, seenTutorial: true })
     state = markLevelCleared(state, 'easy', 1, 50, 12_000)
     state = markLevelCleared(state, 'nightmare', 2, 50, 30_000)
     state = recordEndlessClears(state, 5)
+    localStorage.setItem('code-hack-progress-v1', '{"solo":{}}')
     expect(hasSoloProgress(state)).toBe(true)
 
     const next = resetSoloProgress(state)
@@ -46,6 +48,18 @@ describe('resetSoloProgress', () => {
     expect(next.settings.sound).toBe(false)
     expect(next.settings.seenTutorial).toBe(true)
     expect(hasSoloProgress(next)).toBe(false)
+    expect(localStorage.getItem('code-hack-progress-v1')).toBeNull()
+    expect(localStorage.getItem('code-hack-progress-v2')).not.toBeNull()
+  })
+
+  it('clearProgressStorageCache 删除进度相关键', () => {
+    localStorage.setItem('code-hack-progress-v2', '{}')
+    localStorage.setItem('code-hack-progress-v1', '{}')
+    localStorage.setItem('unrelated', 'keep')
+    clearProgressStorageCache()
+    expect(localStorage.getItem('code-hack-progress-v2')).toBeNull()
+    expect(localStorage.getItem('code-hack-progress-v1')).toBeNull()
+    expect(localStorage.getItem('unrelated')).toBe('keep')
   })
 
   it('旧 challenge 键迁入 nightmare', () => {

@@ -14,7 +14,7 @@ describe('themes catalog', () => {
     // 绿系邻近：堆目 → 圣诞
     expect(THEME_IDS.indexOf('xmas') - THEME_IDS.indexOf('sanxingdui')).toBe(1)
     // 红金邻近：寻梅 → 新春 → 战车 → 美国
-    expect(THEME_IDS.indexOf('cny') - THEME_IDS.indexOf('plum-snow')).toBe(1)
+    expect(THEME_IDS.indexOf('cny') - THEME_IDS.indexOf('snowplum')).toBe(1)
     expect(THEME_IDS.indexOf('panzer') - THEME_IDS.indexOf('cny')).toBe(1)
     expect(THEME_IDS.indexOf('americana') - THEME_IDS.indexOf('panzer')).toBe(1)
   })
@@ -30,15 +30,20 @@ describe('themes catalog', () => {
   it('resolveTheme 校验、迁移与回退', () => {
     expect(resolveTheme('xmas')).toBe('xmas')
     expect(resolveTheme('cny')).toBe('cny')
+    expect(resolveTheme('snowplum')).toBe('snowplum')
     expect(resolveTheme('nope')).toBe(DEFAULT_THEME)
     expect(resolveTheme('macintosh')).toBe('classic')
+    expect(resolveTheme('plum-snow')).toBe('snowplum')
     expect(isThemeId('cny')).toBe(true)
   })
 
-  it('全部主题默认厄运时刻玩法为左轮', () => {
+  it('厄运时刻玩法：americana→revolver；其余主题→beat', () => {
+    expect(THEME_FATE_CASE_PLAY_MODE.americana).toBe('revolver')
+    expect(resolveFateCasePlayMode('americana')).toBe('revolver')
     for (const id of THEME_IDS) {
-      expect(THEME_FATE_CASE_PLAY_MODE[id]).toBe('revolver')
-      expect(resolveFateCasePlayMode(id)).toBe('revolver')
+      if (id === 'americana') continue
+      expect(THEME_FATE_CASE_PLAY_MODE[id]).toBeUndefined()
+      expect(resolveFateCasePlayMode(id)).toBe('beat')
     }
   })
 })

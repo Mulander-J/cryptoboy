@@ -1,6 +1,6 @@
 # CryptoBoy · 代码规范
 
-> 范围：目录约定、页面路由（规划）、组件模块化、TypeScript/React、i18n、安全默认、测试与本地服务
+> 范围：目录约定、页面路由、组件模块化、TypeScript/React（hooks / 动效 / 轻量设计模式）、i18n、安全默认、测试与本地服务
 
 ---
 
@@ -27,9 +27,9 @@
 | 路径 | 页面 | 特性目录 |
 | ------ | ------ | ------ |
 | `/` | 主菜单 | `features/menu/pages/MenuPage` |
-| `/practice/setup` | 自由练习配置 | `features/menu/pages/PracticeSetupPage` |
+| `/practice/setup` | 自定义试炼配置 | `features/menu/pages/PracticeSetupPage` |
 | `/practice/set-secret` | 预设答案设密 | `features/menu/pages/PracticeSetSecretPage` |
-| `/practice/play` | 自由练习对局 | `features/solo/pages/PracticePlayPage` |
+| `/practice/play` | 自定义试炼对局 | `features/solo/pages/PracticePlayPage` |
 | `/solo/:difficulty/:level` | 闯关（`easy` / `advanced` / `nightmare`） | `features/solo/pages/SoloPage` |
 | `/endless` | 无尽连破 | `features/solo/pages/EndlessPage` |
 | `/stats` | 进度数据 | `features/menu/pages/StatsPage` |
@@ -72,7 +72,7 @@
 | 优先级 | 候选 | 现状 / 拆法 |
 | -------- | ------ | ------------- |
 | 低 | `MenuBlock` / `MenuHero` | 主菜单区块与品牌头图 |
-| 低 | `CustomField` | 自由练习表单项 |
+| 低 | `CustomField` | 自定义试炼表单项 |
 | 低 | `StatusBadge` | 闯关 / 练习顶栏徽章 |
 
 原则：**出现两次以上的 UI 结构再抽**；为拆而拆不计入完成。任务跟踪见 [PLAN.md](./PLAN.md) MOD-*。
@@ -92,7 +92,74 @@
 - 领域错误用抛错 / 结果类型；UI 层不吞掉未预期异常（可降级提示）。
 - React：函数组件；状态尽量靠近使用处；跨页共享用 Context（i18n、Help）。
 - 不默认加 `useMemo` / `useCallback`，除非已有性能问题或依赖引用稳定。
-- 副作用：`useEffect` 写清依赖；时钟 / 键盘监听务必 cleanup。
+- 副作用：`useEffect` 写清依赖；时钟 / 键盘 / `rAF` / `ResizeObserver` / timer 务必 cleanup（含组件卸载）。
+
+### 3.1 Hooks 与副作用风格
+
+| 要求 | 说明 |
+| ------ | ------ |
+| 稳定回调进 ref | 父组件常传 inline 的 `onXxx`、或 effect 内只需「最新值」的函数：用 `ref.current = fn`，effect **不要**把不稳定函数塞进 deps 只为「读最新」（防误触发、也防以后去掉 guard 后重入） |
+| 派生 UI 节流 | 高频源（时钟 `tick`、收官剩余）若展示精度是秒 / 百毫秒级，**勿**每帧 `setState`；权威值可留在 `ref`，React state 只在 UI 桶变化或状态位变化时更新 |
+| 暂停 / 恢复读 ref | 对已节流的时钟等：`pause` / `resume` / `freeze` 必须基于 `ref` 里的权威快照，禁止用可能落后一秒的 React state 去改 |
+| `resume` / `pause` 恒等 | 领域更新若无实际变化，返回原对象引用，避免无意义 rerender |
+| effect 依赖求精 | `ResizeObserver` / 滚动绑定等：deps 只放真正改变观测目标的输入；不要把「由 effect 自己 `setState` 出来的 UI 开关」再放回 deps（易抖或重复 disconnect） |
+| 避免 setState 环 | `setState → effect → setState` 必须有收敛条件（相等则返回旧 state、或 ref 闸门）；审查时应能指出退出点 |
+
+### 3.2 动画 / rAF 风格
+
+| 要求 | 说明 |
+| ------ | ------ |
+| 无工作则停 rAF | 终局、主钟非 `running`、收官未开窗、帮助/确认/hidden 暂停时，**停止** `requestAnimationFrame` 调度；恢复时再拉起（deps 变化或 `bumpLoop` 一类显式唤醒） |
+| 平滑运动尽量离 React | 60fps 的 `transform` / 位移动画：优先 rAF **直写 DOM**（或 CSS），React state 只同步离散信息（如当前对准槽位、抖动档） |
+| 单所有者 | 同一视觉量不要父子各跑一条 rAF 再双双 `setState`；倒计时与转盘若解耦，子树更新也应避免拖整盘 `GameBoard` |
+| 卸载必 cancel | `cancelAnimationFrame` / `clearTimeout` / `removeEventListener` 写在 effect cleanup；长按等 timer 同理 |
+
+参考实现：`features/solo/useGameClock.ts`、`features/solo/fateNight/useFateNightPlay.ts`。
+
+### 3.3 Hooks 用量：能简则简、同模式归仓
+
+组件或 hook 里若同时堆很多 `useState` / `useRef` / `useCallback` / `useMemo`，先问「是否可合并或下沉」，再写新的。
+
+| 信号 | 倾向做法 |
+| ------ | ------ |
+| 多个 state 总是一起变（开局清零、同一步提交） | 收成 **一个** `useState` 对象，或 `useReducer`；胜负/结算字段尤忌拆成 5+ 个平行 `useState` |
+| 一串 `useRef` 只为 effect / rAF 读「最新 props/回调」 | 可接受；命名统一 `xxxRef`，赋值紧贴声明（`xxxRef.current = xxx`），不要再包一层无意义 `useCallback` |
+| 页面里既管对局又管计时又管键盘 | **抽自定义 hook**（`useGameClock` / `useGameKeyboard` / `useFateNightPlay`）；页面只编排，不堆实现细节 |
+| `useCallback` / `useMemo` 成串但 deps 不稳或消费方不依赖引用相等 | **删掉**；默认内联函数 + 子组件不靠 memo，或子侧用 ref 接回调（见 §3.1） |
+| 布尔旗 + 镜像 ref（`armed` + `armedRef`） | 仅当 rAF / 原生监听必须同步读时保留；若只在 React 事件里用，只留 state |
+| 仅派生、无独立写入 | 不要 `useState` + sync effect；写成渲染期计算或 `useMemo`（后者仍要克制） |
+
+**标准化约定**
+
+- **自定义 hook 边界**：一块可单测或可复用的行为（计时、收官玩法、焦点陷阱）→ `useXxx.ts`；返回值保持扁平、语义稳定，避免把整个页面 props 捅进 hook。
+- **ref 清单**：权威可变数据（时钟快照、rAF 句柄、闸门 flag）用 ref；需要上屏的再用 state。禁止「state 与 ref 双写同一业务真相」却无注释说明谁为准。
+- **不要为了好看预加** `useCallback`/`useMemo`/`React.memo`；有测量或明确子树压力再加，并写清原因（注释一行即可）。
+- **新增前数一下**：同一文件超过约 5 个 `useState` 或 5 个「镜像 ref」时，优先考虑 reducer / 合并 / 抽 hook，而不是继续追加。
+
+### 3.4 轻量设计模式（按需引入，忌教条）
+
+优先用**本仓库已有形状**表达意图；需要新抽象时，选下面能对上号的模式，并在注释或 README 点一句「这里是 X」，方便后人检索。不引入庞大 OO 框架、不写空接口套娃。
+
+| 模式 | 本项目用法 | 何时用 |
+| ------ | ------ | ------ |
+| **Reducer / 状态机** | `domain/session`：`reduceSession` + 判别联合 `SessionAction`；UI 侧 `useReducer` | 多步骤、多事件、非法转移要拒绝（对局编辑→收官→胜负） |
+| **Strategy（策略）** | Fate Night：`playMode` → Beat / Revolver 舞台与定色文案；共用触发与胜负契约 | 同一契约、多种表现/算法，分支用表或显式映射，避免巨型 `if` 穿透多层 |
+| **Facade（门面）** | `resolveFateCaseRuntime`、`sanitizeOptions`：一次给出启用面/默认档 | 调用方不应拼一堆分散规则；入口函数收敛「算完再给」 |
+| **Adapter（适配）** | `progress` 加载时 normalize / 主题 `resolveTheme` 旧 id | 外部/持久化形态 → 内部干净模型；**新代码不要再叠兼容分支**（未上线可直接改键） |
+| **Controller / 单例窗** | `HelpController`：全局唯一帮助 | 全局 overlay、快捷键、与路由无关的模态 |
+| **Pure domain + thin hook** | `clock` / `fateCase` 纯函数；`useGameClock` 只接 rAF 与 React | 规则可单测、UI 可换皮；禁止把胜负规则写进 JSX |
+| **Composition（组合）** | `FateNightBase` + `children` 舞台；`DeviceShell` 插槽 | UI 外壳共用、内核可插拔；优于深层继承 |
+
+**刻意不用或慎用**
+
+- **上帝 Context**：只放真正跨树的偏好（locale、theme、progress）；对局一步一动的状态留在页面 / reducer。
+- **过度 Observer / 事件总线**：本项目体量用 props、dispatch、少量 Context 即可；不要为解耦再引入全局 mitt。
+- **为模式而模式**：两处以内的重复先复制或抽函数；第三次再升 Strategy / 表驱动。
+
+**命名与落点**
+
+- 领域规则 → `domain/`（纯、可测）；编排与订阅 → `features/**/useXxx`；可复用皮 → `ui/`。
+- 表驱动映射（主题→玩法、档位→周期 ms）放 `const` / `Record`，与 STRATEGY 分支同文件或紧邻，避免魔法字符串散落。
 
 ---
 
@@ -169,4 +236,3 @@ npm run build
 | ------ | ------ |
 | 无尽 | 整盘连破 |
 ```
-

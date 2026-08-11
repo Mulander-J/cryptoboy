@@ -1,4 +1,4 @@
-import { useRef, type PointerEvent } from 'react'
+import { useEffect, useRef, type PointerEvent } from 'react'
 import { useI18n } from '@/i18n'
 
 type Props = {
@@ -43,6 +43,8 @@ export function OrangeKnob({
       longTimer.current = null
     }
   }
+
+  useEffect(() => () => clearLong(), [])
 
   function onPointerDown(e: PointerEvent<HTMLButtonElement>) {
     if (disabled) return

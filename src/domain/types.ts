@@ -55,24 +55,24 @@ export type LevelConfig = {
   /** 倒计时限额（ms）；正计时不设 */
   timeLimitMs?: number
   /**
-   * 厄运时刻（当前玩法：左轮）。缺省 false。
+   * 厄运时刻。缺省 false。
    * 闯关/无尽启用面由入口显式写入；勿仅用 difficulty==='nightmare' 推断（限时试炼会误开）。
    */
   fateCaseEnabled?: boolean
   /** 入场后自动开始窗口（跳过「开始」）；缺省 false */
   fateCaseAutoStart?: boolean
-  /** 码数速率档 1（慢）–5（快难锁）；缺省 3 */
-  fateCaseSpinSpeed?: 1 | 2 | 3 | 4 | 5
+  /** 难度档 1（易）–5（难）；缺省 3；各玩法自行解释 */
+  fateCaseDifficulty?: 1 | 2 | 3 | 4 | 5
   /**
-   * 一枪定负：失靶立即判负（无尽）。
-   * false = 可连开至命中或窗口超时（噩梦 / 试炼默认）。
+   * 一次机会：未中立即判负（无尽）。
+   * false = 可连试至命中或窗口超时（噩梦 / 试炼默认）。
    */
   fateCaseOneShot?: boolean
   /**
-   * 厄运时刻玩法子集（左轮 / 日后居合等）。
-   * 缺省由视觉主题映射，当前全部主题 → `revolver`。
+   * 厄运时刻玩法子集（左轮 / 节拍等）。
+   * 缺省由视觉主题映射：americana → revolver；其余 → beat。
    */
-  fateCasePlayMode?: 'revolver'
+  fateCasePlayMode?: 'revolver' | 'beat'
 }
 
 export type GenerateConfig = {
