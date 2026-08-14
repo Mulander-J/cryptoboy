@@ -20,14 +20,13 @@ export type Messages = {
     name: string
     tagline: string
     description: string
-    /** 如「本项目 Agent Stats 100%」 */
-    aiCreatedLead: string
-    /** logo 后短标签，如「AI 生成」 */
+    /** 短标签，如「AI 生成」 */
     aiCreated: string
     aiCreatedTitle: string
+    /** 短标签，如「非商业」 */
+    nonCommercial: string
     githubLabel: string
     githubTitle: string
-    mitLicenseTitle: string
   }
   lang: {
     label: string
@@ -49,6 +48,7 @@ export type Messages = {
     helpHint: string
     helpTutorial: string
     themeLabel: string
+    themeHint: string
     soundLabel: string
     toggleOn: string
     toggleOff: string
@@ -63,7 +63,8 @@ export type Messages = {
     statsLabel: string
     statsHint: string
     statsCta: string
-    aboutLabel: string
+    sourceLabel: string
+    sourceHint: string
   }
   stats: {
     back: string

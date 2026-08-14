@@ -3,8 +3,6 @@ import chevronSvg from '@/ui/icons/assets/chevron.svg?raw'
 import githubMarkSvg from '@/ui/icons/assets/github-mark.svg?raw'
 import helpCircleSvg from '@/ui/icons/assets/help-circle.svg?raw'
 import infoCircleSvg from '@/ui/icons/assets/info-circle.svg?raw'
-import mitLicenseSvg from '@/ui/icons/assets/mit-license.svg?raw'
-
 type IconPreset = {
   svg: string
   size?: number
@@ -32,13 +30,6 @@ const ICON_REGISTRY = {
     svg: chevronSvg,
     width: 14,
     height: 9,
-  },
-  'mit-license': {
-    svg: mitLicenseSvg,
-    width: 90,
-    height: 20,
-    className: 'mit-license-badge',
-    label: 'license: MIT',
   },
 } as const satisfies Record<string, IconPreset>
 

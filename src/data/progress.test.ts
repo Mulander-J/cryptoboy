@@ -85,13 +85,13 @@ describe('resetSoloProgress', () => {
     expect(hasSoloProgress(loadProgress())).toBe(false)
   })
 
-  it('新存档默认：classic / 音效开 / 色盲关 / 确认关', () => {
+  it('新存档默认：cny / 音效开 / 色盲关 / 确认关', () => {
     const state = loadProgress()
-    expect(state.settings.theme).toBe('classic')
+    expect(state.settings.theme).toBe('cny')
     expect(state.settings.sound).toBe(true)
     expect(state.settings.colorBlindPatterns).toBe(false)
     expect(state.settings.confirmSubmit).toBe(false)
-    expect(DEFAULT_SETTINGS.theme).toBe('classic')
+    expect(DEFAULT_SETTINGS.theme).toBe('cny')
   })
 
   it('语言：无缓存时跟随客户端，有缓存用缓存', () => {

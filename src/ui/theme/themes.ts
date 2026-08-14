@@ -86,7 +86,7 @@ export const THEMES: ThemeMeta[] = [
   },
 ]
 
-export const DEFAULT_THEME: ThemeId = 'classic'
+export const DEFAULT_THEME: ThemeId = 'cny'
 
 /** 已下线主题 → 就近迁移 */
 const THEME_MIGRATIONS: Record<string, ThemeId> = {

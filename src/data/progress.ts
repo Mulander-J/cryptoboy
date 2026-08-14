@@ -55,7 +55,7 @@ const emptyProgress = (): DifficultyProgress => ({
 
 const emptyEndless = (): EndlessProgress => ({ bestClears: 0 })
 
-/** 设置默认：主题 classic、音效开、色盲关、确认关；语言见 resolveInitialLocale */
+/** 设置默认：主题 cny（祥瑞新春）、音效开、色盲关、确认关；语言见 resolveInitialLocale */
 export const DEFAULT_SETTINGS: Settings = {
   sound: true,
   confirmSubmit: false,

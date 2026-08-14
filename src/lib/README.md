@@ -16,9 +16,9 @@
 ```ts
 import { assetUrl } from '@/lib/assetUrl'
 
-assetUrl('imgs/cursor.svg')
-// 本地 → /imgs/cursor.svg
-// Pages → /cryptoboy/imgs/cursor.svg
+assetUrl('fonts/press-start-2p-latin.woff2')
+// 本地 → /fonts/press-start-2p-latin.woff2
+// Pages → /cryptoboy/fonts/press-start-2p-latin.woff2
 ```
 
 ## 相关

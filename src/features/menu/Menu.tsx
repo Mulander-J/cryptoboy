@@ -2,9 +2,10 @@ import type { Difficulty } from '@/domain/types'
 import { type ProgressState, type Settings } from '@/data/progress'
 import { useI18n } from '@/i18n'
 import { MenuSettingRow } from '@/ui/MenuSettingRow'
+import { THEME_IDS } from '@/ui/theme/themes'
 import { useHelp } from '@/features/help/HelpController'
 import { SvgIcon } from '@/ui/icons'
-import { AiCreatedBadge } from './AiCreatedBadge'
+import { HeroTags } from './HeroTags'
 import { ColorBlindToggle } from './ColorBlindToggle'
 import { ConfirmSubmitToggle } from './ConfirmSubmitToggle'
 import { LocaleSwitcher } from './LocaleSwitcher'
@@ -12,7 +13,6 @@ import { SoundToggle } from './SoundToggle'
 import { ThemePicker } from './ThemePicker'
 
 const REPO_URL = 'https://github.com/Mulander-J/cryptoboy'
-const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`
 
 type Props = {
   progress: ProgressState
@@ -42,6 +42,7 @@ export function Menu({
         <div className="menu-device-preview" aria-hidden />
         <h1>{m.app.name}</h1>
         <p className="menu-hero-tagline">{m.app.tagline}</p>
+        <HeroTags />
       </div>
 
       <div className="menu-cards">
@@ -127,8 +128,13 @@ export function Menu({
 
         <section className="menu-block">
           <h2>{m.menu.helpTitle}</h2>
-          <p className="menu-hint">{m.menu.settingsHint}</p>
-          <AiCreatedBadge />
+          <div className="menu-project-blurb">
+            {m.menu.settingsHint.split(/\r\n|\n/).map((line) => (
+              <p key={line} className="menu-hint">
+                {line}
+              </p>
+            ))}
+          </div>
 
           <MenuSettingRow label={m.menu.helpLabel} hint={m.menu.helpHint}>
             <button type="button" className="btn btn-secondary btn-sm" onClick={openHelp}>
@@ -147,7 +153,10 @@ export function Menu({
             </button>
           </MenuSettingRow>
 
-          <MenuSettingRow label={m.menu.themeLabel}>
+          <MenuSettingRow
+            label={m.menu.themeLabel}
+            hint={t(m.menu.themeHint, { n: THEME_IDS.length })}
+          >
             <ThemePicker
               variant="inline"
               current={settings.theme}
@@ -188,31 +197,17 @@ export function Menu({
             />
           </MenuSettingRow>
 
-          <MenuSettingRow label={m.menu.aboutLabel}>
-            <span className="menu-about-links">
-              <a
-                className="menu-about-link"
-                href={REPO_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={m.app.githubTitle}
-              >
-                <SvgIcon name="github-mark" />
-                <span>{m.app.githubLabel}</span>
-              </a>
-              <span className="menu-about-sep" aria-hidden>
-                |
-              </span>
-              <a
-                className="menu-about-link menu-about-badge-link"
-                href={LICENSE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={m.app.mitLicenseTitle}
-              >
-                <SvgIcon name="mit-license" />
-              </a>
-            </span>
+          <MenuSettingRow label={m.menu.sourceLabel} hint={m.menu.sourceHint}>
+            <a
+              className="menu-about-link"
+              href={REPO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={m.app.githubTitle}
+            >
+              <SvgIcon name="github-mark" />
+              <span>{m.app.githubLabel}</span>
+            </a>
           </MenuSettingRow>
         </section>
       </div>

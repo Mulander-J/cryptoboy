@@ -3,12 +3,11 @@
     "name": "CryptoBoy",
     "tagline": "破译四色密码 · 最多七次机会",
     "description": "CryptoBoy — 仿复古颜色密码小玩具的浏览器数字版（娱乐向）",
-    "aiCreatedLead": "本项目 Agent Stats 100%",
     "aiCreated": "AI 生成",
     "aiCreatedTitle": "本应用主要由 AI 生成",
+    "nonCommercial": "非商业",
     "githubLabel": "GitHub",
-    "githubTitle": "打开 GitHub 仓库",
-    "mitLicenseTitle": "以 MIT 协议开源，查看完整许可文本"
+    "githubTitle": "打开 GitHub 仓库"
   },
   "lang": {
     "label": "语言",
@@ -25,11 +24,12 @@
     "practiceCta": "开始试炼",
     "practiceHint": "不计闯关进度；可改难度预设、颜色数、是否重复、提示方式、限时、预设答案与厄运时刻",
     "helpTitle": "设置和其他",
-    "settingsHint": "主题、语言、音效与无障碍等",
+    "settingsHint": "仿复古颜色密码小玩具。\r\n个人独立开发，非商业用途。",
     "helpLabel": "帮助",
     "helpHint": "对局顶栏「？说明」也可打开；或按键「H」",
     "helpTutorial": "查看教程",
     "themeLabel": "主题",
+    "themeHint": "可换其他主题配色，多达 {n} 种可选",
     "soundLabel": "音效",
     "toggleOn": "开",
     "toggleOff": "关",
@@ -44,7 +44,8 @@
     "statsLabel": "数据",
     "statsHint": "各模式进度与各关最佳用时",
     "statsCta": "查看数据",
-    "aboutLabel": "关于"
+    "sourceLabel": "源码",
+    "sourceHint": "以 MIT 协议开源，完整文本见仓库 LICENSE"
   },
   "stats": {
     "back": "返回",

@@ -3,12 +3,11 @@
     "name": "CryptoBoy",
     "tagline": "Crack a 4-color code · 7 attempts max",
     "description": "CryptoBoy — a browser remake of a retro color-code toy, for fun",
-    "aiCreatedLead": "This project · Agent Stats 100%",
     "aiCreated": "AI-built",
     "aiCreatedTitle": "This app is largely AI-built",
+    "nonCommercial": "Non-commercial",
     "githubLabel": "GitHub",
-    "githubTitle": "Open the GitHub repository",
-    "mitLicenseTitle": "Open source under MIT — view the full license"
+    "githubTitle": "Open the GitHub repository"
   },
   "lang": {
     "label": "Language",
@@ -25,11 +24,12 @@
     "practiceCta": "Start",
     "practiceHint": "No campaign progress; tune difficulty preset, colors, repeats, hints, timer, preset secret, and Fate Night",
     "helpTitle": "Settings & more",
-    "settingsHint": "Theme, language, sound, and accessibility",
+    "settingsHint": "A retro color-code toy.\r\nIndependently developed for personal, non-commercial use.",
     "helpLabel": "Help",
     "helpHint": "Also via in-game “? Help”; or press “H”",
     "helpTutorial": "View tutorial",
     "themeLabel": "Theme",
+    "themeHint": "More color themes — {n} to choose from",
     "soundLabel": "Sound",
     "toggleOn": "On",
     "toggleOff": "Off",
@@ -44,7 +44,8 @@
     "statsLabel": "Data",
     "statsHint": "Campaign progress and per-level best times",
     "statsCta": "View data",
-    "aboutLabel": "About"
+    "sourceLabel": "Source",
+    "sourceHint": "Open source under MIT — full text in the repo LICENSE"
   },
   "stats": {
     "back": "Back",

@@ -31,6 +31,7 @@ describe('themes catalog', () => {
     expect(resolveTheme('xmas')).toBe('xmas')
     expect(resolveTheme('cny')).toBe('cny')
     expect(resolveTheme('snowplum')).toBe('snowplum')
+    expect(DEFAULT_THEME).toBe('cny')
     expect(resolveTheme('nope')).toBe(DEFAULT_THEME)
     expect(resolveTheme('macintosh')).toBe('classic')
     expect(resolveTheme('plum-snow')).toBe('snowplum')
