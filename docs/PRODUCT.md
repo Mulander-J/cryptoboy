@@ -214,7 +214,7 @@
 | 触发 | `exactCount === 3` 且启用；**优先于**次数判负 |
 | 胜负 | 命中悬格正解 → `won`；窗口归零 → `lost(timeout)`；未中见下「一次机会 / 连试」 |
 | 空弹 | 悬格 `candidates` 唯一时追加，避免必中 |
-| 计时 | 入场冻主钟 ❄️；玩家确认（或自动开始）后开独立窗口（默认 3s）；结算拆推理 / 收官 / 合计 |
+| 计时 | 入场冻主钟 ❄️；玩家确认（或自动开始）后开独立窗口（默认 5s）；结算拆推理 / 收官 / 合计 |
 | **最佳用时** | 闯关：四色直通与厄运时刻胜局均按合计用时覆盖最佳 |
 | Easy / Advanced | 不上（保推理） |
 | 噩梦 | 开；手动开始；难度档 3；**可连试**至命中或超时 |
@@ -377,7 +377,8 @@
 用确定性种子生成，保证同版本可复现、可测：
 
 ```bash
-levelSeed = hash(mode, difficulty, levelIndex, appSalt)
+levelSeed = hash(mode, difficulty, levelIndex, appSalt)                # 周目 1（首周目，与旧版逐位一致）
+levelSeed = hash(mode, difficulty, "c{cycle}", levelIndex, appSalt)    # 周目 ≥2（见 §7.4）
 password  = generate(levelSeed, colorCount, allowRepeat)
 ```
 
@@ -398,9 +399,9 @@ password  = generate(levelSeed, colorCount, allowRepeat)
 ```json
 {
   "solo": {
-    "easy": { "unlocked": 12, "cleared": 11, "bestTimes": { "1": 12345 } },
-    "advanced": { "unlocked": 3, "cleared": 2, "bestTimes": {} },
-    "nightmare": { "unlocked": 1, "cleared": 0, "bestTimes": {} }
+    "easy": { "cleared": 11, "bestTimes": { "1": 12345 }, "cycle": 1 },
+    "advanced": { "cleared": 2, "bestTimes": {}, "cycle": 1 },
+    "nightmare": { "cleared": 0, "bestTimes": {}, "cycle": 2 }
   },
   "endless": { "bestClears": 0 },
   "settings": {
@@ -421,8 +422,19 @@ password  = generate(levelSeed, colorCount, allowRepeat)
 ### 7.3 数据页（已落地）
 
 - 路由 `/stats`；菜单「数据」进入。
-- 展示简单 / 进阶 / 噩梦的解锁、通关数与**各关最佳用时**（合计，含厄运时刻），以及无尽最高连胜。
-- 页内可重置闯关与无尽进度（设置保留）。
+- 展示简单 / 进阶 / 噩梦的解锁、通关数、当前**周目**与**各关最佳用时**（合计，含厄运时刻；跨周目生涯最佳），以及无尽最高连胜。
+- 页内可重置闯关与无尽进度（设置保留；周目回到 1）。
+
+### 7.4 周目轮回（NG+ · 已落地）
+
+> 动机：整档通关后重玩仍是同一批种子答案，延续性差；且固定答案使「记住答案重进刷最佳」成立。周目轮换让每轮答案重排，刷记录回归纯推理竞速。
+
+- **首周目固定种子**：周目 1 的关卡答案与旧版逐位一致（`levelSeed` 原 key 不变），保留官方关卡表语义；局内「重试本关」仍是同一答案。
+- **开启条件**：某难度整档通关（`cleared` = 关卡总数）后，菜单该难度行下出现「开启第 N+1 周目」（确认框；与重置进度同用 `window.confirm`）。
+- **效果**：该难度 `unlocked`/`cleared` 归位（1 / 0）、`bestTimes` 清空、`cycle + 1` 参与关卡种子，全档答案重排；确认后直接进入第 1 关。其他难度不受影响。
+- **最佳用时**：开启新周目时清空重置，玩家在新周目重新刷新当前周目的各关最佳用时。
+- **展示**：菜单难度行在周目 ≥2 时显示「第 X 关 · 周目 n」；数据页展示各难度当前周目。
+- **不影响**：无尽 / 自定义试炼本就随机种子；Easy / Advanced 首周目无厄运时刻等规则均不变。
 
 ---
 

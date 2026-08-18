@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { formatMmSs } from '@/domain/clock'
 import { COLOR_META } from '@/domain/colors'
-import type { FateCasePhase } from '@/domain/fateCase'
+import type { Guess } from '@/domain/types'
 import { useI18n } from '@/i18n'
 import { useColorBlindPatterns } from '@/ui/colorBlind/ColorBlindContext'
 import { ColorPatternMark } from '@/ui/colorBlind/ColorPatternMark'
@@ -27,7 +27,8 @@ type Props = {
   /** 未开局提示；开局后为 null */
   hint: string | null
   remainingMs: number
-  locks: FateCasePhase['locks']
+  /** 触发收官时填写的 4 色猜测（仅展示四色，不标注正误/位置） */
+  guess?: Guess
   /** 主按钮文案：开始 / 定色 */
   actionLabel: string
   /** 可定色（live 且未锁输入） */
@@ -38,7 +39,7 @@ type Props = {
   children: ReactNode
 }
 
-/** Fate Night 外壳：入场特效、标题、倒计时、三锁、主按钮；舞台由 children 注入 */
+/** Fate Night 外壳：入场特效、标题、倒计时、主按钮；舞台由 children 注入 */
 export function FateNightBase({
   titleId,
   playClass,
@@ -51,7 +52,7 @@ export function FateNightBase({
   subtitle,
   hint,
   remainingMs,
-  locks,
+  guess,
   actionLabel,
   armed,
   onStart,
@@ -95,7 +96,6 @@ export function FateNightBase({
           </h2>
           <p className="fate-case-subtitle">{subtitle}</p>
         </div>
-        {hint ? <p className="fate-case-moment-hint">{hint}</p> : null}
 
         {live ? (
           <p
@@ -110,23 +110,36 @@ export function FateNightBase({
           </p>
         )}
 
-        <div className="fate-case-locks" aria-hidden>
-          {locks.map((color, i) => (
-            <div
-              key={i}
-              className={`fate-case-lock ${color ? 'locked' : 'hanging'}`}
-              style={
-                {
-                  ...(color ? { background: COLOR_META[color].hex } : null),
-                  '--lock-i': String(i),
-                } as CSSProperties
-              }
-            >
-              {color && showPattern ? <ColorPatternMark color={color} /> : null}
-              {!color ? '?' : null}
+        {guess ? (
+          <div className="fate-case-guess-wrap">
+            <div className="fate-case-guess-row">
+              <div className="fate-case-locks" aria-hidden>
+                {guess.map((color, i) => (
+                  <div
+                    key={i}
+                    className="fate-case-lock"
+                    style={
+                      {
+                        background: COLOR_META[color].hex,
+                        '--lock-i': String(i),
+                      } as CSSProperties
+                    }
+                  >
+                    {showPattern ? <ColorPatternMark color={color} /> : null}
+                    <span className="fate-case-lock-q">?</span>
+                  </div>
+                ))}
+              </div>
+              <div className="fate-case-hint-dots" aria-hidden title="3 绿提示">
+                <span className="hint-dot exact" />
+                <span className="hint-dot exact" />
+                <span className="hint-dot exact" />
+                <span className="hint-dot" />
+              </div>
             </div>
-          ))}
-        </div>
+            <p className="fate-case-shortcut-tip">{m.game.fateCaseShortcutTip}</p>
+          </div>
+        ) : null}
 
         {children}
 
@@ -148,6 +161,8 @@ export function FateNightBase({
             {actionLabel}
           </button>
         )}
+
+        {hint ? <p className="fate-case-moment-hint">{hint}</p> : null}
       </div>
     </ModalBackdrop>
   )

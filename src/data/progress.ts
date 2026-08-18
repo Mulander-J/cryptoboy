@@ -18,10 +18,11 @@ const LEGACY_KEY = 'code-hack-progress-v1'
 const PROGRESS_STORAGE_KEYS = [STORAGE_KEY, LEGACY_KEY] as const
 
 export type DifficultyProgress = {
-  unlocked: number
   cleared: number
   /** 各关最佳用时（ms）；三档均记「用时」，越短越好 */
   bestTimes: Record<string, number>
+  /** 周目（NG+），从 1 起；整档通关后可进下一周目，参与关卡种子 */
+  cycle: number
 }
 
 export type EndlessProgress = {
@@ -48,10 +49,15 @@ export type ProgressState = {
 }
 
 const emptyProgress = (): DifficultyProgress => ({
-  unlocked: 1,
   cleared: 0,
   bestTimes: {},
+  cycle: 1,
 })
+
+/** 由已通关数衍生当前允许进入的最高关卡（最小 1，最大 maxLevels） */
+export function getUnlockedLevel(p: DifficultyProgress, maxLevels: number): number {
+  return Math.min(maxLevels, Math.max(1, p.cleared + 1))
+}
 
 const emptyEndless = (): EndlessProgress => ({ bestClears: 0 })
 
@@ -83,14 +89,19 @@ function canUseStorage(): boolean {
   return typeof localStorage !== 'undefined'
 }
 
+function sanitizeCycle(raw: unknown, fallback: number): number {
+  const n = Math.floor(Number(raw))
+  return Number.isFinite(n) && n >= 1 ? n : fallback
+}
+
 function mergeDiff(
   base: DifficultyProgress,
   raw: Partial<DifficultyProgress> | undefined,
 ): DifficultyProgress {
   return {
-    unlocked: raw?.unlocked ?? base.unlocked,
     cleared: raw?.cleared ?? base.cleared,
     bestTimes: { ...base.bestTimes, ...raw?.bestTimes },
+    cycle: sanitizeCycle(raw?.cycle, base.cycle),
   }
 }
 
@@ -221,12 +232,11 @@ export function markLevelCleared(
   state: ProgressState,
   difficulty: Difficulty,
   levelIndex: number,
-  maxLevels: number,
+  _maxLevels: number,
   elapsedMs?: number,
 ): ProgressState {
   const cur = state.solo[difficulty]
   const cleared = Math.max(cur.cleared, levelIndex)
-  const unlocked = Math.min(maxLevels, Math.max(cur.unlocked, levelIndex + 1))
   const bestTimes = { ...cur.bestTimes }
   if (typeof elapsedMs === 'number' && elapsedMs >= 0) {
     const key = String(levelIndex)
@@ -239,7 +249,32 @@ export function markLevelCleared(
     ...state,
     solo: {
       ...state.solo,
-      [difficulty]: { unlocked, cleared, bestTimes },
+      [difficulty]: { ...cur, cleared, bestTimes },
+    },
+  }
+  saveProgress(next)
+  return next
+}
+
+/**
+ * 开启下一周目（NG+）：须整档通关；解锁/通关/最佳用时归位，周目 +1（参与关卡种子）。
+ */
+export function startNextCycle(
+  state: ProgressState,
+  difficulty: Difficulty,
+  maxLevels: number,
+): ProgressState {
+  const cur = state.solo[difficulty]
+  if (cur.cleared < maxLevels) return state
+  const next: ProgressState = {
+    ...state,
+    solo: {
+      ...state.solo,
+      [difficulty]: {
+        cleared: 0,
+        bestTimes: {},
+        cycle: cur.cycle + 1,
+      },
     },
   }
   saveProgress(next)
@@ -277,7 +312,9 @@ export function hasSoloProgress(state: ProgressState): boolean {
   const soloHas = (Object.keys(state.solo) as Difficulty[]).some((d) => {
     const cur = state.solo[d]
     return (
-      cur.unlocked > 1 || cur.cleared > 0 || Object.keys(cur.bestTimes).length > 0
+      cur.cleared > 0 ||
+      cur.cycle > 1 ||
+      Object.keys(cur.bestTimes).length > 0
     )
   })
   return soloHas || state.endless.bestClears > 0

@@ -52,9 +52,9 @@ function clockUiChanged(prev: GameClock, next: GameClock): boolean {
 export type GameClockApi = GameClock & {
   /** Fate Night 窗口剩余；未开始 / 非收官为 null */
   fateCaseRemainingMs: number | null
-  /** Fate Night 是否已开 3s 窗口 */
+  /** Fate Night 是否已开 5s 窗口 */
   fateCaseLive: boolean
-  /** 玩家确认后启动 Fate Night 3s（主钟已在入场时冻结） */
+  /** 玩家确认后启动 Fate Night 5s（主钟已在入场时冻结） */
   startFateCaseWindow: () => void
   scoreElapsedMs: () => number
   scoreBreakdown: () => ScoreBreakdown
@@ -62,7 +62,7 @@ export type GameClockApi = GameClock & {
 
 /**
  * 主钟：帮助 / 确认 / hidden 暂停；胜负或 Fate Night 入场冻结。
- * Fate Night：入场先冻主钟，等玩家手动开始后再走独立 3s；结算 = 入场前已用 + 收官消耗。
+ * Fate Night：入场先冻主钟，等玩家手动开始后再走独立 5s；结算 = 入场前已用 + 收官消耗。
  */
 export function useGameClock({
   config,
@@ -197,7 +197,7 @@ export function useGameClock({
     return () => document.removeEventListener('visibilitychange', onVis)
   }, [bumpLoop])
 
-  // Fate Night 入场：冻结主钟；autoStart 则立刻开 3s，否则等玩家点开始
+  // Fate Night 入场：冻结主钟；autoStart 则立刻开 5s，否则等玩家点开始
   useEffect(() => {
     if (gameStatus !== 'fateCase') return
     if (fateCaseFrozen.current) return

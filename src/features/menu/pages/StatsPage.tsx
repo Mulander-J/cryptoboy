@@ -50,8 +50,8 @@ export function StatsPage() {
               <h2>{m.difficulty[diff]}</h2>
               <dl className="stats-summary">
                 <div>
-                  <dt>{m.stats.unlocked}</dt>
-                  <dd>{t(m.stats.levelOfMax, { n: row.unlocked, max })}</dd>
+                  <dt>{m.stats.cycle}</dt>
+                  <dd>{t(m.menu.cycleBadge, { n: row.cycle })}</dd>
                 </div>
                 <div>
                   <dt>{m.stats.cleared}</dt>

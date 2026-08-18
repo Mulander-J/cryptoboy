@@ -37,6 +37,11 @@ export type Messages = {
     soloTitle: string
     soloHint: string
     levelBtn: string
+    /** 周目徽章（周目 ≥2 展示） */
+    cycleBadge: string
+    /** 整档通关后开启下一周目 */
+    nextCycleCta: string
+    nextCycleConfirm: string
     endlessCta: string
     endlessBest: string
     practiceTitle: string
@@ -72,6 +77,8 @@ export type Messages = {
     lead: string
     unlocked: string
     cleared: string
+    /** 当前周目 */
+    cycle: string
     levelOfMax: string
     levelLabel: string
     noBest: string
@@ -152,12 +159,15 @@ export type Messages = {
     fateCaseBeatAria: string
     fateCaseBlank: string
     fateCaseSpinning: string
+    fateCaseAction: string
+    fateCaseReadyTip: string
     fateCaseReadyRevolver: string
     fateCaseReadyBeat: string
     fateCaseFire: string
     fateCaseLock: string
     fateCaseMissRetry: string
     fateCaseStart: string
+    fateCaseShortcutTip: string
   }
   result: {
     won: string

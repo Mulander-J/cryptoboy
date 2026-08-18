@@ -46,10 +46,19 @@ export function generate(seed: number, config: GenerateConfig): Password {
   return result as unknown as Password
 }
 
-/** 关卡种子：难度 + 关卡序号 → 稳定 hash */
-export function levelSeed(difficulty: string, levelIndex: number, salt = 0xc0de): number {
+/**
+ * 关卡种子：难度 + 周目 + 关卡序号 → 稳定 hash。
+ * 周目 1 沿用原 key，保证首周目答案与旧版存档逐位一致；周目 ≥2 混入 cycle。
+ */
+export function levelSeed(
+  difficulty: string,
+  levelIndex: number,
+  cycle = 1,
+  salt = 0xc0de,
+): number {
   let h = salt >>> 0
-  const key = `${difficulty}:${levelIndex}`
+  const key =
+    cycle > 1 ? `${difficulty}:c${cycle}:${levelIndex}` : `${difficulty}:${levelIndex}`
   for (let i = 0; i < key.length; i++) {
     h = Math.imul(h ^ key.charCodeAt(i), 0x01000193)
   }

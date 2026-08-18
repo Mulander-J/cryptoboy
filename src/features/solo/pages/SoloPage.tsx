@@ -2,7 +2,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { parseDifficulty, parseLevel, ROUTES, soloPath } from '@/app/paths'
 import { useProgress } from '@/app/ProgressContext'
 import { MAX_LEVELS } from '@/data/levels'
-import { getBestTime } from '@/data/progress'
+import { getBestTime, getUnlockedLevel } from '@/data/progress'
 import { GameBoard } from '../GameBoard'
 
 export function SoloPage() {
@@ -18,7 +18,7 @@ export function SoloPage() {
   }
 
   const max = MAX_LEVELS[difficulty]
-  const unlocked = progress.solo[difficulty].unlocked
+  const unlocked = getUnlockedLevel(progress.solo[difficulty], max)
   const level = Math.min(max, Math.max(1, levelRaw))
 
   // 未解锁关卡：拉回当前解锁关
@@ -31,12 +31,15 @@ export function SoloPage() {
     return <Navigate to={soloPath(difficulty, level)} replace />
   }
 
+  const cycle = progress.solo[difficulty].cycle
+
   return (
     <GameBoard
-      key={`solo-${difficulty}-${level}`}
+      key={`solo-${difficulty}-${cycle}-${level}`}
       mode="solo"
       difficulty={difficulty}
       level={level}
+      cycle={cycle}
       sound={progress.settings.sound}
       confirmSubmit={progress.settings.confirmSubmit}
       bestTimeMs={getBestTime(progress, difficulty, level)}

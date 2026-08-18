@@ -48,6 +48,8 @@ type Props = {
   bestTimeMs?: number
   /** 无尽：当前连胜（已破译局数） */
   endlessClears?: number
+  /** 闯关周目（NG+），参与关卡种子；默认 1（首周目） */
+  cycle?: number
   onClearLevel?: (level: number, elapsedMs: number) => void
   onNextLevel?: () => void
   /** 无尽破译成功：带入本盘剩余时间继续 */
@@ -83,6 +85,7 @@ function buildSecret(
   mode: GameMode,
   difficulty: Difficulty,
   level: number,
+  cycle: number,
   config: LevelConfig,
   initialSecret?: Password,
 ): Password {
@@ -90,7 +93,7 @@ function buildSecret(
   const seed =
     mode === 'practice' || mode === 'endless'
       ? (Math.floor(Math.random() * 0xffffffff) >>> 0)
-      : levelSeed(difficulty, level)
+      : levelSeed(difficulty, level, cycle)
   return generate(seed, {
     colorCount: config.colorCount,
     allowRepeat: config.allowRepeat,
@@ -111,6 +114,7 @@ export function GameBoard({
   initialSecret,
   bestTimeMs,
   endlessClears = 0,
+  cycle = 1,
   onClearLevel,
   onNextLevel,
   onEndlessWon,
@@ -130,7 +134,10 @@ export function GameBoard({
     sessionReducer,
     undefined,
     () =>
-      createSession(buildSecret(mode, difficulty, level, config, initialSecret), config),
+      createSession(
+        buildSecret(mode, difficulty, level, cycle, config, initialSecret),
+        config,
+      ),
   )
 
   const [clockResetKey, setClockResetKey] = useState(0)
@@ -232,7 +239,14 @@ export function GameBoard({
 
   function restart(nextLevel = level) {
     const nextConfig = buildConfig(mode, difficulty, nextLevel, themeId, customConfig)
-    const secret = buildSecret(mode, difficulty, nextLevel, nextConfig, initialSecret)
+    const secret = buildSecret(
+      mode,
+      difficulty,
+      nextLevel,
+      cycle,
+      nextConfig,
+      initialSecret,
+    )
     dispatch({ type: 'RESTART', secret, config: nextConfig })
     prevStatus.current = 'editing'
     urgentBeeped.current = false

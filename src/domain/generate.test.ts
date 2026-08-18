@@ -42,4 +42,18 @@ describe('levelSeed', () => {
   it('不同关卡不同种子', () => {
     expect(levelSeed('easy', 1)).not.toBe(levelSeed('easy', 2))
   })
+
+  it('周目 1 与旧版双参调用逐位一致（首周目答案兼容）', () => {
+    for (const diff of ['easy', 'advanced', 'nightmare']) {
+      for (let level = 1; level <= 5; level++) {
+        expect(levelSeed(diff, level, 1)).toBe(levelSeed(diff, level))
+      }
+    }
+  })
+
+  it('周目 ≥2 换答案且稳定', () => {
+    expect(levelSeed('nightmare', 3, 2)).not.toBe(levelSeed('nightmare', 3, 1))
+    expect(levelSeed('nightmare', 3, 2)).toBe(levelSeed('nightmare', 3, 2))
+    expect(levelSeed('nightmare', 3, 3)).not.toBe(levelSeed('nightmare', 3, 2))
+  })
 })

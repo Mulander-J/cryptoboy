@@ -6,7 +6,7 @@ import type { ColorToken, Difficulty, Guess, LevelConfig, Password } from './typ
  * 玩法 UI：features/solo/fateNight；规格：PRODUCT §3.7。
  */
 
-export const FATE_CASE_TIME_FLOOR_MS = 3_000
+export const FATE_CASE_TIME_FLOOR_MS = 5_000
 
 export type FateCasePlayMode = 'revolver' | 'beat'
 export type FateCaseDifficultyTier = 1 | 2 | 3 | 4 | 5
@@ -18,6 +18,7 @@ export type FateCasePhase = {
   hangingIndex: number
   locks: readonly (ColorToken | null)[]
   chamber: readonly FateCaseChoice[]
+  guess: Guess
 }
 
 const DEFAULT_PLAY_MODE: FateCasePlayMode = 'beat'
@@ -27,7 +28,7 @@ export const THEME_FATE_CASE_PLAY_MODE: Readonly<Partial<Record<string, FateCase
   americana: 'revolver',
 }
 
-/** 档位 → 一周期耗时（窗口 3s ÷ 周期数；噩梦 3、无尽 5） */
+/** 档位 → 一周期耗时（窗口 5s ÷ 周期数；噩梦 3、无尽 5） */
 export const FATE_CASE_SPIN_MS: Record<FateCaseDifficultyTier, number> = {
   1: FATE_CASE_TIME_FLOOR_MS / 1,
   2: FATE_CASE_TIME_FLOOR_MS / 2,
@@ -129,6 +130,7 @@ export function buildFateCasePhase(
     hangingIndex,
     locks,
     chamber: buildChamber(hangingCandidates(secret, guess, config)),
+    guess,
   }
 }
 

@@ -17,6 +17,7 @@ import {
   markLevelCleared,
   recordEndlessClears,
   resetSoloProgress,
+  startNextCycle,
   updateSettings,
   type ProgressState,
   type Settings,
@@ -32,6 +33,8 @@ type ProgressContextValue = {
   resetProgress: () => void
   markTutorialSeen: () => void
   clearLevel: (difficulty: Difficulty, level: number, elapsedMs: number) => void
+  /** 整档通关后开启下一周目（NG+） */
+  startCycle: (difficulty: Difficulty) => void
   recordEndless: (clears: number) => void
   saveCustomPractice: (next: CustomPracticeOptions) => CustomPracticeOptions
 }
@@ -78,6 +81,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     setProgress((p) => recordEndlessClears(p, clears))
   }, [])
 
+  const startCycle = useCallback((difficulty: Difficulty) => {
+    setProgress((p) => startNextCycle(p, difficulty, MAX_LEVELS[difficulty]))
+  }, [])
+
   const saveCustomPractice = useCallback((next: CustomPracticeOptions) => {
     const clean = sanitizeOptions(next)
     setProgress((p) => updateSettings(p, { customPractice: clean }))
@@ -92,6 +99,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       resetProgress,
       markTutorialSeen,
       clearLevel,
+      startCycle,
       recordEndless,
       saveCustomPractice,
     }),
@@ -102,6 +110,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       resetProgress,
       markTutorialSeen,
       clearLevel,
+      startCycle,
       recordEndless,
       saveCustomPractice,
     ],

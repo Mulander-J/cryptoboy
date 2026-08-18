@@ -34,16 +34,10 @@ export function FateNightWatcher({
     ? m.game.fateCaseSubtitleBeat
     : m.game.fateCaseSubtitleRevolver
   const stageAria = play.isBeat ? m.game.fateCaseBeatAria : m.game.fateCaseChamberAria
-  const readyHint = play.isBeat ? m.game.fateCaseReadyBeat : m.game.fateCaseReadyRevolver
-  const actionLabel = play.isBeat ? m.game.fateCaseLock : m.game.fateCaseFire
+  const readyHint = m.game.fateCaseReadyTip
+  const actionLabel = m.game.fateCaseAction
 
-  const hint = !live
-    ? null
-    : play.missFlash
-      ? m.game.fateCaseMissRetry
-      : play.armed
-        ? readyHint
-        : m.game.fateCaseSpinning
+  const hint = play.missFlash ? m.game.fateCaseMissRetry : readyHint
 
   const stageProps = {
     chamber: phase.chamber,
@@ -72,7 +66,7 @@ export function FateNightWatcher({
       subtitle={subtitle}
       hint={hint}
       remainingMs={remainingMs}
-      locks={phase.locks}
+      guess={phase.guess}
       actionLabel={actionLabel}
       armed={play.armed}
       onStart={onStart}

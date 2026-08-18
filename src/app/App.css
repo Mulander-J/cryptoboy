@@ -195,7 +195,7 @@
 .stats-block {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 0.8rem;
 }
 
 .stats-screen .stats-block h2 {
@@ -810,6 +810,12 @@
   margin: 0.2rem 0.1rem;
   border: 0;
   border-top: 1px solid color-mix(in srgb, var(--text-muted) 40%, transparent);
+}
+
+/* 下周目（NG+）：次级钮 + 虚线描边示「轮回」 */
+.menu-cycle-btn {
+  border-style: dashed;
+  opacity: 0.92;
 }
 
 .menu-hint {
@@ -2031,10 +2037,10 @@
 }
 
 .fate-case-subtitle {
-  margin: 0;
+  margin: 0.55rem 0 0.15rem;
   color: var(--color-text-muted);
   font-family: var(--font-pixel);
-  font-size: 0.72rem;
+  font-size: 0.85rem;
   font-weight: 400;
   letter-spacing: 0.16em;
   line-height: 1.2;
@@ -2085,7 +2091,7 @@
 }
 
 .fate-case-moment-hint {
-  margin: 0 0 0.65rem;
+  margin: 0.55rem 0 0;
   min-height: 1.2em;
   color: var(--color-text-muted);
   font-size: 0.78rem;
@@ -2109,30 +2115,80 @@
   color: var(--color-accent);
 }
 
+.fate-case-guess-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.15rem;
+}
+
+.fate-case-guess-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+}
+
 .fate-case-locks {
   display: flex;
   justify-content: center;
-  gap: 0.45rem;
-  margin-bottom: 0.85rem;
+  gap: 0.35rem;
+}
+
+.fate-case-hint-dots {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5px;
+  padding: 0.25rem 0.35rem;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--color-surface) 90%, #000);
+  border: 1px solid var(--color-border-strong);
+  box-shadow: inset 0 1px 2px #00000044;
+}
+
+.fate-case-hint-dots .hint-dot {
+  width: 8px;
+  height: 8px;
+}
+
+.fate-case-hint-dots .hint-dot.exact {
+  background: var(--hint-exact);
+  box-shadow:
+    0 0 6px var(--hint-exact),
+    0 0 0 1px color-mix(in srgb, #000 30%, transparent);
+}
+
+.fate-case-shortcut-tip {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--color-accent) 30%, transparent);
 }
 
 .fate-case-lock {
-  width: 2.1rem;
-  height: 2.1rem;
-  border-radius: 6px;
-  border: 2px solid var(--color-border-strong);
+  position: relative;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 5px;
+  border: 1.5px solid var(--color-border-strong);
   display: grid;
   place-items: center;
   font-family: var(--font-pixel);
-  font-size: 0.95rem;
+  font-size: 0.75rem;
   color: var(--color-text);
   box-shadow: inset 0 -2px 0 #00000033;
 }
 
-.fate-case-lock.hanging {
-  background: var(--color-surface);
-  color: var(--color-accent);
-  animation: fate-case-hang-pulse 1.1s ease-in-out infinite;
+.fate-case-lock-q {
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  line-height: 1;
 }
 
 .fate-case-moment.has-entrance .fate-case-lock {
@@ -2140,13 +2196,12 @@
   animation-delay: calc(0.52s + var(--lock-i, 0) * 0.07s);
 }
 
-.fate-case-moment.has-entrance .fate-case-lock.hanging {
-  animation:
-    fate-case-lock-pop 0.48s cubic-bezier(0.22, 1, 0.36, 1) both,
-    fate-case-hang-pulse 1.1s ease-in-out infinite;
-  animation-delay:
-    calc(0.52s + var(--lock-i, 0) * 0.07s),
-    calc(0.95s + var(--lock-i, 0) * 0.07s);
+.fate-case-moment.has-entrance .fate-case-hint-dots {
+  animation: fate-case-lock-pop 0.48s 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fate-case-moment.has-entrance .fate-case-shortcut-tip {
+  animation: fate-case-content-fade 0.48s 0.88s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .fate-case-wheel-stage {
@@ -2739,6 +2794,8 @@
   .fate-case-moment.has-entrance .fate-case-beat-stage,
   .fate-case-moment.has-entrance .fate-case-fire-btn,
   .fate-case-moment.has-entrance .fate-case-lock,
+  .fate-case-moment.has-entrance .fate-case-hint-dots,
+  .fate-case-moment.has-entrance .fate-case-shortcut-tip,
   .fate-case-moment.has-entrance .fate-case-lock.hanging,
   .fate-case-wheel-shake,
   .fate-case-countdown.urgent .fate-case-countdown-digits,

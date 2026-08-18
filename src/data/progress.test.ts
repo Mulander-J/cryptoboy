@@ -7,6 +7,7 @@ import {
   markLevelCleared,
   recordEndlessClears,
   resetSoloProgress,
+  startNextCycle,
   updateSettings,
 } from './progress'
 
@@ -41,9 +42,21 @@ describe('resetSoloProgress', () => {
     expect(hasSoloProgress(state)).toBe(true)
 
     const next = resetSoloProgress(state)
-    expect(next.solo.easy).toEqual({ unlocked: 1, cleared: 0, bestTimes: {} })
-    expect(next.solo.advanced).toEqual({ unlocked: 1, cleared: 0, bestTimes: {} })
-    expect(next.solo.nightmare).toEqual({ unlocked: 1, cleared: 0, bestTimes: {} })
+    expect(next.solo.easy).toEqual({
+      cleared: 0,
+      bestTimes: {},
+      cycle: 1,
+    })
+    expect(next.solo.advanced).toEqual({
+      cleared: 0,
+      bestTimes: {},
+      cycle: 1,
+    })
+    expect(next.solo.nightmare).toEqual({
+      cleared: 0,
+      bestTimes: {},
+      cycle: 1,
+    })
     expect(next.endless.bestClears).toBe(0)
     expect(next.settings.sound).toBe(false)
     expect(next.settings.seenTutorial).toBe(true)
@@ -62,6 +75,22 @@ describe('resetSoloProgress', () => {
     expect(localStorage.getItem('unrelated')).toBe('keep')
   })
 
+  it('旧存档无 cycle 字段：迁移为周目 1', () => {
+    localStorage.setItem(
+      'code-hack-progress-v2',
+      JSON.stringify({
+        solo: {
+          easy: { unlocked: 3, cleared: 2, bestTimes: { '1': 5000 } },
+        },
+        settings: {},
+      }),
+    )
+    const state = loadProgress()
+    expect(state.solo.easy.cycle).toBe(1)
+    expect(state.solo.easy.cleared).toBe(2)
+    expect(state.solo.nightmare.cycle).toBe(1)
+  })
+
   it('旧 challenge 键迁入 nightmare', () => {
     localStorage.setItem(
       'code-hack-progress-v2',
@@ -75,7 +104,6 @@ describe('resetSoloProgress', () => {
       }),
     )
     const state = loadProgress()
-    expect(state.solo.nightmare.unlocked).toBe(4)
     expect(state.solo.nightmare.cleared).toBe(3)
     expect(state.solo.nightmare.bestTimes['1']).toBe(1000)
     expect(state.endless.bestClears).toBe(0)
@@ -83,6 +111,18 @@ describe('resetSoloProgress', () => {
 
   it('新存档无进度', () => {
     expect(hasSoloProgress(loadProgress())).toBe(false)
+  })
+
+  it('markLevelCleared 保留 cycle', () => {
+    let state = loadProgress()
+    state = markLevelCleared(state, 'easy', 1, 2, 9000)
+    state = markLevelCleared(state, 'easy', 2, 2, 8000)
+    const initialCycle = state.solo.easy.cycle
+    state = startNextCycle(state, 'easy', 2)
+    expect(state.solo.easy.cycle).toBe(initialCycle + 1)
+    state = markLevelCleared(state, 'easy', 1, 2, 7000)
+    expect(state.solo.easy.cycle).toBe(initialCycle + 1)
+    expect(state.solo.easy.cleared).toBe(1)
   })
 
   it('新存档默认：cny / 音效开 / 色盲关 / 确认关', () => {
@@ -109,5 +149,49 @@ describe('resetSoloProgress', () => {
       }),
     )
     expect(loadProgress().settings.locale).toBe('zh-CN')
+  })
+})
+
+describe('startNextCycle', () => {
+  beforeEach(() => {
+    stubLocalStorage()
+  })
+
+  it('未整档通关：不可开启下周目', () => {
+    let state = loadProgress()
+    state = markLevelCleared(state, 'easy', 1, 2, 9000)
+    const next = startNextCycle(state, 'easy', 2)
+    expect(next).toBe(state)
+    expect(next.solo.easy.cycle).toBe(1)
+  })
+
+  it('整档通关后：周目 +1、进度归位、最佳用时清空并持久化', () => {
+    let state = loadProgress()
+    state = markLevelCleared(state, 'nightmare', 1, 2, 30_000)
+    state = markLevelCleared(state, 'nightmare', 2, 2, 25_000)
+    expect(state.solo.nightmare.cleared).toBe(2)
+
+    const next = startNextCycle(state, 'nightmare', 2)
+    expect(next.solo.nightmare).toEqual({
+      cleared: 0,
+      bestTimes: {},
+      cycle: 2,
+    })
+    // 不影响其他难度
+    expect(next.solo.easy.cycle).toBe(1)
+    // 已写入存档
+    const reloaded = loadProgress()
+    expect(reloaded.solo.nightmare.cycle).toBe(2)
+    // 周目 >1 视为有进度（可重置）
+    expect(hasSoloProgress(next)).toBe(true)
+  })
+
+  it('重置进度后回到周目 1', () => {
+    let state = loadProgress()
+    state = markLevelCleared(state, 'easy', 1, 1, 9000)
+    state = startNextCycle(state, 'easy', 1)
+    expect(state.solo.easy.cycle).toBe(2)
+    const next = resetSoloProgress(state)
+    expect(next.solo.easy.cycle).toBe(1)
   })
 })
